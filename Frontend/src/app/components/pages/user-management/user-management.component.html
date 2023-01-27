@@ -17,14 +17,4 @@
       </div>
     </div>
   </div>
-
-  <hr class="mb-3" />
-
-  <div class="text-center m-auto">
-    <div *ngFor="let token of unusedTokens$ | async" class="inline-block p-3 border border-gray-300 rounded-md mx-3">
-      <p class="font-semibold lg:text-lg">{{ token.token }}</p>
-      <p class="font-semibold">{{ token.accountType | titlecase }}</p>
-      <button styled-red (click)="deleteToken(token.tokenID)" class="my-2">Delete</button>
-    </div>
-  </div>
 </div>

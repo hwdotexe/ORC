@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { take, takeUntil } from 'rxjs/operators';
-import { UserUpdateRequest } from 'src/app/models/API/Request/user-update-request.interface';
+import { AccountUpdateRequest } from 'src/app/models/API/Request/account-update-request.interface';
 import { UpdateCharacterFormComponentService } from 'src/app/services/forms/update-character-form-component-service/update-character-form-component.service';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
@@ -45,9 +45,8 @@ export class UpdateCharacterFormComponent extends BaseUnsubscribeComponent imple
     this.showErrorValidations$.next(false);
 
     if (this.updateCharacterForm.valid) {
-      let request: UserUpdateRequest = {
-        characterName: this.updateCharacterForm.get('characterName').value,
-        characterServer: this.updateCharacterForm.get('characterServer').value
+      let request: AccountUpdateRequest = {
+        displayName: this.updateCharacterForm.get('displayName').value
       };
 
       this.dispatch(request);
@@ -56,13 +55,13 @@ export class UpdateCharacterFormComponent extends BaseUnsubscribeComponent imple
     }
   }
 
-  dispatch(dispatchData: UserUpdateRequest): void {
+  dispatch(dispatchData: AccountUpdateRequest): void {
     this.componentService
       .sendCharacterData(dispatchData)
       .pipe(take(1), takeUntil(this.unsubscribe$))
       .subscribe(response => {
         if (response) {
-          this.authStateService.onAuthDataCharacterUpdated(response.characterName, response.avatarURL);
+          this.authStateService.onAuthDataInfoUpdated(response.displayName);
           this.router.navigate(['/']);
         } else {
           this.showErrorValidations$.next(true);

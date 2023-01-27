@@ -11,19 +11,16 @@ const reducer = createReducer(
       ...state,
       authToken: action.authToken,
       userID: action.userid,
-      userAvatarURL: action.userAvatarURL,
-      userName: action.userName,
-      userServer: action.userServer,
+      displayName: action.displayName,
       accountType: action.accountType
     })
   ),
   on(AuthStateActions.AUTH_DATA_CLEARED, (state, action): AuthState => authInitialState),
   on(
-    AuthStateActions.AUTH_DATA_CHARACTER_UPDATED,
+    AuthStateActions.AUTH_DATA_INFO_UPDATED,
     (state, action): AuthState => ({
       ...state,
-      userAvatarURL: action.avatarURL,
-      userName: action.characterName
+      displayName: action.displayName
     })
   )
 );

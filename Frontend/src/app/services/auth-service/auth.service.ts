@@ -15,12 +15,8 @@ export class AuthService {
     return this.authStateService.userID$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
   }
 
-  getUserName$(): Observable<string> {
-    return this.authStateService.userName$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
-  }
-
-  getUserAvatarURL$(): Observable<string> {
-    return this.authStateService.userAvatarURL$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+  getDisplayName$(): Observable<string> {
+    return this.authStateService.displayName$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
   }
 
   checkUserSessionActive$(): Observable<boolean> {

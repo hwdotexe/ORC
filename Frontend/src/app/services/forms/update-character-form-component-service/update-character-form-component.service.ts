@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { UserUpdateRequest } from 'src/app/models/API/Request/user-update-request.interface';
-import { UserUpdateResponse } from 'src/app/models/API/Response/user-update-response.interface';
+import { AccountUpdateRequest } from 'src/app/models/API/Request/account-update-request.interface';
+import { AccountUpdateResponse } from 'src/app/models/API/Response/account-update-response.interface';
 import { HTTPService } from '../../httpservice/http.service';
 
 @Injectable({
@@ -11,8 +11,8 @@ import { HTTPService } from '../../httpservice/http.service';
 export class UpdateCharacterFormComponentService {
   constructor(private httpService: HTTPService) {}
 
-  sendCharacterData(request: UserUpdateRequest): Observable<UserUpdateResponse> {
-    return this.httpService.PATCH<UserUpdateResponse>('user', request, 'UPDATE_CHARACTER').pipe(
+  sendCharacterData(request: AccountUpdateRequest): Observable<AccountUpdateResponse> {
+    return this.httpService.PATCH<AccountUpdateResponse>('user', request, 'UPDATE_CHARACTER').pipe(
       take(1),
       map(response => {
         return response.responseBody;

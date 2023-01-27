@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-import { RegisterDataRequest } from 'src/app/models/API/Request/register-data-request.interface';
+import { AccountCreateRequest } from 'src/app/models/API/Request/account-create-request.interface';
 import { CaptchaService } from 'src/app/services/captcha/captcha.service';
 import { RegisterFormComponentService } from 'src/app/services/forms/register-form-component-service/register-form-component.service';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
@@ -42,9 +42,7 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     this.registerAccountForm = this.formBuilder.group({
       email: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required, Validators.email])] }),
       password: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
-      characterName: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
-      characterServer: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
-      accountCreationToken: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] })
+      displayName: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] })
     });
   }
 
@@ -54,27 +52,19 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     this.showRegisterError$.next(false);
 
     if (this.registerAccountForm.valid) {
-      this.captchaService
-        .createCaptchaToken$('PUT_REGISTER')
-        .pipe(take(1), takeUntil(this.unsubscribe$))
-        .subscribe(token => {
-          let registerData: RegisterDataRequest = {
-            email: this.registerAccountForm.get('email').value,
-            password: this.registerAccountForm.get('password').value,
-            characterName: this.registerAccountForm.get('characterName').value,
-            characterServer: this.registerAccountForm.get('characterServer').value,
-            createAccountToken: this.registerAccountForm.get('accountCreationToken').value,
-            captchaToken: token
-          };
+      let registerData: AccountCreateRequest = {
+        email: this.registerAccountForm.get('email').value,
+        password: this.registerAccountForm.get('password').value,
+        displayName: this.registerAccountForm.get('displayName').value
+      };
 
-          this.dispatch(registerData);
-        });
+      this.dispatch(registerData);
     } else {
       this.showErrorValidations$.next(true);
     }
   }
 
-  dispatch(dispatchData: RegisterDataRequest): void {
+  dispatch(dispatchData: AccountCreateRequest): void {
     this.componentService
       .sendRegisterData(dispatchData)
       .pipe(take(1), takeUntil(this.unsubscribe$))

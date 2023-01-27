@@ -1,24 +1,24 @@
 {
 	"info": {
-		"_postman_id": "7ef5768f-3831-44a1-9be8-3361dbb35860",
+		"_postman_id": "7545ff5a-4296-429e-8e7d-2e1c4cf6a296",
 		"name": "ORC API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "Account",
 			"item": [
 				{
-					"name": "Create User",
+					"name": "Create Account",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var token = pm.response.json().authToken;",
-									"var userid = pm.response.json().userID;",
+									"var accountid = pm.response.json().accountID;",
 									"pm.environment.set(\"authToken\", token);",
-									"pm.environment.set(\"userid\", userid);"
+									"pm.environment.set(\"accountid\", accountid);"
 								],
 								"type": "text/javascript"
 							}
@@ -26,10 +26,16 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"test@miqote.com\",\r\n    \"Password\": \"!SuperTest5\",\r\n    \"CharacterServer\": \"Lamia\",\r\n    \"CharacterName\": \"Kenji Sekhiru\",\r\n    \"CreateAccountToken\": \"MLP9G4N2PD\",\r\n    \"CaptchaToken\": \"token\"\r\n}",
+							"raw": "{\r\n    \"Email\": \"test@test.com\",\r\n    \"Password\": \"!SuperTest5\",\r\n    \"DisplayName\": \"MyCoolName\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,29 +43,29 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/user",
+							"raw": "{{serverAddress}}/v1/account",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"user"
+								"account"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Log In User",
+					"name": "Log In",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var token = pm.response.json().authToken;",
-									"var userid = pm.response.json().userID;",
+									"var accountid = pm.response.json().accountID;",
 									"pm.environment.set(\"authToken\", token);",
-									"pm.environment.set(\"userid\", userid);"
+									"pm.environment.set(\"accountid\", accountid);"
 								],
 								"type": "text/javascript"
 							}
@@ -67,10 +73,16 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"test@miqote.com\",\r\n    \"Password\": \"!SuperTest5\",\r\n    \"CaptchaToken\": \"token\"\r\n}",
+							"raw": "{\r\n    \"Email\": \"test@test.com\",\r\n    \"Password\": \"!SuperTest5\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,20 +90,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/user",
+							"raw": "{{serverAddress}}/v1/account",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"user"
+								"account"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Log Out User",
+					"name": "Log Out",
 					"event": [
 						{
 							"listen": "test",
@@ -109,6 +121,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "default"
+							},
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
 								"type": "default"
 							}
 						],
@@ -135,7 +152,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Username",
+					"name": "Update Display Name",
 					"event": [
 						{
 							"listen": "test",
@@ -154,11 +171,16 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"CharacterName\": \"Kenji Sekhiru\",\r\n    \"CharacterServer\": \"Leviathan\"\r\n}",
+							"raw": "{\r\n    \"DisplayName\": \"Kenji Sekhiru\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,54 +188,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/user",
+							"raw": "{{serverAddress}}/v1/account",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetReviews",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review"
+								"account"
 							]
 						}
 					},
@@ -265,424 +246,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "GetRequests",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/request",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"request"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Review",
-			"item": [
-				{
-					"name": "Create Review",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().reviewID;",
-									"pm.environment.set(\"reviewid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"Title\": \"Hotter than the tubs\",\n    \"ClubName\": \"Osu no Kemonomimi Cafe\",\n    \"ClubDatacenter\": \"Aether\",\n    \"ClubServer\": \"Leviathan\",\n    \"ClubDistrict\": \"Lavender Beds\",\n    \"ClubWard\": 8,\n    \"ClubPlot\": 42,\n    \"ClubHours\": [\n        {\n            \"Day\": \"Saturday\",\n            \"Open\": \"20:00\",\n            \"Close\": \"23:00\",\n            \"TimezoneID\": \"America/New_York\"\n        },\n        {\n            \"Day\": \"Sunday\",\n            \"Open\": \"21:00\",\n            \"Close\": \"22:00\",\n            \"TimezoneID\": \"America/New_York\"\n        }\n    ],\n    \"Summary\": \"Okay, okay, so we all know how long I've been out clubbing. I mean, I'm practically an expert at awkwardly-prolonged replies as I think of the best way to respond to the waitress to thank her for the drink. But besides all that, I know what I'm doing. But this place is special to me because it was my very first club. I decided to revisit it the other day, and all the nostalgia hit me like a dissatisfied Karen. The hot tubs are pretty great. I remember meeting a bunch of random strangers, and it was completely SFW, we just talked while being mostly naked in a virtual public place. Good times.\",\n    \"StarRating\": 4.5,\n    \"Website\": \"http://whyamialoser.com\",\n    \"Tags\": [\"Fun\", \"Hot\", \"Leet\", \"Dope\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Review",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().reviewID;",
-									"pm.environment.set(\"reviewid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"ReviewID\": \"{{reviewid}}\",\n    \"Title\": \"A GREAT Club\",\n    \"ClubName\": \"An Awesome Club\",\n    \"ClubServer\": \"Leviathan\",\n    \"ClubDistrict\": \"Shirogane\",\n    \"ClubWard\": 12,\n    \"ClubPlot\": 13,\n    \"ClubHours\": \"M-F 10pm-12am EST\",\n    \"Summary\": \"This club IS MY FAVORITE\",\n    \"StarRating\": 5,\n    \"Website\": \"potato.com\",\n    \"Tags\": [\"Fun\", \"Hot\", \"Leet\", \"Dope\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Review",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().reviewID;\r",
-									"pm.environment.set(\"reviewid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"ReviewID\": \"{{reviewid}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Request a Review",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().requestID;",
-									"pm.environment.set(\"requestid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"RequestorServer\": \"Leviathan\",\n    \"RequestorName\": \"Kenji Sekhiru\",\n    \"ClubName\": \"Kitty Club\",\n    \"ClubServer\": \"Leviathan\",\n    \"ClubDistrict\": \"Shirogane\",\n    \"ClubWard\": 12,\n    \"ClubPlot\": 13,\n    \"ClubHours\": \"M-F 10pm-12am EST\",\n    \"Info\": \"Knock three times\",\n    \"ClubWebsite\": \"potato.com\",\n    \"CaptchaToken\": \"token\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/request",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"request"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Request",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().requestID;\r",
-									"pm.environment.set(\"requestid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"RequestID\": \"{{requestid}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/request",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"request"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Report",
-			"item": [
-				{
-					"name": "Get Reports",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/report",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"report"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Report",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().reportID;",
-									"pm.environment.set(\"reportid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"ReviewID\": \"{{reviewid}}\",\n    \"ReportReason\": \"I hate it I think they stole my ideas and they all deserve to be eaten by a fat Roe.\",\n    \"CharacterName\": \"Kenji Sekhiru\",\n    \"CharacterServer\": \"Leviathan\",\n    \"Contact\": \"Discord#1234\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/report",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"report"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Report",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"ReportID\": \"{{reportid}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/review/report",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"review",
-								"report"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -690,7 +253,7 @@
 			"name": "User Status",
 			"item": [
 				{
-					"name": "Get Users",
+					"name": "Get Accounts",
 					"event": [
 						{
 							"listen": "test",
@@ -724,13 +287,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/user/status",
+							"raw": "{{serverAddress}}/v1/account/status",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"user",
+								"account",
 								"status"
 							]
 						}
@@ -738,7 +301,7 @@
 					"response": []
 				},
 				{
-					"name": "Update User Account Status",
+					"name": "Update Account Status",
 					"event": [
 						{
 							"listen": "test",
@@ -761,7 +324,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"UserID\": \"{{userid}}\",\n    \"AccountStatus\": \"ENABLED\"\n}",
+							"raw": "{\n    \"TargetAccountID\": \"{{userid}}\",\n    \"NewAccountStatus\": \"ENABLED\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -769,155 +332,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/user/status",
+							"raw": "{{serverAddress}}/v1/account/status",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"user",
+								"account",
 								"status"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Token",
-			"item": [
-				{
-					"name": "Get Tokens",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/token",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var tid = pm.response.json().tokenID;\r",
-									"pm.environment.set(\"tokenid\", tid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"AccountType\": \"GUEST\" //GUEST, REVIEWER, MODERATOR, ADMIN\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/token",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"TokenID\": \"{{tokenid}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{serverAddress}}/v1/token",
-							"host": [
-								"{{serverAddress}}"
-							],
-							"path": [
-								"v1",
-								"token"
 							]
 						}
 					},

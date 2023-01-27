@@ -1,9 +1,0 @@
-<div class="text-left align-bottom max-w-[15rem]">
-  <input styled placeholder="RP, Cafe, Auctions" (keyup)="onTagAdd($event, false)" (keydown.enter)="onTagAdd($event, true)" [disabled]="disabled" />
-
-  <div class="m-1 mx-1.5">
-    <ng-container *ngFor="let tag of tagList">
-      <app-tag editable="true" (doRemove)="removeTag(tag)" text="{{ tag }}"></app-tag>
-    </ng-container>
-  </div>
-</div>

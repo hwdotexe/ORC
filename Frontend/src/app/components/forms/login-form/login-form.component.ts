@@ -7,7 +7,7 @@ import { LoginFormComponentService } from 'src/app/services/forms/login-form-com
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 import { takeUntil, take } from 'rxjs/operators';
-import { LoginDataRequest } from 'src/app/models/API/Request/login-data-request.interface';
+import { AccountLoginRequest } from 'src/app/models/API/Request/account-login-request.interface';
 
 @Component({
   selector: 'app-login-form',
@@ -50,7 +50,7 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
     this.showErrorValidations$.next(false);
 
     if (this.loginInfoForm.valid) {
-      let loginData: LoginDataRequest = {
+      let loginData: AccountLoginRequest = {
         email: this.loginInfoForm.get('email').value,
         password: this.loginInfoForm.get('password').value
       };
@@ -61,7 +61,7 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
     }
   }
 
-  dispatch(dispatchData: LoginDataRequest): void {
+  dispatch(dispatchData: AccountLoginRequest): void {
     this.componentService
       .sendLoginData(dispatchData)
       .pipe(take(1), takeUntil(this.unsubscribe$))
