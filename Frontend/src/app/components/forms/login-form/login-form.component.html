@@ -1,0 +1,31 @@
+<form class="px-4 text-center" [formGroup]="loginInfoForm" (ngSubmit)="this.submit()">
+  <h1 class="text-xl font-bold my-2">Reviewer Log In</h1>
+
+  <div class="inline-block my-5">
+    <div class="inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Email Address</p>
+      <ui-form-error [formGroup]="loginInfoForm" [errorFor]="'email'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="email" placeholder="user@example.com" />
+    </div>
+
+    <div class="inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Password</p>
+      <ui-form-error [formGroup]="loginInfoForm" [errorFor]="'password'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="password" placeholder="•••••••" type="password" />
+    </div>
+  </div>
+
+  <br />
+
+  <div *ngIf="{ value: isLoading$ | async } as isLoading">
+    <button styled-blue class="w-full lg:w-9/12 mt-3" type="submit" *ngIf="!isLoading.value">Log In</button>
+    <button styled-blue-disabled class="w-full lg:w-9/12 mt-3 hover:cursor-progress" type="submit" disabled="disabled" *ngIf="isLoading.value">
+      <i class="fa-solid fa-spinner animate-spin mx-2"></i>
+      Log In
+    </button>
+  </div>
+
+  <p *ngIf="showInvalidLogin$ | async" class="mx-2 text-sm text-red-500">Invalid login details - please try again.</p>
+
+  <p *ngIf="showLoginError$ | async" class="mx-2 text-sm text-red-500">There was an error logging in. Please try again later.</p>
+</form>

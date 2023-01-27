@@ -1,0 +1,101 @@
+<form [formGroup]="selectTimeForm" (ngSubmit)="this.submit()">
+  <div class="inline-block">
+    <p class="font-semibold text-sm">Day</p>
+    <ui-form-error [formGroup]="selectTimeForm" [errorFor]="'dayOfWeek'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="dayOfWeek">
+      <option>Sunday</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+    </select>
+  </div>
+
+  <div class="inline-block">
+    <p class="font-semibold text-sm">Opens</p>
+    <ui-form-error [formGroup]="selectTimeForm" [errorFor]="'timeOpens'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="timeOpens">
+      <option>12:00 AM</option>
+      <option>1:00 AM</option>
+      <option>2:00 AM</option>
+      <option>3:00 AM</option>
+      <option>4:00 AM</option>
+      <option>5:00 AM</option>
+      <option>6:00 AM</option>
+      <option>7:00 AM</option>
+      <option>8:00 AM</option>
+      <option>9:00 AM</option>
+      <option>10:00 AM</option>
+      <option>11:00 AM</option>
+      <option>12:00 PM</option>
+      <option>1:00 PM</option>
+      <option>2:00 PM</option>
+      <option>3:00 PM</option>
+      <option>4:00 PM</option>
+      <option>5:00 PM</option>
+      <option>6:00 PM</option>
+      <option>7:00 PM</option>
+      <option>8:00 PM</option>
+      <option>9:00 PM</option>
+      <option>10:00 PM</option>
+      <option>11:00 PM</option>
+    </select>
+  </div>
+
+  <div class="inline-block">
+    <p class="font-semibold text-sm">Closes</p>
+    <ui-form-error [formGroup]="selectTimeForm" [errorFor]="'timeCloses'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="timeCloses">
+      <option>12:00 AM</option>
+      <option>1:00 AM</option>
+      <option>2:00 AM</option>
+      <option>3:00 AM</option>
+      <option>4:00 AM</option>
+      <option>5:00 AM</option>
+      <option>6:00 AM</option>
+      <option>7:00 AM</option>
+      <option>8:00 AM</option>
+      <option>9:00 AM</option>
+      <option>10:00 AM</option>
+      <option>11:00 AM</option>
+      <option>12:00 PM</option>
+      <option>1:00 PM</option>
+      <option>2:00 PM</option>
+      <option>3:00 PM</option>
+      <option>4:00 PM</option>
+      <option>5:00 PM</option>
+      <option>6:00 PM</option>
+      <option>7:00 PM</option>
+      <option>8:00 PM</option>
+      <option>9:00 PM</option>
+      <option>10:00 PM</option>
+      <option>11:00 PM</option>
+    </select>
+  </div>
+
+  <div class="inline-block">
+    <p class="font-semibold text-sm">Timezone</p>
+    <ui-form-error [formGroup]="selectTimeForm" [errorFor]="'timezone'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="timezone">
+      <option value="Pacific/Honolulu">Hawaii</option>
+      <option value="America/Anchorage">Alaska</option>
+      <option value="America/Los_Angeles">Pacific</option>
+      <option value="America/Denver">Mountain</option>
+      <option value="America/Chicago">Central</option>
+      <option value="America/New_York">Eastern</option>
+      <option value="UTC">UTC</option>
+    </select>
+  </div>
+
+  <button styled-simple type="submit"><i class="fa-solid fa-plus"></i></button>
+</form>
+
+<ng-container *ngFor="let hour of hoursList">
+  <div class="my-2">
+    <button styled-simple type="button" class="inline-block" (click)="deleteTime(hour)"><i class="fa-solid fa-minus"></i></button>
+
+    <p class="text-xs lg:text-sm inline-block py-2 mx-2">{{ hour.day }}: {{ hour.open }} - {{ hour.close }} ({{ hour.timezoneID }})</p>
+  </div>
+</ng-container>

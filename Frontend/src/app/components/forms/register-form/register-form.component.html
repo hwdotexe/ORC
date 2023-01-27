@@ -1,0 +1,90 @@
+<form class="px-4 pb-5" [formGroup]="registerAccountForm" (ngSubmit)="this.submit()">
+  <div class="text-center">
+    <h1 class="text-xl font-bold my-2">Create Reviewer Account</h1>
+    <p class="text-sm text-gray-600 mb-3">
+      Account creation is restricted to users with an Account Creation Token. You must receive this token from an admin in order to create your
+      account. Please reach out to our staff if you have any questions!
+    </p>
+  </div>
+
+  <div class="inline-block align-middle mt-4 mb-2">
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Email Address</p>
+      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'email'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="email" placeholder="user@example.com" />
+    </div>
+
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Password</p>
+      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'password'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="password" placeholder="•••••••" type="password" />
+    </div>
+
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Character Name</p>
+      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'characterName'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="characterName" placeholder="Tymomo Tymo" />
+    </div>
+
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Home World</p>
+      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'characterServer'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <select styled formControlName="characterServer">
+        <optgroup label="Aether">
+          <option>Adamantoise</option>
+          <option>Cactuar</option>
+          <option>Faerie</option>
+          <option>Gilgamesh</option>
+          <option>Jenova</option>
+          <option>Midgardsormr</option>
+          <option>Sargatanas</option>
+          <option>Siren</option>
+        </optgroup>
+        <optgroup label="Primal">
+          <option>Behemoth</option>
+          <option>Excalibur</option>
+          <option>Exodus</option>
+          <option>Famfrit</option>
+          <option>Hyperion</option>
+          <option>Lamia</option>
+          <option>Leviathan</option>
+          <option>Ultros</option>
+        </optgroup>
+        <optgroup label="Crystal">
+          <option>Balmung</option>
+          <option>Brynhildr</option>
+          <option>Coeurl</option>
+          <option>Diabolos</option>
+          <option>Goblin</option>
+          <option>Malboro</option>
+          <option>Mateus</option>
+          <option>Zalera</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Account Creation Token</p>
+      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'accountCreationToken'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="accountCreationToken" placeholder="Token" />
+    </div>
+  </div>
+
+  <p class="mx-2 text-sm text-gray-600 p-2">
+    Passwords must be at least 8 characters long and include a capital letter, lowercase letter, and a number.
+  </p>
+
+  <div *ngIf="{ value: isLoading$ | async } as isLoading">
+    <button styled-blue class="w-full mt-3" type="submit" *ngIf="!isLoading.value">Register Account</button>
+    <button styled-blue-disabled class="w-full mt-3 hover:cursor-progress" type="submit" disabled="disabled" *ngIf="isLoading.value">
+      <i class="fa-solid fa-spinner animate-spin mx-2"></i>
+      Register Account
+    </button>
+  </div>
+
+  <p *ngIf="showInvalidRegistration$ | async" class="mx-2 text-sm text-red-500">
+    Your registration was not accepted. Please make sure all your information is correct.
+  </p>
+
+  <p *ngIf="showRegisterError$ | async" class="mx-2 text-sm text-red-500">Please double-check your email and password and try again.</p>
+</form>

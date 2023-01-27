@@ -1,0 +1,9 @@
+<div class="mx-auto my-3 lg:my-0 w-11/12 lg:w-4/5 bg-gray-50 rounded-md shadow-md p-2">
+  <h1 class="text-2xl font-bold my-1 text-center">Edit Review</h1>
+  <p class="text-sm text-gray-600 m-1 text-center">Make an update to a review.</p>
+  <p class="text-xs text-gray-600 mb-3 text-center italic">
+    Note: This is intended for minor updates. If you are re-evaluating a club, you should delete the old review and publish a new one.
+  </p>
+
+  <app-review-form [review]="review$ | async"></app-review-form>
+</div>

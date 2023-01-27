@@ -1,0 +1,30 @@
+<div class="mx-auto w-11/12 lg:w-4/5 my-3 lg:my-0 bg-gray-50 rounded-md shadow-md p-3">
+  <h1 class="text-2xl font-bold my-2 text-center">User Management</h1>
+  <p class="text-sm text-gray-600 mb-3 text-center">Manage users and unused account creation tokens.</p>
+
+  <div *ngFor="let user of users$ | async">
+    <div class="flex p-3 my-3 border border-gray-300 rounded-md">
+      <img src="{{ user.characterAvatarURL }}" class="rounded-md inline-block self-center" />
+      <div class="flex-initial inline-block self-center mx-3">
+        <p class="font-semibold">{{ user.characterName }}</p>
+        <p class="font-semibold">{{ user.accountType | titlecase }}</p>
+        <p class="font-semibold text-sm">{{ user.accountStatus | titlecase }}</p>
+      </div>
+      <div class="flex-1 text-right self-center">
+        <button styled-green (click)="editUserAccount(user.userID, accountStatus.ENABLED)">Enable</button>
+        <br />
+        <button styled-red (click)="editUserAccount(user.userID, accountStatus.DISABLED)">Disable</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="mb-3" />
+
+  <div class="text-center m-auto">
+    <div *ngFor="let token of unusedTokens$ | async" class="inline-block p-3 border border-gray-300 rounded-md mx-3">
+      <p class="font-semibold lg:text-lg">{{ token.token }}</p>
+      <p class="font-semibold">{{ token.accountType | titlecase }}</p>
+      <button styled-red (click)="deleteToken(token.tokenID)" class="my-2">Delete</button>
+    </div>
+  </div>
+</div>

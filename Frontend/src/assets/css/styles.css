@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background-color: #eaeaea;
+}
+
+@font-face {
+  font-family: 'FFXIV';
+  font-weight: 300;
+  src: local('FFXIV'), url('../font/ffxiv.woff') format('woff');
+}

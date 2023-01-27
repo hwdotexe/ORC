@@ -1,0 +1,195 @@
+<form class="px-4 pb-5" [formGroup]="composeRequestForm" (ngSubmit)="this.submit()">
+  <h1 class="text-xl font-bold my-2 text-center">Request a Review</h1>
+  <p class="text-sm text-gray-600 mb-3 text-center">
+    Have a club or cafe you'd like us to visit? Leave us a note here, and we'll dispatch a Warrior of Light to check it out.
+  </p>
+
+  <div class="inline-block w-full my-4">
+    <div class="mx-2 my-5">
+      <p class="text-gray-600 font-semibold">
+        <i class="fa-solid fa-house"></i>
+        Club Information
+      </p>
+      <p class="text-sm text-gray-600 my-1 py-1 italic">Tell us where the party's at.</p>
+      <hr />
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Club Name</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubName'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="clubName" placeholder="A Cool Club" />
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Active Hours</p>
+      <p class="mx-2 text-sm text-gray-600">When is this club open?</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubHours'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="clubHours" placeholder="Weekends at 9pm-12am EST" />
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold inline">Extra Details</p>
+      <p class="text-xs text-gray-600 italic inline">Optional</p>
+
+      <div class="block">
+        <p class="mx-2 text-sm text-gray-600">Anything we should know?</p>
+        <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'info'" [showErrors]="showErrorValidations$"></ui-form-error>
+        <input styled formControlName="info" placeholder="DJ and Costume Contests" />
+      </div>
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold inline">Website</p>
+      <p class="text-xs text-gray-600 italic inline">Optional</p>
+
+      <div class="block">
+        <p class="mx-2 text-sm text-gray-600">Do you have a website?</p>
+        <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubWebsite'" [showErrors]="showErrorValidations$"></ui-form-error>
+        <input styled formControlName="clubWebsite" placeholder="https://mycool.ff14.club" />
+      </div>
+    </div>
+
+    <br />
+
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Datacenter</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubDatacenter'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <select styled formControlName="clubDatacenter">
+        <option>Aether</option>
+        <option>Primal</option>
+        <option>Crystal</option>
+      </select>
+    </div>
+
+    <div class="inline-block text-left align-bottom my-2">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">World</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubServer'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <select styled formControlName="clubServer">
+        <optgroup label="Aether">
+          <option>Adamantoise</option>
+          <option>Cactuar</option>
+          <option>Faerie</option>
+          <option>Gilgamesh</option>
+          <option>Jenova</option>
+          <option>Midgardsormr</option>
+          <option>Sargatanas</option>
+          <option>Siren</option>
+        </optgroup>
+        <optgroup label="Primal">
+          <option>Behemoth</option>
+          <option>Excalibur</option>
+          <option>Exodus</option>
+          <option>Famfrit</option>
+          <option>Hyperion</option>
+          <option>Lamia</option>
+          <option>Leviathan</option>
+          <option>Ultros</option>
+        </optgroup>
+        <optgroup label="Crystal">
+          <option>Balmung</option>
+          <option>Brynhildr</option>
+          <option>Coeurl</option>
+          <option>Diabolos</option>
+          <option>Goblin</option>
+          <option>Malboro</option>
+          <option>Mateus</option>
+          <option>Zalera</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="my-2 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Residential District</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubDistrict'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <select styled formControlName="clubDistrict">
+        <option>Empyreum</option>
+        <option>Goblet</option>
+        <option>Lavender Beds</option>
+        <option>Mist</option>
+        <option>Shirogane</option>
+      </select>
+    </div>
+
+    <div class="my-2 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Club Ward</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubWard'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="clubWard" placeholder="12" type="number" />
+    </div>
+
+    <div class="my-2 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Club Plot</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'clubPlot'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="clubPlot" placeholder="12" type="number" />
+    </div>
+
+    <br />
+
+    <div class="mx-2 my-5">
+      <p class="text-gray-600 font-semibold">
+        <i class="fa-solid fa-user"></i>
+        Your Information
+      </p>
+      <p class="text-sm text-gray-600 my-1 py-1 italic">In case we need to reach out.</p>
+      <hr />
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Your Character Name</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'requestorName'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <input styled formControlName="requestorName" placeholder="Urianger" />
+    </div>
+
+    <div class="my-1 inline-block text-left align-bottom">
+      <p class="mx-2 text-sm text-gray-800 font-semibold">Your Home World</p>
+      <ui-form-error [formGroup]="composeRequestForm" [errorFor]="'requestorServer'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <select styled formControlName="requestorServer">
+        <optgroup label="Aether">
+          <option>Adamantoise</option>
+          <option>Cactuar</option>
+          <option>Faerie</option>
+          <option>Gilgamesh</option>
+          <option>Jenova</option>
+          <option>Midgardsormr</option>
+          <option>Sargatanas</option>
+          <option>Siren</option>
+        </optgroup>
+        <optgroup label="Primal">
+          <option>Behemoth</option>
+          <option>Excalibur</option>
+          <option>Exodus</option>
+          <option>Famfrit</option>
+          <option>Hyperion</option>
+          <option>Lamia</option>
+          <option>Leviathan</option>
+          <option>Ultros</option>
+        </optgroup>
+        <optgroup label="Crystal">
+          <option>Balmung</option>
+          <option>Brynhildr</option>
+          <option>Coeurl</option>
+          <option>Diabolos</option>
+          <option>Goblin</option>
+          <option>Malboro</option>
+          <option>Mateus</option>
+          <option>Zalera</option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+
+  <br />
+
+  <div *ngIf="{ value: isLoading$ | async } as isLoading">
+    <button styled-blue class="w-full mt-3" type="submit" *ngIf="!isLoading.value">Request a Review</button>
+    <button styled-blue-disabled class="w-full mt-3 hover:cursor-progress" type="submit" disabled="disabled" *ngIf="isLoading.value">
+      <i class="fa-solid fa-spinner animate-spin mx-2"></i>
+      Request a Review
+    </button>
+  </div>
+
+  <p *ngIf="showComposeError$ | async" class="mx-2 text-sm text-red-500">There was an error sending your request. Please try again later.</p>
+
+  <p *ngIf="showInvalidRequest$ | async" class="mx-2 text-sm text-red-500">
+    The server rejected your request. Please ensure all fields are filled in correctly.
+  </p>
+</form>

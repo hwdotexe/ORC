@@ -1,0 +1,13 @@
+<div class="mx-auto my-3 lg:my-0 w-11/12 lg:w-4/5 bg-gray-50 rounded-md shadow-md p-5">
+  <h1 class="text-2xl font-bold my-1 text-center">Report Review</h1>
+  <p class="text-sm text-gray-600 m-1 text-center">Find an issue with one of our reviews? Let our staff know about it here.</p>
+
+  <div *ngIf="review$ | async as review" class="my-5">
+    <h1 class="text-lg font-semibold text-gray-600">You are reporting this review:</h1>
+    <app-review-tile [review]="review"></app-review-tile>
+
+    <hr />
+
+    <app-report-form [reviewID]="reviewID"></app-report-form>
+  </div>
+</div>

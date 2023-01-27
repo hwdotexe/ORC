@@ -1,0 +1,10 @@
+<div class="lg:flex-initial shadow-md bg-gray-50 rounded-md p-3 lg:p-5 my-3 lg:my-0 lg:ml-4">
+  <div class="text-gray-800 text-center">
+    <h1 class="text-lg font-semibold">Reports</h1>
+    <hr class="my-3" />
+  </div>
+  <div *ngIf="reports$ | async as reports">
+    <app-report-tile *ngFor="let report of reports" [report]="report" [review]="matchReviewToReport$(report.reviewID) | async"></app-report-tile>
+    <p *ngIf="reports.length === 0" class="text-sm font-semibold text-red-800">There aren't any pending reports to review.</p>
+  </div>
+</div>

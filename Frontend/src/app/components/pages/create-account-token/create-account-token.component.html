@@ -1,0 +1,24 @@
+<div class="mx-auto w-11/12 lg:w-4/5 my-3 lg:my-0 bg-gray-50 rounded-md shadow-md p-2">
+  <h1 class="text-2xl font-bold my-2 text-center">Generate Token</h1>
+  <p class="text-sm text-gray-600 mb-3 text-center">
+    Create a new Account Creation Token. New users will need this one-time token to activate their account. This token will also grant them various
+    permissions on the site.
+  </p>
+
+  <app-create-account-token-form (tokenResponse)="updateToken($event)"></app-create-account-token-form>
+
+  <div class="bg-gray-50 shadow-md border border-gray-400 text-gray-800 text-center rounded-md p-3 m-3 mt-0" *ngIf="tokenResponse">
+    <p class="text-lg font-semibold text-green-800 pb-4">Generated Token</p>
+
+    <div class="inline-block my-2">
+      <p class="p-2 inline border border-gray-800 rounded-md mx-1">
+        <i class="fa-solid fa-key mr-2"></i>
+        {{ tokenResponse.token }}
+      </p>
+      <p class="p-2 inline border border-gray-800 rounded-md mx-1">
+        <i class="fa-solid fa-user-check mr-2"></i>
+        {{ tokenResponse.accountType | titlecase }}
+      </p>
+    </div>
+  </div>
+</div>

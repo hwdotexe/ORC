@@ -1,0 +1,14 @@
+Backend/.vs
+Frontend/.vscode
+deploy/*
+Backend/BackendAPI/bin/Debug
+Backend/BackendAPI/bin/Release
+Backend/BackendAPI/obj
+Backend/BackendCore/bin/Debug
+Backend/BackendCore/bin/Release
+Backend/BackendCore/obj
+Backend/BackendAPI/bin
+Backend/BackendCore/bin
+Frontend/dist
+Backend/BackendWebAPI/bin
+Backend/BackendWebAPI/obj

@@ -1,0 +1,8 @@
+<div class="hidden lg:inline-block text-amber-500 text-xl">
+    <i class="fa-solid fa-star text-yellow-500" *ngFor="let _ of [].constructor(getFullStars())"></i>
+    <i class="fa-solid fa-star-half text-yellow-500" *ngIf="hasHalfStar()"></i>
+</div>
+
+<div class="inline-block lg:hidden text-amber-500 font-semibold">
+    <p><i class="fa-solid fa-star text-yellow-500 mx-1.5"></i>{{rating}}</p>
+</div>

@@ -1,0 +1,103 @@
+<form class="" [formGroup]="composeReportForm" (ngSubmit)="this.submit()">
+  <div class="mx-2 my-5">
+    <p class="text-gray-600 font-semibold">
+      <i class="fa-solid fa-house"></i>
+      Report Reason
+    </p>
+    <p class="text-sm text-gray-600 my-1 py-1 italic">Why are you reporting this review?</p>
+    <hr />
+  </div>
+
+  <div class="my-1 inline-block text-left align-bottom">
+    <p class="mx-2 text-sm text-gray-800 font-semibold">Select one:</p>
+    <ui-form-error [formGroup]="composeReportForm" [errorFor]="'reportReason'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="reportReason">
+      <option>This review is inaccurate</option>
+      <option>This review is biased or misleading</option>
+      <option>This review is offensive</option>
+      <option>This venue has closed</option>
+      <option>This venue's hours or location changed</option>
+      <option>This venue's website has changed</option>
+      <option>I would like this review taken down</option>
+      <option>I would like this review updated</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <hr />
+
+  <div class="mx-2 my-5">
+    <p class="text-gray-600 font-semibold">
+      <i class="fa-solid fa-user"></i>
+      Your Information
+    </p>
+    <p class="text-sm text-gray-600 my-1 py-1 italic">In case we need to reach out.</p>
+    <hr />
+  </div>
+
+  <div class="my-1 inline-block text-left align-bottom">
+    <p class="mx-2 text-sm text-gray-800 font-semibold">Your Character Name</p>
+    <ui-form-error [formGroup]="composeReportForm" [errorFor]="'requestorName'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <input styled formControlName="requestorName" placeholder="Urianger" />
+  </div>
+
+  <div class="my-1 inline-block text-left align-bottom">
+    <p class="mx-2 text-sm text-gray-800 font-semibold">Your Home World</p>
+    <ui-form-error [formGroup]="composeReportForm" [errorFor]="'requestorServer'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <select styled formControlName="requestorServer">
+      <optgroup label="Aether">
+        <option>Adamantoise</option>
+        <option>Cactuar</option>
+        <option>Faerie</option>
+        <option>Gilgamesh</option>
+        <option>Jenova</option>
+        <option>Midgardsormr</option>
+        <option>Sargatanas</option>
+        <option>Siren</option>
+      </optgroup>
+      <optgroup label="Primal">
+        <option>Behemoth</option>
+        <option>Excalibur</option>
+        <option>Exodus</option>
+        <option>Famfrit</option>
+        <option>Hyperion</option>
+        <option>Lamia</option>
+        <option>Leviathan</option>
+        <option>Ultros</option>
+      </optgroup>
+      <optgroup label="Crystal">
+        <option>Balmung</option>
+        <option>Brynhildr</option>
+        <option>Coeurl</option>
+        <option>Diabolos</option>
+        <option>Goblin</option>
+        <option>Malboro</option>
+        <option>Mateus</option>
+        <option>Zalera</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <div class="my-1 inline-block text-left align-bottom">
+    <p class="mx-2 text-sm text-gray-800 font-semibold">Contact</p>
+    <p class="mx-2 text-sm text-gray-600">Let us know how to contact you, if needed.</p>
+    <ui-form-error [formGroup]="composeReportForm" [errorFor]="'contact'" [showErrors]="showErrorValidations$"></ui-form-error>
+    <input styled formControlName="contact" placeholder="Discord#1234" />
+  </div>
+
+  <br />
+
+  <div *ngIf="{ value: isLoading$ | async } as isLoading">
+    <button styled-red class="w-full mt-3" type="submit" *ngIf="!isLoading.value">Send Report</button>
+    <button styled-red-disabled class="w-full mt-3 hover:cursor-progress" type="submit" disabled="disabled" *ngIf="isLoading.value">
+      <i class="fa-solid fa-spinner animate-spin mx-2"></i>
+      Send Report
+    </button>
+  </div>
+
+  <p *ngIf="showComposeError$ | async" class="mx-2 text-sm text-red-500">There was an error sending your report. Please try again later.</p>
+
+  <p *ngIf="showInvalidRequest$ | async" class="mx-2 text-sm text-red-500">
+    The server rejected your report. Please ensure all fields are filled in correctly.
+  </p>
+</form>

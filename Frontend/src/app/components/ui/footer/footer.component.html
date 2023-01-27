@@ -1,0 +1,13 @@
+<div class="container mx-auto my-2 p-5">
+  <p class="text-sm text-gray-500 text-center">
+    MiqoMixers is an independent, fan-made platform. Not affiliated with Square Enix or Final Fantasy XIV. All rights reserved.
+    <a *ngIf="userID$ | async; else loggedOut" class="underline hover:cursor-pointer" (click)="clickLogOut()">Log out</a>
+    <span class="mx-1">•</span>
+    <a class="underline" [routerLink]="['info']">About Us</a>
+    <span class="mx-1">•</span>
+    <a href="https://discord.gg/sGCzMJtebJ" target="_blank"><i class="fa-brands fa-discord"></i></a>
+  </p>
+  <ng-template #loggedOut>
+    <a [routerLink]="['/login']" class="underline">Log in</a>
+  </ng-template>
+</div>
