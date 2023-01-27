@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models.Enum
 {
-    public enum UserAccountStatus
+    public enum AccountStatus
     {
         [BsonRepresentation(BsonType.String)]
         ENABLED,

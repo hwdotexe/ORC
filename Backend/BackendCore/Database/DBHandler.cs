@@ -9,11 +9,7 @@ namespace BackendCore.Database
     public class DBHandler
     {
         private readonly string _dbname;
-        private readonly string _userstable = "Users";
-        private readonly string _reviewstable = "Reviews";
-        private readonly string _requestsTable = "Requests";
-        private readonly string _reportsTable = "Reports";
-        private readonly string _accounttokens = "AccountTokens";
+        private readonly string _accountstable = "Accounts";
         private readonly string _logindatatable = "LoginData";
         private IMongoDatabase database;
 
@@ -28,109 +24,9 @@ namespace BackendCore.Database
             Console.WriteLine("Database connected!");
         }
 
-        public User GetUser(Guid userID)
+        public Account GetAccount(Guid accountID)
         {
-            var r = ReadRows<User>(_userstable, "UserID", userID);
-
-            if(r.Count > 0)
-            {
-                return r[0];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public List<User> GetUsers()
-        {
-            var r = ReadRows<User>(_userstable);
-
-            return r;
-        }
-
-        public void InsertUser(User user)
-        {
-            Insert(_userstable, user);
-        }
-
-        public void UpdateUser(User user)
-        {
-            Update(_userstable, "UserID", user.UserID, user);
-        }
-
-        public List<Review> GetReviews()
-        {
-            return ReadRows<Review>(_reviewstable);
-        }
-
-        public void InsertReview(Review review)
-        {
-            Insert(_reviewstable, review);
-        }
-
-        public void UpdateReview(Review review)
-        {
-            Update(_reviewstable, "ReviewID", review.ReviewID, review);
-        }
-
-        public void DeleteReview(Review review)
-        {
-            Delete<Review>(_reviewstable, "ReviewID", review.ReviewID);
-        }
-
-        public List<Request> GetRequests()
-        {
-            return ReadRows<Request>(_requestsTable);
-        }
-
-        public void InsertRequest(Request request)
-        {
-            Insert(_requestsTable, request);
-        }
-
-        public void DeleteRequest(Request request)
-        {
-            Delete<Request>(_requestsTable, "RequestID", request.RequestID);
-        }
-
-
-        public List<Report> GetReports()
-        {
-            return ReadRows<Report>(_reportsTable);
-        }
-
-        public void InsertReport(Report report)
-        {
-            Insert(_reportsTable, report);
-        }
-
-        public void DeleteReport(Report report)
-        {
-            Delete<Report>(_reportsTable, "ReportID", report.ReportID);
-        }
-
-
-        public LoginData GetLoginData(string email)
-        {
-            var r = ReadRows<LoginData>(_logindatatable, "LoginEmail", email);
-
-            if(r.Count > 0)
-            {
-                return r[0];
-            }
-
-            return null;
-        }
-
-        public void InsertLoginData(LoginData data)
-        {
-            Insert(_logindatatable, data);
-        }
-
-        public CreateAccountToken GetAccountToken(string token)
-        {
-            var r = ReadRows<CreateAccountToken>(_accounttokens, "Token", token);
+            var r = ReadRows<Account>(_accountstable, "AccountID", accountID);
 
             if (r.Count > 0)
             {
@@ -142,19 +38,38 @@ namespace BackendCore.Database
             }
         }
 
-        public List<CreateAccountToken> GetAccountTokens()
+        public List<Account> GetAccounts()
         {
-            return ReadRows<CreateAccountToken>(_accounttokens);
+            var r = ReadRows<Account>(_accountstable);
+
+            return r;
         }
 
-        public void InsertAccountToken(CreateAccountToken token)
+        public void InsertAccount(Account account)
         {
-            Insert(_accounttokens, token);
+            Insert(_accountstable, account);
         }
 
-        public void DeleteAccountToken(string tokenID)
+        public void UpdateAccount(Account account)
         {
-            Delete<CreateAccountToken>(_accounttokens, "TokenID", tokenID);
+            Update(_accountstable, "AccountID", account.AccountID, account);
+        }
+
+        public LoginData GetLoginData(string email)
+        {
+            var r = ReadRows<LoginData>(_logindatatable, "LoginEmail", email);
+
+            if (r.Count > 0)
+            {
+                return r[0];
+            }
+
+            return null;
+        }
+
+        public void InsertLoginData(LoginData data)
+        {
+            Insert(_logindatatable, data);
         }
 
         private List<T> ReadRows<T>(string table, string field, object value)

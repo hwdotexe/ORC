@@ -1,9 +1,9 @@
-﻿using BackendAPI.Core;
-using BackendCore.Database.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using BackendAPI.Core;
+using BackendCore.Database.Models;
 
 namespace BackendCore.Authentication
 {
@@ -15,12 +15,12 @@ namespace BackendCore.Authentication
         private readonly int sessionDurationHours = 1;
         private readonly static string salt = "White-haired Anime Husbando";
         private readonly static string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        private Dictionary<string, UserSession> Sessions { get; }
+        private Dictionary<string, AccountSession> Sessions { get; }
         private RequestCache LoginAttemptCache { get; set; }
 
         public Gatekeeper()
         {
-            Sessions = new Dictionary<string, UserSession>();
+            Sessions = new Dictionary<string, AccountSession>();
             LoginAttemptCache = new RequestCache(10);
         }
 
@@ -38,7 +38,8 @@ namespace BackendCore.Authentication
             LoginData loginData;
             var lowerEmail = email.ToLower();
 
-            if(LoginAttemptCache.Cache.Contains(lowerEmail)) {
+            if (LoginAttemptCache.Cache.Contains(lowerEmail))
+            {
                 loginData = (LoginData)LoginAttemptCache.Cache.Get(lowerEmail);
             }
             else
@@ -59,8 +60,8 @@ namespace BackendCore.Authentication
 
                     return new AuthData
                     {
-                        UserID = loginData.UserID,
-                        AuthToken = CreateSession(loginData.UserID)
+                        AccountID = loginData.AccountID,
+                        AuthToken = CreateSession(loginData.AccountID)
                     };
                 }
             }
@@ -68,7 +69,7 @@ namespace BackendCore.Authentication
             return null;
         }
 
-        public bool UserExists(string email)
+        public bool AccountExists(string email)
         {
             var lowerEmail = email.ToLower();
 
@@ -88,9 +89,9 @@ namespace BackendCore.Authentication
         /// </summary>
         /// <param name="authToken">The token to search by.</param>
         /// <returns>A UserSession if found, otherwise null.</returns>
-        public UserSession? GetSession(string authToken)
+        public AccountSession? GetSession(string authToken)
         {
-            if(Sessions.ContainsKey(authToken))
+            if (Sessions.ContainsKey(authToken))
             {
                 var session = Sessions[authToken];
                 var now = DateTime.Now;
@@ -116,12 +117,12 @@ namespace BackendCore.Authentication
         /// <summary>
         /// Creates a new UserSession for the given user.
         /// </summary>
-        /// <param name="userID">The User for whom to create the session.</param>
+        /// <param name="accountID">The User for whom to create the session.</param>
         /// <returns>The authentication token for this session.</returns>
-        public string CreateSession(Guid userID)
+        public string CreateSession(Guid accountID)
         {
             var expires = DateTime.Now.AddHours(sessionDurationHours);
-            var session = new UserSession(userID, expires);
+            var session = new AccountSession(accountID, expires);
             var authToken = GenerateSessionToken();
 
             Sessions.Add(authToken, session);
@@ -135,7 +136,7 @@ namespace BackendCore.Authentication
         /// <param name="token">The token to invalidate.</param>
         public void InvalidateSession(string token)
         {
-            if(Sessions.ContainsKey(token))
+            if (Sessions.ContainsKey(token))
             {
                 Sessions.Remove(token);
             }
@@ -144,14 +145,14 @@ namespace BackendCore.Authentication
         /// <summary>
         /// Invalidates all active sessions belonging to the User provided.
         /// </summary>
-        /// <param name="userID">The user to invalidate.</param>
-        public void InvalidateSessions(Guid userID)
+        /// <param name="accountID">The user to invalidate.</param>
+        public void InvalidateSessions(Guid accountID)
         {
             var tokenList = new List<string>();
 
-            foreach(KeyValuePair<string, UserSession> entry in Sessions)
+            foreach (KeyValuePair<string, AccountSession> entry in Sessions)
             {
-                if(entry.Value.UserID == userID)
+                if (entry.Value.AccountID == accountID)
                 {
                     tokenList.Add(entry.Key);
                 }
@@ -168,7 +169,7 @@ namespace BackendCore.Authentication
         {
             var tokenList = new List<string>();
 
-            foreach (KeyValuePair<string, UserSession> entry in Sessions)
+            foreach (KeyValuePair<string, AccountSession> entry in Sessions)
             {
                 if (entry.Value.Expires <= DateTime.Now)
                 {
@@ -195,7 +196,7 @@ namespace BackendCore.Authentication
 
         private string GenerateSessionToken()
         {
-            using(var AES = Aes.Create())
+            using (var AES = Aes.Create())
             {
                 AES.GenerateIV();
                 AES.GenerateKey();
@@ -209,7 +210,7 @@ namespace BackendCore.Authentication
             var random = new Random();
             var randomToken = "";
 
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 randomToken += alphabet[random.Next(0, alphabet.Length)];
             }

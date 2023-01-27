@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using BackendCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
@@ -8,7 +6,7 @@ namespace BackendCore.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static string GetUserAuthToken(this HttpContext context)
+        public static string GetAuthToken(this HttpContext context)
         {
             try
             {
@@ -44,11 +42,11 @@ namespace BackendCore.Extensions
             return null;
         }
 
-        public static UserSession? GetUserSession(this HttpContext context)
+        public static AccountSession? GetAccountSession(this HttpContext context)
         {
             try
             {
-                var token = GetUserAuthToken(context);
+                var token = GetAuthToken(context);
 
                 if (!string.IsNullOrEmpty(token))
                 {

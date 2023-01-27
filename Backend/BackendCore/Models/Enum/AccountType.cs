@@ -3,14 +3,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models.Enum
 {
-    public enum UserAccountType
+    public enum AccountType
     {
         [BsonRepresentation(BsonType.String)]
-        GUEST,
-        [BsonRepresentation(BsonType.String)]
-        REVIEWER,
-        [BsonRepresentation(BsonType.String)]
-        MODERATOR,
+        USER,
         [BsonRepresentation(BsonType.String)]
         ADMIN
     }

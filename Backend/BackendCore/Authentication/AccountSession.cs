@@ -1,14 +1,14 @@
 ﻿using System;
 namespace BackendCore.Authentication
 {
-    public struct UserSession
+    public struct AccountSession
     {
-        public Guid UserID { get; }
+        public Guid AccountID { get; }
         public DateTime Expires { get; private set; }
 
-        public UserSession(Guid userID, DateTime expires)
+        public AccountSession(Guid accountID, DateTime expires)
         {
-            UserID = userID;
+            AccountID = accountID;
             Expires = expires;
         }
 

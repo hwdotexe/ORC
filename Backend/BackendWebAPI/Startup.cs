@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using BackendCore;
 using BackendCore.Automation;
 using BackendCore.Services;
@@ -11,12 +7,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace BackendWebAPI
 {
@@ -66,7 +59,7 @@ namespace BackendWebAPI
                 app.UseHttpsRedirection();
                 app.UseCors();
             }
-            
+
             app.UseRouting();
             app.UseAuthorization();
             app.UseHttpLogging();
@@ -107,11 +100,13 @@ namespace BackendWebAPI
             // If the route is a spa route then let it fall through to the
             // spa index file and have it resolved by the spa application
             // https://tattoocoder.com/kestrel-as-a-static-server-for-angular/
-            app.MapWhen(context => {
+            app.MapWhen(context =>
+            {
                 var path = context.Request.Path.Value;
                 return !path.Contains(".");
             },
-            spa => {
+            spa =>
+            {
                 spa.Use((context, next) =>
                 {
                     context.Request.Path = new PathString("/index.html");

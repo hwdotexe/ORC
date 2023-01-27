@@ -23,7 +23,7 @@ namespace BackendCore.Services
         public static bool IsSafeRequest(HttpContext context, string action)
         {
             // GetScore should be moved to a private method and/or merged with this method.
-            var score = GetScore(context.GetCaptchaToken(), action);
+            var score = GetScore(context.GetCaptchaToken(), context.Request.Method + "_" + action);
 
             return score > 0.5;
         }
