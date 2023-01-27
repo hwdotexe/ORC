@@ -28,20 +28,24 @@ export class ReviewFormComponentService {
     this.errorMessage$.next(null);
 
     return this.httpService
-      .PUT<ComposeReviewResponse>('review', {
-        Title: reviewData.title,
-        ClubName: reviewData.clubName,
-        ClubDatacenter: reviewData.clubDatacenter,
-        ClubServer: reviewData.clubServer,
-        ClubDistrict: reviewData.clubDistrict,
-        ClubWard: reviewData.clubWard,
-        ClubPlot: reviewData.clubPlot,
-        ClubHours: reviewData.clubHours,
-        Summary: reviewData.summary,
-        StarRating: reviewData.starRating,
-        Website: reviewData.website,
-        Tags: reviewData.tags
-      })
+      .PUT<ComposeReviewResponse>(
+        'review',
+        {
+          Title: reviewData.title,
+          ClubName: reviewData.clubName,
+          ClubDatacenter: reviewData.clubDatacenter,
+          ClubServer: reviewData.clubServer,
+          ClubDistrict: reviewData.clubDistrict,
+          ClubWard: reviewData.clubWard,
+          ClubPlot: reviewData.clubPlot,
+          ClubHours: reviewData.clubHours,
+          Summary: reviewData.summary,
+          StarRating: reviewData.starRating,
+          Website: reviewData.website,
+          Tags: reviewData.tags
+        },
+        'ADD_REVIEW'
+      )
       .pipe(
         take(1),
         map(response => response.statusCode),
@@ -66,21 +70,25 @@ export class ReviewFormComponentService {
     this.errorMessage$.next(null);
 
     return this.httpService
-      .PATCH<EditReviewResponse>('review', {
-        ReviewID: reviewData.reviewid,
-        Title: reviewData.title,
-        ClubName: reviewData.clubName,
-        ClubDatacenter: reviewData.clubDatacenter,
-        ClubServer: reviewData.clubServer,
-        ClubDistrict: reviewData.clubDistrict,
-        ClubWard: reviewData.clubWard,
-        ClubPlot: reviewData.clubPlot,
-        ClubHours: reviewData.clubHours,
-        Summary: reviewData.summary,
-        StarRating: reviewData.starRating,
-        Website: reviewData.website,
-        Tags: reviewData.tags
-      })
+      .PATCH<EditReviewResponse>(
+        'review',
+        {
+          ReviewID: reviewData.reviewid,
+          Title: reviewData.title,
+          ClubName: reviewData.clubName,
+          ClubDatacenter: reviewData.clubDatacenter,
+          ClubServer: reviewData.clubServer,
+          ClubDistrict: reviewData.clubDistrict,
+          ClubWard: reviewData.clubWard,
+          ClubPlot: reviewData.clubPlot,
+          ClubHours: reviewData.clubHours,
+          Summary: reviewData.summary,
+          StarRating: reviewData.starRating,
+          Website: reviewData.website,
+          Tags: reviewData.tags
+        },
+        'EDIT_REVIEW'
+      )
       .pipe(
         take(1),
         map(response => response.statusCode),

@@ -26,6 +26,24 @@ namespace BackendCore.Extensions
             return null;
         }
 
+        public static string GetCaptchaToken(this HttpContext context)
+        {
+            try
+            {
+                var key = context.Request.Headers["X-Captcha-Token"];
+
+                if (!string.IsNullOrEmpty(key))
+                {
+                    var token = key.ToString();
+
+                    return token;
+                }
+            }
+            catch (Exception) { }
+
+            return null;
+        }
+
         public static UserSession? GetUserSession(this HttpContext context)
         {
             try

@@ -26,7 +26,7 @@ export class ReviewsService {
   loadReviews$(): Observable<Review[]> {
     this.hasError$.next(false);
 
-    return this.httpService.GET<ReviewsResponse>('review').pipe(
+    return this.httpService.GET<ReviewsResponse>('review', 'LOAD_REVIEWS').pipe(
       take(1),
       switchMap(response => {
         if (response.statusCode === 200) {
@@ -41,7 +41,7 @@ export class ReviewsService {
   }
 
   deleteReview$(request: DeleteReviewRequest): Observable<boolean> {
-    return this.httpService.DELETE<DeleteReviewRequest>('review', request).pipe(
+    return this.httpService.DELETE<DeleteReviewRequest>('review', request, 'DELETE_REVIEW').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 200) {

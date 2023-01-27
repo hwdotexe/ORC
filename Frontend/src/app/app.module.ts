@@ -122,7 +122,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     RecaptchaV3Module,
     StoreModule.forRoot(rootReducer, { metaReducers })
   ],
-  providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Le1KYcgAAAAANk4IydQSldMIr26sT6b_SyrYg67' }],
+  providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

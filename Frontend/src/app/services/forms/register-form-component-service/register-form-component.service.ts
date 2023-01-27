@@ -14,7 +14,7 @@ export class RegisterFormComponentService {
   constructor(private httpService: HTTPService, private authStateService: AuthStateService, private router: Router) {}
 
   sendRegisterData(registerData: RegisterDataRequest): Observable<number> {
-    return this.httpService.PUT<LoginResponse>('user', registerData).pipe(
+    return this.httpService.PUT<LoginResponse>('user', registerData, 'REGISTER').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 201) {

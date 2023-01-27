@@ -26,7 +26,6 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
     private componentService: LoginFormComponentService,
     private formBuilder: UntypedFormBuilder,
     private pageLoadingService: PageLoadingService,
-    private captchaService: CaptchaService,
     private router: Router
   ) {
     super();
@@ -51,18 +50,12 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
     this.showErrorValidations$.next(false);
 
     if (this.loginInfoForm.valid) {
-      this.captchaService
-        .createCaptchaToken$('POST_LOGIN')
-        .pipe(take(1), takeUntil(this.unsubscribe$))
-        .subscribe(token => {
-          let loginData: LoginDataRequest = {
-            email: this.loginInfoForm.get('email').value,
-            password: this.loginInfoForm.get('password').value,
-            captchaToken: token
-          };
+      let loginData: LoginDataRequest = {
+        email: this.loginInfoForm.get('email').value,
+        password: this.loginInfoForm.get('password').value
+      };
 
-          this.dispatch(loginData);
-        });
+      this.dispatch(loginData);
     } else {
       this.showErrorValidations$.next(true);
     }

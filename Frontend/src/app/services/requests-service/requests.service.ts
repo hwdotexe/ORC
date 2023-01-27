@@ -15,7 +15,7 @@ export class RequestsService {
   getRequests$(): Observable<Request[]> {
     this.hasError$.next(false);
 
-    return this.httpService.GET<Request[]>('review/request').pipe(
+    return this.httpService.GET<Request[]>('review/request', 'GET_REQUESTS').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 200) {
@@ -28,7 +28,7 @@ export class RequestsService {
   }
 
   deleteRequest$(request: DeleteRequestRequest): Observable<boolean> {
-    return this.httpService.DELETE<DeleteRequestRequest>('review/request', request).pipe(
+    return this.httpService.DELETE<DeleteRequestRequest>('review/request', request, 'DELETE_REQUEST').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 200) {

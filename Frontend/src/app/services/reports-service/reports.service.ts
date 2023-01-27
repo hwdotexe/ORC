@@ -26,7 +26,7 @@ export class ReportsService {
   loadReports$(): Observable<Report[]> {
     this.hasError$.next(false);
 
-    return this.httpService.GET<GetReportsResponse>('review/report').pipe(
+    return this.httpService.GET<GetReportsResponse>('review/report', 'LOAD_REPORTS').pipe(
       take(1),
       switchMap(response => {
         if (response.statusCode === 200) {
@@ -41,7 +41,7 @@ export class ReportsService {
   }
 
   deleteReport$(request: DeleteReportRequest): Observable<boolean> {
-    return this.httpService.DELETE<DeleteReportRequest>('review/report', request).pipe(
+    return this.httpService.DELETE<DeleteReportRequest>('review/report', request, 'DELETE_REPORT').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 200) {

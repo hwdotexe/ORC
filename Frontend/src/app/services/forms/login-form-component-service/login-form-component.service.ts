@@ -14,7 +14,7 @@ export class LoginFormComponentService {
   constructor(private httpService: HTTPService, private authStateService: AuthStateService, private router: Router) {}
 
   sendLoginData(loginData: LoginDataRequest): Observable<number> {
-    return this.httpService.POST<LoginResponse>('user', loginData).pipe(
+    return this.httpService.POST<LoginResponse>('user', loginData, 'LOGIN').pipe(
       take(1),
       map(response => {
         if (response.statusCode === 200) {

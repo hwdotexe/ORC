@@ -12,7 +12,7 @@ export class UpdateCharacterFormComponentService {
   constructor(private httpService: HTTPService) {}
 
   sendCharacterData(request: UserUpdateRequest): Observable<UserUpdateResponse> {
-    return this.httpService.PATCH<UserUpdateResponse>('user', request).pipe(
+    return this.httpService.PATCH<UserUpdateResponse>('user', request, 'UPDATE_CHARACTER').pipe(
       take(1),
       map(response => {
         return response.responseBody;

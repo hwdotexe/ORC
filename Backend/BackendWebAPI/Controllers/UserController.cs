@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendAPI.Core;
 using BackendAPI.Mappers;
 using BackendCore;
 using BackendCore.Database.Models;
@@ -14,8 +10,6 @@ using BackendCore.Models.Enum;
 using BackendCore.Services;
 using BackendWebAPI.Core;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace BackendWebAPI.Controllers
 {
@@ -34,9 +28,8 @@ namespace BackendWebAPI.Controllers
                 if (request != null)
                 {
                     var requestValue = request.Value;
-                    var captchaRiskScore = CaptchaService.GetScore(requestValue.CaptchaToken, "POST_LOGIN");
 
-                    if (captchaRiskScore > 0.5)
+                    if (CaptchaService.IsSafeRequest(HttpContext, "POST_LOGIN"))
                     {
                         if (Validators.ValidateEmail(requestValue.Email))
                         {

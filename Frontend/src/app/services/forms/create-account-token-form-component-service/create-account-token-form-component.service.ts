@@ -12,7 +12,7 @@ export class CreateAccountTokenFormComponentService {
   constructor(private httpService: HTTPService) {}
 
   sendTokenData(request: CreateAccountTokenRequest): Observable<CreateAccountTokenResponse> {
-    return this.httpService.POST<CreateAccountTokenResponse>('token', request).pipe(
+    return this.httpService.POST<CreateAccountTokenResponse>('token', request, 'CREATE_TOKEN').pipe(
       take(1),
       map(response => {
         return response.responseBody;

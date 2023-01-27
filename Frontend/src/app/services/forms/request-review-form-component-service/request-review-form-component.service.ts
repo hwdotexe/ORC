@@ -11,7 +11,7 @@ export class RequestReviewFormComponentService {
   constructor(private httpService: HTTPService) {}
 
   sendRequestData(reviewData: ComposeRequestRequest): Observable<number> {
-    return this.httpService.PUT<ComposeRequestRequest>('review/request', reviewData).pipe(
+    return this.httpService.PUT<ComposeRequestRequest>('review/request', reviewData, 'REQUEST_REVIEW').pipe(
       take(1),
       map(response => {
         return response.statusCode;

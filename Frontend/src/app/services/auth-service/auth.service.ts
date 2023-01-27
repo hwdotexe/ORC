@@ -27,7 +27,7 @@ export class AuthService {
     return this.authStateService.authToken$.pipe(
       switchMap(token => {
         if (token) {
-          return this.httpService.GET<any>('sessioncheck').pipe(
+          return this.httpService.GET<any>('sessioncheck', 'CHECK_SESSION').pipe(
             take(1),
             map(response => {
               if (response.statusCode == 200) {
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   logOut$(): Observable<boolean> {
-    return this.httpService.POST<any>('logout', {}).pipe(
+    return this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
       take(1),
       map(() => true)
     );

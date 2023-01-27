@@ -14,7 +14,7 @@ export class UserManagementComponentService {
   constructor(private httpService: HTTPService) {}
 
   getUnusedTokens$(): Observable<GetCreateAccountTokensResponse> {
-    return this.httpService.GET<GetCreateAccountTokensResponse>('token').pipe(
+    return this.httpService.GET<GetCreateAccountTokensResponse>('token', 'GET_TOKENS').pipe(
       take(1),
       map(response => {
         return response.responseBody;
@@ -23,7 +23,7 @@ export class UserManagementComponentService {
   }
 
   deleteToken$(request: DeleteCreateAccountTokenRequest): Observable<number> {
-    return this.httpService.DELETE<any>('token', request).pipe(
+    return this.httpService.DELETE<any>('token', request, 'DELETE_TOKEN').pipe(
       take(1),
       map(response => {
         return response.statusCode;
@@ -32,7 +32,7 @@ export class UserManagementComponentService {
   }
 
   getUsers$(): Observable<UsersGetResponse> {
-    return this.httpService.GET<UsersGetResponse>('user/status').pipe(
+    return this.httpService.GET<UsersGetResponse>('user/status', 'LIST_USERS').pipe(
       take(1),
       map(response => {
         return response.responseBody;
@@ -41,7 +41,7 @@ export class UserManagementComponentService {
   }
 
   updateUserStatus$(request: UserUpdateManagementRequest): Observable<number> {
-    return this.httpService.POST<any>('user/status', request).pipe(
+    return this.httpService.POST<any>('user/status', request, 'UPDATE_USER').pipe(
       take(1),
       map(response => {
         return response.statusCode;
