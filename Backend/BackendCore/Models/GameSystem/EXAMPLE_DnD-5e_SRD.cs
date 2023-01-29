@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BackendCore.Models.GameSystem
 {
     public class EXAMPLE_DnD_5e_SRD : GameSystem
     {
-        public EXAMPLE_DnD_5e_SRD()
+        public EXAMPLE_DnD_5e_SRD(Guid owner) : base(owner)
         {
             Name = "D&D Example";
             Version = "5th Edition";
@@ -43,6 +44,16 @@ namespace BackendCore.Models.GameSystem
                 {
                     Name = "Age",
                     Type = CharacterFieldType.INTEGER
+                },
+                new CharacterField
+                {
+                    Name = "Appearance",
+                    Type = CharacterFieldType.STRING
+                },
+                new CharacterField
+                {
+                    Name = "Personality",
+                    Type = CharacterFieldType.STRING
                 },
                 new CharacterField
                 {

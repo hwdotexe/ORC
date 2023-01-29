@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BackendCore.Database.Models;
 using BackendCore.Models;
+using BackendCore.Models.GameSystem;
 using MongoDB.Driver;
 
 namespace BackendCore.Database
@@ -11,6 +12,8 @@ namespace BackendCore.Database
         private readonly string _dbname;
         private readonly string _accountstable = "Accounts";
         private readonly string _logindatatable = "LoginData";
+        private readonly string _systemstable = "Systems";
+        private readonly string _charactersstable = "Characters";
         private IMongoDatabase database;
 
         public DBHandler(string databaseName)
@@ -24,6 +27,7 @@ namespace BackendCore.Database
             Console.WriteLine("Database connected!");
         }
 
+        #region accounts
         public Account GetAccount(Guid accountID)
         {
             var r = ReadRows<Account>(_accountstable, "AccountID", accountID);
@@ -54,7 +58,9 @@ namespace BackendCore.Database
         {
             Update(_accountstable, "AccountID", account.AccountID, account);
         }
+        #endregion
 
+        #region logindata
         public LoginData GetLoginData(string email)
         {
             var r = ReadRows<LoginData>(_logindatatable, "LoginEmail", email);
@@ -71,7 +77,56 @@ namespace BackendCore.Database
         {
             Insert(_logindatatable, data);
         }
+        #endregion
 
+        #region systems
+        public List<GameSystem> GetSystems(Guid accountID)
+        {
+            var r = ReadRows<GameSystem>(_systemstable, "OwnerAccountID", accountID);
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void InsertSystem(GameSystem system)
+        {
+            Insert(_systemstable, system);
+        }
+        #endregion
+
+        #region systems
+        public List<Character> GetCharacters(Guid accountID)
+        {
+            var r = ReadRows<Character>(_charactersstable, "OwnerAccountID", accountID);
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void InsertCharacter(Character character)
+        {
+            Insert(_charactersstable, character);
+        }
+
+        public void DeleteCharacter(Character character)
+        {
+            Delete<Character>(_charactersstable, "CharacterID", character.CharacterID);
+        }
+        #endregion
+
+        #region database
         private List<T> ReadRows<T>(string table, string field, object value)
         {
             var collection = database.GetCollection<T>(table);
@@ -124,5 +179,6 @@ namespace BackendCore.Database
 
             await collection.DeleteManyAsync(filter);
         }
+        #endregion
     }
 }

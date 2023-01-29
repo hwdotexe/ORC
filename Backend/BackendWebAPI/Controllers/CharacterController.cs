@@ -1,9 +1,7 @@
 ﻿using System;
 using BackendAPI.Mappers;
 using BackendCore;
-using BackendCore.Database.Models;
 using BackendCore.Extensions;
-using BackendCore.Models;
 using BackendCore.Models.API.Request;
 using BackendCore.Models.API.Response;
 using BackendCore.Models.Enum;
@@ -14,60 +12,36 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendWebAPI.Controllers
 {
     [ApiController]
-    [Route("v1/account")]
-    public class AccountController : ControllerBase
+    [Route("v1/character")]
+    public class CharacterController : ControllerBase
     {
         [HttpPut]
-        public ActionResult PUT_Create_Account()
+        public ActionResult PUT_Create_Character()
         {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                 var request = APIRequestMapper.MapRequestToModel<AccountCreateRequest>(body);
+                var sessionValue = session.Value;
 
                 if (request != null)
                 {
                     var requestValue = request.Value;
 
-                    if (CaptchaService.IsSafeRequest(HttpContext, "REGISTER_ACCOUNT"))
+                    if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_CHARACTER"))
                     {
-                        if (Validators.ValidateEmail(requestValue.Email) && Validators.ValidatePassword(requestValue.Password))
-                        {
-                            if (!App.GetState().Auth.AccountExists(requestValue.Email))
-                            {
-                                var accountCount = App.GetState().DB.GetAccounts().Count;
-                                var accountType = accountCount == 0 ? AccountType.ADMIN : AccountType.USER;
-                                var account = new Account(requestValue.DisplayName, accountType);
-                                var token = App.GetState().Auth.CreateSession(account.AccountID);
+                        var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
 
-                                App.GetState().DB.InsertAccount(account);
-                                App.GetState().DB.InsertLoginData(new LoginData
-                                {
-                                    AccountID = account.AccountID,
-                                    LoginEmail = requestValue.Email,
-                                    PasswordHash = App.GetState().Auth.GenerateHash(requestValue.Password)
-                                });
+                        // TODO: implement this
 
-                                App.GetState().LoadedAccounts.Add(account);
-
-                                var responseObj = new AccountAuthenticatedResponse()
-                                {
-                                    AuthToken = token,
-                                    AccountID = account.AccountID,
-                                    AccountType = account.AccountType.ToString()
-                                };
-
-                                return Created(Url.ToString(), responseObj);
-                            }
-                            else
-                            {
-                                return Conflict();
-                            }
-                        }
-                        else
-                        {
-                            return BadRequest();
-                        }
+                        return StatusCode(501);
                     }
                     else
                     {
@@ -114,7 +88,7 @@ namespace BackendWebAPI.Controllers
                                 {
                                     if (account.AccountStatus == AccountStatus.ENABLED)
                                     {
-                                        App.GetState().LoadAccount(account);
+                                        App.GetState().LoadedAccounts.Add(account);
 
                                         var responseObj = new AccountAuthenticatedResponse()
                                         {
@@ -182,26 +156,19 @@ namespace BackendWebAPI.Controllers
 
                 if (request != null)
                 {
-                    if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_ACCOUNT"))
+                    var requestValue = request.Value;
+                    var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
+
+                    account.DisplayName = requestValue.DisplayName;
+
+                    App.GetState().DB.UpdateAccount(account);
+
+                    var responseObj = new AccountUpdateResponse()
                     {
-                        var requestValue = request.Value;
-                        var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
+                        DisplayName = account.DisplayName
+                    };
 
-                        account.DisplayName = requestValue.DisplayName;
-
-                        App.GetState().DB.UpdateAccount(account);
-
-                        var responseObj = new AccountUpdateResponse()
-                        {
-                            DisplayName = account.DisplayName
-                        };
-
-                        return Ok(responseObj);
-                    }
-                    else
-                    {
-                        return StatusCode(429);
-                    }
+                    return Ok(responseObj);
                 }
                 else
                 {

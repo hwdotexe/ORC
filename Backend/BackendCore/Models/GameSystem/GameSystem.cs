@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models.GameSystem
 {
     public class GameSystem
     {
+        [BsonId]
         public Guid SystemID { get; set; }
+        public Guid OwnerAccountID { get; set; }
         public string Name { get; set; }
         public string Version { get; set; }
         public string Publisher { get; set; }
         public List<CharacterFieldValueProvider> CharacterFieldValueProviders { get; set; }
         public List<CharacterField> CharacterFields { get; set; }
+
+        public GameSystem(Guid owner)
+        {
+            SystemID = Guid.NewGuid();
+            OwnerAccountID = owner;
+        }
 
         // Mandated fields have a name and value. Values can have Providers stored here. Values can be String, Integer, or List<string>
 
