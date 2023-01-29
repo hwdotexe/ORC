@@ -27,10 +27,9 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var sessionValue = session.Value;
-
                 if (CaptchaService.IsSafeRequest(HttpContext, "LIST_SYSTEMS"))
                 {
+                    var sessionValue = session.Value;
                     List<GameSystem> systems = App.GetState().LoadedSystems.FindAll(system => system.OwnerAccountID == sessionValue.AccountID);
 
                     return Ok(systems);
@@ -60,20 +59,18 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<SystemCreateRequest>(body);
-                var sessionValue = session.Value;
-
-                if (request != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_SYSTEM"))
                 {
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<SystemCreateRequest>(body);
+                    var sessionValue = session.Value;
                     var requestValue = request.Value;
 
-                    if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_SYSTEM"))
+                    if (request != null)
                     {
-                        var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
-
-                        var system = new GameSystem(account.AccountID)
+                        var system = new GameSystem(sessionValue.AccountID)
                         {
+                            Name = requestValue.Name,
                             Publisher = requestValue.Publisher,
                             Version = requestValue.Version,
                             CharacterFields = requestValue.CharacterFields,
@@ -87,12 +84,12 @@ namespace BackendWebAPI.Controllers
                     }
                     else
                     {
-                        return StatusCode(429);
+                        return BadRequest();
                     }
                 }
                 else
                 {
-                    return BadRequest();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)

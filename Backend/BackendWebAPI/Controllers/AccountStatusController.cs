@@ -6,6 +6,7 @@ using BackendCore.Extensions;
 using BackendCore.Models;
 using BackendCore.Models.API.Request;
 using BackendCore.Models.Enum;
+using BackendCore.Services;
 using BackendWebAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,18 +28,25 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var sessionValue = session.Value;
-                var account = App.GetState().LoadedAccounts.Find(account => account.AccountID == sessionValue.AccountID);
-
-                if (account.AccountType == AccountType.ADMIN)
+                if (CaptchaService.IsSafeRequest(HttpContext, "LIST_ACCOUNTS"))
                 {
-                    List<Account> accounts = App.GetState().DB.GetAccounts();
+                    var sessionValue = session.Value;
+                    var account = App.GetState().LoadedAccounts.Find(account => account.AccountID == sessionValue.AccountID);
 
-                    return Ok(accounts);
+                    if (account.AccountType == AccountType.ADMIN)
+                    {
+                        List<Account> accounts = App.GetState().DB.GetAccounts();
+
+                        return Ok(accounts);
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
                 }
                 else
                 {
-                    return Unauthorized();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)
@@ -50,7 +58,7 @@ namespace BackendWebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult POST_Update_Account_Activation()
+        public ActionResult POST_Update_Account_Status()
         {
             var session = HttpContext.GetAccountSession();
 
@@ -61,55 +69,61 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var sessionValue = session.Value;
-                var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
-
-                if (account.AccountType == AccountType.ADMIN)
+                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_ACCOUNT_STATUS"))
                 {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                    var request = APIRequestMapper.MapRequestToModel<AccountStatusChangeRequest>(body);
+                    var sessionValue = session.Value;
+                    var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
 
-                    if (request != null)
+                    if (account.AccountType == AccountType.ADMIN)
                     {
-                        var requestValue = request.Value;
+                        var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                        var request = APIRequestMapper.MapRequestToModel<AccountStatusChangeRequest>(body);
 
-                        if (account.AccountID != requestValue.TargetAccountID)
+                        if (request != null)
                         {
-                            var targetAccount = App.GetState().DB.GetAccount(requestValue.TargetAccountID);
+                            var requestValue = request.Value;
 
-                            if (targetAccount != null)
+                            if (account.AccountID != requestValue.TargetAccountID)
                             {
-                                targetAccount.AccountStatus = requestValue.NewAccountStatus;
+                                var targetAccount = App.GetState().DB.GetAccount(requestValue.TargetAccountID);
 
-                                if (requestValue.NewAccountStatus == AccountStatus.DISABLED)
+                                if (targetAccount != null)
                                 {
-                                    App.GetState().Auth.InvalidateSessions(targetAccount.AccountID);
+                                    targetAccount.AccountStatus = requestValue.NewAccountStatus;
+
+                                    if (requestValue.NewAccountStatus == AccountStatus.DISABLED)
+                                    {
+                                        App.GetState().Auth.InvalidateSessions(targetAccount.AccountID);
+                                    }
+
+                                    App.GetState().DB.UpdateAccount(targetAccount);
+
+                                    return Ok();
                                 }
-
-                                App.GetState().DB.UpdateAccount(targetAccount);
-
-                                return Ok();
+                                else
+                                {
+                                    return NotFound();
+                                }
                             }
                             else
                             {
-                                return NotFound();
+                                return Conflict();
                             }
                         }
                         else
                         {
-                            return Conflict();
+                            return BadRequest();
                         }
                     }
                     else
                     {
-                        return BadRequest();
+                        return Unauthorized();
                     }
                 }
                 else
                 {
-                    return Unauthorized();
+                    return StatusCode(429);
                 }
-
             }
             catch (Exception e)
             {

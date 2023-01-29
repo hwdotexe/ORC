@@ -23,12 +23,12 @@ export class HTTPService {
     private captchaService: CaptchaService
   ) {}
 
-  GET<T>(url: string, action: string): Observable<APIResponse<T>> {
+  GET<T>(url: string, action: string, isProtected: boolean = true): Observable<APIResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
       take(1),
-      withLatestFrom(this.captchaService.createCaptchaToken$('GET_' + action)),
+      withLatestFrom(isProtected ? this.captchaService.createCaptchaToken$('GET_' + action) : of('token')),
       switchMap(([authToken, captchaToken]) => {
         let call = this.http.get<T>(environment.api_base + url, this.httpCallOptions(authToken, captchaToken));
         return this.mapResponse<T>(call);
@@ -36,12 +36,12 @@ export class HTTPService {
     );
   }
 
-  POST<T>(url: string, body: any, action: string): Observable<APIResponse<T>> {
+  POST<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<APIResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
       take(1),
-      withLatestFrom(this.captchaService.createCaptchaToken$('POST_' + action)),
+      withLatestFrom(isProtected ? this.captchaService.createCaptchaToken$('POST_' + action) : of('token')),
       switchMap(([authToken, captchaToken]) => {
         let call = this.http.post<T>(environment.api_base + url, body, this.httpCallOptions(authToken, captchaToken));
         return this.mapResponse<T>(call);

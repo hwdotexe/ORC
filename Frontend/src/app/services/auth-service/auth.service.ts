@@ -23,15 +23,9 @@ export class AuthService {
     return this.authStateService.authToken$.pipe(
       switchMap(token => {
         if (token) {
-          return this.httpService.GET<any>('sessioncheck', 'CHECK_SESSION').pipe(
+          return this.httpService.GET<any>('heartbeat', 'HEARTBEAT', false).pipe(
             take(1),
-            map(response => {
-              if (response.statusCode == 200) {
-                return true;
-              } else {
-                return false;
-              }
-            })
+            map(response => response.statusCode === 200)
           );
         } else {
           return of(false);

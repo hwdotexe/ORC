@@ -100,7 +100,7 @@ namespace BackendCore.Database
         }
         #endregion
 
-        #region systems
+        #region characters
         public List<Character> GetCharacters(Guid accountID)
         {
             var r = ReadRows<Character>(_charactersstable, "OwnerAccountID", accountID);
@@ -118,6 +118,11 @@ namespace BackendCore.Database
         public void InsertCharacter(Character character)
         {
             Insert(_charactersstable, character);
+        }
+
+        public void UpdateCharacter(Character character)
+        {
+            Update(_charactersstable, "CharacterID", character.CharacterID, character);
         }
 
         public void DeleteCharacter(Character character)

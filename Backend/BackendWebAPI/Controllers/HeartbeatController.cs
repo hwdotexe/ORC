@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendWebAPI.Controllers
 {
     [ApiController]
-    [Route("v1/sessioncheck")]
-    public class SessionCheckController : ControllerBase
+    [Route("v1/heartbeat")]
+    public class HeartbeatController : ControllerBase
     {
         [HttpGet]
         public ActionResult Get()

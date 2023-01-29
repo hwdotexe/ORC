@@ -2,9 +2,8 @@
 using BackendAPI.Mappers;
 using BackendCore;
 using BackendCore.Extensions;
+using BackendCore.Models;
 using BackendCore.Models.API.Request;
-using BackendCore.Models.API.Response;
-using BackendCore.Models.Enum;
 using BackendCore.Services;
 using BackendWebAPI.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +14,38 @@ namespace BackendWebAPI.Controllers
     [Route("v1/character")]
     public class CharacterController : ControllerBase
     {
+        [HttpGet]
+        public ActionResult GET_List_Character()
+        {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (CaptchaService.IsSafeRequest(HttpContext, "LIST_CHARACTERS"))
+                {
+                    var sessionValue = session.Value;
+                    var characters = App.GetState().LoadedCharacters.FindAll(c => c.OwnerAccountID == sessionValue.AccountID);
+
+                    return Ok(characters);
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
+            }
+        }
+
         [HttpPut]
         public ActionResult PUT_Create_Character()
         {
@@ -28,7 +59,7 @@ namespace BackendWebAPI.Controllers
             try
             {
                 var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<AccountCreateRequest>(body);
+                var request = APIRequestMapper.MapRequestToModel<CharacterCreateRequest>(body);
                 var sessionValue = session.Value;
 
                 if (request != null)
@@ -38,86 +69,20 @@ namespace BackendWebAPI.Controllers
                     if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_CHARACTER"))
                     {
                         var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
+                        var system = App.GetState().LoadedSystems.Find(s => s.SystemID == requestValue.System);
 
-                        // TODO: implement this
-
-                        return StatusCode(501);
-                    }
-                    else
-                    {
-                        return StatusCode(429);
-                    }
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch (Exception e)
-            {
-                HTTPServerUtilities.LogServerError(e);
-
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult POST_Login()
-        {
-            try
-            {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<AccountLoginRequest>(body);
-
-                if (request != null)
-                {
-                    var requestValue = request.Value;
-
-                    if (CaptchaService.IsSafeRequest(HttpContext, "LOGIN"))
-                    {
-                        if (Validators.ValidateEmail(requestValue.Email))
+                        if (system != null)
                         {
-                            var authResult = App.GetState().Auth.Authenticate(requestValue.Email, requestValue.Password);
+                            var character = new Character(requestValue.Name, account.AccountID, system.SystemID);
 
-                            if (authResult != null)
-                            {
-                                var resultValue = authResult.Value;
-                                var account = App.GetState().DB.GetAccount(resultValue.AccountID);
+                            App.GetState().LoadedCharacters.Add(character);
+                            App.GetState().DB.InsertCharacter(character);
 
-                                if (account != null)
-                                {
-                                    if (account.AccountStatus == AccountStatus.ENABLED)
-                                    {
-                                        App.GetState().LoadedAccounts.Add(account);
-
-                                        var responseObj = new AccountAuthenticatedResponse()
-                                        {
-                                            AuthToken = resultValue.AuthToken,
-                                            AccountID = account.AccountID,
-                                            DisplayName = account.DisplayName,
-                                            AccountType = account.AccountType.ToString()
-                                        };
-
-                                        return Ok(responseObj);
-                                    }
-                                    else
-                                    {
-                                        return Unauthorized();
-                                    }
-                                }
-                                else
-                                {
-                                    return NotFound();
-                                }
-                            }
-                            else
-                            {
-                                return Unauthorized();
-                            }
+                            return Created(Url.ToString(), character);
                         }
                         else
                         {
-                            return BadRequest();
+                            return NotFound();
                         }
                     }
                     else
@@ -139,7 +104,7 @@ namespace BackendWebAPI.Controllers
         }
 
         [HttpPatch]
-        public ActionResult PATCH_Update_Account()
+        public ActionResult PATCH_Update_Character()
         {
             var session = HttpContext.GetAccountSession();
 
@@ -150,29 +115,40 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<AccountUpdateRequest>(body);
-                var sessionValue = session.Value;
-
-                if (request != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_CHARACTER"))
                 {
-                    var requestValue = request.Value;
-                    var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<CharacterUpdateRequest>(body);
+                    var sessionValue = session.Value;
 
-                    account.DisplayName = requestValue.DisplayName;
-
-                    App.GetState().DB.UpdateAccount(account);
-
-                    var responseObj = new AccountUpdateResponse()
+                    if (request != null)
                     {
-                        DisplayName = account.DisplayName
-                    };
+                        var requestValue = request.Value;
+                        var character = App.GetState().LoadedCharacters.Find(a => a.OwnerAccountID == sessionValue.AccountID && a.CharacterID == requestValue.CharacterID);
 
-                    return Ok(responseObj);
+                        if (character != null)
+                        {
+                            // TODO - validation on the allowed type?
+                            character.CharacterFields = requestValue.CharacterFields;
+                            character.Name = requestValue.Name;
+
+                            App.GetState().DB.UpdateCharacter(character);
+
+                            return Created(Url.ToString(), character);
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
                 }
                 else
                 {
-                    return BadRequest();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)

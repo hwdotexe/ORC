@@ -22,14 +22,13 @@ namespace BackendWebAPI.Controllers
         {
             try
             {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<AccountCreateRequest>(body);
-
-                if (request != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "REGISTER_ACCOUNT"))
                 {
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<AccountCreateRequest>(body);
                     var requestValue = request.Value;
 
-                    if (CaptchaService.IsSafeRequest(HttpContext, "REGISTER_ACCOUNT"))
+                    if (request != null)
                     {
                         if (Validators.ValidateEmail(requestValue.Email) && Validators.ValidatePassword(requestValue.Password))
                         {
@@ -71,12 +70,12 @@ namespace BackendWebAPI.Controllers
                     }
                     else
                     {
-                        return StatusCode(429);
+                        return BadRequest();
                     }
                 }
                 else
                 {
-                    return BadRequest();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)
@@ -92,14 +91,13 @@ namespace BackendWebAPI.Controllers
         {
             try
             {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<AccountLoginRequest>(body);
-
-                if (request != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "LOGIN"))
                 {
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<AccountLoginRequest>(body);
                     var requestValue = request.Value;
 
-                    if (CaptchaService.IsSafeRequest(HttpContext, "LOGIN"))
+                    if (request != null)
                     {
                         if (Validators.ValidateEmail(requestValue.Email))
                         {
@@ -148,12 +146,12 @@ namespace BackendWebAPI.Controllers
                     }
                     else
                     {
-                        return StatusCode(429);
+                        return BadRequest();
                     }
                 }
                 else
                 {
-                    return BadRequest();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)
