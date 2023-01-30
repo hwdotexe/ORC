@@ -201,7 +201,7 @@
 					"response": []
 				},
 				{
-					"name": "Session Check",
+					"name": "Heartbeat",
 					"event": [
 						{
 							"listen": "test",
@@ -235,13 +235,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/sessioncheck",
+							"raw": "{{serverAddress}}/v1/heartbeat",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"sessioncheck"
+								"heartbeat"
 							]
 						}
 					},
@@ -334,7 +334,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"Test System\",\r\n    \"Version\": \"1.0\",\r\n    \"Publisher\": \"Me\",\r\n    \"CharacterFieldValueProviders\": [\r\n        {\r\n            \"ProviderID\": \"test_provider\",\r\n            \"Values\": [\r\n                \"test value a\",\r\n                \"test value b\"\r\n            ]\r\n        }\r\n    ],\r\n    \"CharacterFields\": [\r\n        {\r\n            \"Name\": \"Age\",\r\n            \"Type\": \"INTEGER\"\r\n        },\r\n        {\r\n            \"Name\": \"Test\",\r\n            \"Type\": \"STRING\",\r\n            \"Provider\": \"test_provider\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"Name\": \"Test System\",\r\n    \"Version\": \"1.0\",\r\n    \"Publisher\": \"Me\",\r\n    \"CharacterFieldValueProviders\": [\r\n        {\r\n            \"ProviderID\": \"test_provider\",\r\n            \"Values\": [\r\n                \"test value a\",\r\n                \"test value b\"\r\n            ]\r\n        }\r\n    ],\r\n    \"CharacterFields\": [\r\n        {\r\n            \"Name\": \"Age\",\r\n            \"Type\": \"INTEGER\"\r\n        },\r\n        {\r\n            \"Name\": \"Appearance\",\r\n            \"Type\": \"STRING\"\r\n        },\r\n        {\r\n            \"Name\": \"Test\",\r\n            \"Type\": \"STRING\",\r\n            \"Provider\": \"test_provider\"\r\n        },\r\n        {\r\n            \"Name\": \"Test2\",\r\n            \"Type\": \"STRING_LIST\",\r\n            \"Provider\": \"test_provider\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -349,6 +349,162 @@
 							"path": [
 								"v1",
 								"system"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Character",
+			"item": [
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/character",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"character"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().characterID;",
+									"pm.environment.set(\"characterid\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Colonel Mustard\",\r\n    \"System\": \"{{systemid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/character",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"character"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CharacterID\": \"{{characterid}}\",\r\n    \"Name\": \"New Character Name\",\r\n    \"CharacterFields\": {\r\n        \"Age\": 132,\r\n        \"Appearance\": \"Super hot\",\r\n        \"Test\": \"test value a\",\r\n        \"Test2\": [\r\n            \"test value a\",\r\n            \"test value b\"\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/character",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"character"
 							]
 						}
 					},

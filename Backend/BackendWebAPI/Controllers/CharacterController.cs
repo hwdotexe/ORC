@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackendAPI.Mappers;
 using BackendCore;
 using BackendCore.Extensions;
 using BackendCore.Models;
 using BackendCore.Models.API.Request;
+using BackendCore.Models.GameSystem;
 using BackendCore.Services;
 using BackendWebAPI.Core;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BackendWebAPI.Controllers
 {
@@ -128,13 +131,71 @@ namespace BackendWebAPI.Controllers
 
                         if (character != null)
                         {
-                            // TODO - validation on the allowed type?
-                            character.CharacterFields = requestValue.CharacterFields;
-                            character.Name = requestValue.Name;
+                            var system = App.GetState().LoadedSystems.Find(s => s.SystemID == character.System);
 
-                            App.GetState().DB.UpdateCharacter(character);
+                            if (system != null)
+                            {
+                                // Make sure we are only adding System fields.
+                                foreach (var key in requestValue.CharacterFields.Keys)
+                                {
+                                    var systemField = system.CharacterFields.Find(cf => cf.Name.Equals(key, StringComparison.OrdinalIgnoreCase));
 
-                            return Created(Url.ToString(), character);
+                                    if (systemField == null)
+                                    {
+                                        return BadRequest();
+                                    }
+
+                                    // The value of this field must come from a provider.
+                                    if (systemField.Provider != null)
+                                    {
+                                        var systemProvider = system.CharacterFieldValueProviders.Find(p => p.ProviderID.Equals(systemField.Provider, StringComparison.OrdinalIgnoreCase));
+
+                                        if (systemField.Type == CharacterFieldType.STRING_LIST)
+                                        {
+                                            // Check all values
+                                            try
+                                            {
+                                                var fieldValue = ((JArray)requestValue.CharacterFields[key]).ToObject<List<string>>();
+
+                                                foreach (var value in fieldValue)
+                                                {
+                                                    if (!systemProvider.Values.Contains(value))
+                                                    {
+                                                        return BadRequest();
+                                                    }
+                                                }
+
+                                                requestValue.CharacterFields[key] = fieldValue;
+                                            }
+                                            catch (Exception)
+                                            {
+                                                return BadRequest();
+                                            }
+                                        }
+                                        else if (systemField.Type == CharacterFieldType.STRING)
+                                        {
+                                            // Check that our one value is in the provider.
+                                            var fieldValue = (string)requestValue.CharacterFields[key];
+
+                                            if (!systemProvider.Values.Contains(fieldValue))
+                                            {
+                                                return BadRequest();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                character.CharacterFields = requestValue.CharacterFields;
+                                character.Name = requestValue.Name;
+
+                                App.GetState().DB.UpdateCharacter(character);
+
+                                return Ok(character);
+                            }
+                            else
+                            {
+                                return NotFound();
+                            }
                         }
                         else
                         {
