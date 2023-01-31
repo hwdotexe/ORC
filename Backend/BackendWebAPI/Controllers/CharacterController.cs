@@ -61,16 +61,15 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                var request = APIRequestMapper.MapRequestToModel<CharacterCreateRequest>(body);
-                var sessionValue = session.Value;
-
-                if (request != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_CHARACTER"))
                 {
-                    var requestValue = request.Value;
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<CharacterCreateRequest>(body);
+                    var sessionValue = session.Value;
 
-                    if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_CHARACTER"))
+                    if (request != null)
                     {
+                        var requestValue = request.Value;
                         var account = App.GetState().LoadedAccounts.Find(a => a.AccountID == sessionValue.AccountID);
                         var system = App.GetState().LoadedSystems.Find(s => s.SystemID == requestValue.System);
 
@@ -90,12 +89,12 @@ namespace BackendWebAPI.Controllers
                     }
                     else
                     {
-                        return StatusCode(429);
+                        return BadRequest();
                     }
                 }
                 else
                 {
-                    return BadRequest();
+                    return StatusCode(429);
                 }
             }
             catch (Exception e)
@@ -196,6 +195,59 @@ namespace BackendWebAPI.Controllers
                             {
                                 return NotFound();
                             }
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete]
+        public ActionResult DELETE_Delete_Character()
+        {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_CHARACTER"))
+                {
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<CharacterDeleteRequest>(body);
+                    var sessionValue = session.Value;
+
+                    if (request != null)
+                    {
+                        var requestValue = request.Value;
+                        var character = App.GetState().LoadedCharacters.Find(a => a.CharacterID == requestValue.CharacterID && a.OwnerAccountID == sessionValue.AccountID);
+
+                        if (character != null)
+                        {
+                            App.GetState().LoadedCharacters.Remove(character);
+                            App.GetState().DB.DeleteCharacter(character);
+
+                            return Ok();
                         }
                         else
                         {

@@ -14,6 +14,7 @@ namespace BackendCore.Database
         private readonly string _logindatatable = "LoginData";
         private readonly string _systemstable = "Systems";
         private readonly string _charactersstable = "Characters";
+        private readonly string _campaignstable = "Campaigns";
         private IMongoDatabase database;
 
         public DBHandler(string databaseName)
@@ -131,12 +132,56 @@ namespace BackendCore.Database
         }
         #endregion
 
+        #region campaigns
+        public List<Campaign> GetCampaigns(Guid accountID)
+        {
+            // TODO experimental
+            var ownerFilter = Builders<Campaign>.Filter.Eq("OwnerAccountID", accountID);
+            var memberFilter = Builders<Campaign>.Filter.Eq("Players.@keys", accountID);
+
+            var r = ReadRows<Campaign>(_campaignstable, new List<FilterDefinition<Campaign>>() { ownerFilter, memberFilter });
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void InsertCampaign(Campaign campaign)
+        {
+            Insert(_campaignstable, campaign);
+        }
+
+        public void UpdateCharacter(Campaign campaign)
+        {
+            Update(_campaignstable, "CampaignID", campaign.CampaignID, campaign);
+        }
+
+        public void DeleteCharacter(Campaign campaign)
+        {
+            Delete<Campaign>(_campaignstable, "CampaignID", campaign.CampaignID);
+        }
+        #endregion
+
         #region database
+        private List<T> ReadRows<T>(string table, List<FilterDefinition<T>> filters)
+        {
+            var collection = database.GetCollection<T>(table);
+
+            // TODO: is this not async?
+            return collection.Find(Builders<T>.Filter.Or(filters)).ToList();
+        }
+
         private List<T> ReadRows<T>(string table, string field, object value)
         {
             var collection = database.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq(field, value);
 
+            // TODO: is this not async?
             return collection.Find(filter).ToList();
         }
 

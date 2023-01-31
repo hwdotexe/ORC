@@ -12,6 +12,7 @@ namespace BackendCore
         public List<Account> LoadedAccounts { get; }
         public List<GameSystem> LoadedSystems { get; }
         public List<Character> LoadedCharacters { get; set; }
+        public List<Campaign> LoadedCampaigns { get; set; }
         public Gatekeeper Auth { get; }
         public DBHandler DB { get; set; }
 
@@ -22,6 +23,7 @@ namespace BackendCore
             LoadedAccounts = new List<Account>();
             LoadedSystems = new List<GameSystem>();
             LoadedCharacters = new List<Character>();
+            LoadedCampaigns = new List<Campaign>();
 
             Auth = new Gatekeeper();
             DB = new DBHandler(App.databaseName);
@@ -39,6 +41,7 @@ namespace BackendCore
 
             var userSystems = DB.GetSystems(account.AccountID);
             var userCharacters = DB.GetCharacters(account.AccountID);
+            var userCampaigns = DB.GetCampaigns(account.AccountID);
 
             if (userSystems != null)
             {
@@ -48,6 +51,13 @@ namespace BackendCore
             if (userCharacters != null)
             {
                 LoadedCharacters.AddRange(userCharacters);
+            }
+
+            // TODO: potential collision if User A and User B both load the same campaign.
+            // Keep the original in memory, as it has potential to have been modified.
+            if (userCampaigns != null)
+            {
+                LoadedCampaigns.AddRange(userCampaigns);
             }
         }
     }
