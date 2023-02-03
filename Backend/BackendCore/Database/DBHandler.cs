@@ -16,6 +16,7 @@ namespace BackendCore.Database
         private readonly string _systemstable = "Systems";
         private readonly string _charactersstable = "Characters";
         private readonly string _campaignstable = "Campaigns";
+        private readonly string _pagestable = "Pages";
         private IMongoDatabase database;
 
         public DBHandler(string databaseName)
@@ -161,6 +162,51 @@ namespace BackendCore.Database
         public void DeleteCampaign(Campaign campaign)
         {
             Delete<Campaign>(_campaignstable, "CampaignID", campaign.CampaignID);
+        }
+        #endregion
+
+        #region pages
+        public List<Campaign> GetPages(Guid accountID)
+        {
+            var r = ReadRows<Campaign>(_pagestable, "OwnerAccountID", accountID);
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Page GetPage(Guid pageID)
+        {
+            var r = ReadRows<Page>(_pagestable, "PageID", pageID);
+
+            if (r.Count > 0)
+            {
+                return r[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void InsertPage(Page page)
+        {
+            Insert(_pagestable, page);
+        }
+
+        public void UpdatePage(Page page)
+        {
+            Update(_pagestable, "PageID", page.PageID, page);
+        }
+
+        public void DeletePage(Page page)
+        {
+            Delete<Page>(_pagestable, "PageID", page.PageID);
         }
         #endregion
 

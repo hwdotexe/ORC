@@ -12,6 +12,7 @@ namespace BackendCore.Models
         public string Name { get; set; }
         public Guid System { get; set; }
         public Dictionary<string, object> CharacterFields { get; set; }
+        public List<Guid> Pages { get; set; }
 
         public Character(string name, Guid owner, Guid system)
         {
@@ -19,6 +20,7 @@ namespace BackendCore.Models
             OwnerAccountID = owner;
             System = system;
             CharacterFields = new Dictionary<string, object>();
+            Pages = new List<Guid>();
         }
     }
 }

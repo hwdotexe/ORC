@@ -14,6 +14,7 @@ namespace BackendCore
         public List<GameSystem> LoadedSystems { get; }
         public List<Character> LoadedCharacters { get; set; }
         public List<Campaign> LoadedCampaigns { get; set; }
+        public List<Page> CachedPages { get; set; }
         public Gatekeeper Auth { get; }
         public DBHandler DB { get; set; }
 
@@ -25,6 +26,7 @@ namespace BackendCore
             LoadedSystems = new List<GameSystem>();
             LoadedCharacters = new List<Character>();
             LoadedCampaigns = new List<Campaign>();
+            CachedPages = new List<Page>();
 
             Auth = new Gatekeeper();
             DB = new DBHandler(App.databaseName);
@@ -36,7 +38,6 @@ namespace BackendCore
 
         public void LoadAccount(Account account)
         {
-            // TODO: put into memory, call mapping functions, load user assets.
             // TODO: unload these later?
             LoadedAccounts.Add(account);
 

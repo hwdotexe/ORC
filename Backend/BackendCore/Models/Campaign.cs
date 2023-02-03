@@ -14,6 +14,7 @@ namespace BackendCore.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public List<CampaignPlayer> Players { get; set; }
+        public List<Guid> Pages { get; set; }
 
         public Campaign(string name, string description, Guid owner, Guid system)
         {
@@ -22,9 +23,11 @@ namespace BackendCore.Models
             Description = description;
             OwnerAccountID = owner;
             System = system;
-            Players = new List<CampaignPlayer>();
-
-            Players.Add(new CampaignPlayer(owner, PlayerRole.Owner));
+            Players = new List<CampaignPlayer>
+            {
+                new CampaignPlayer(owner, PlayerRole.Owner)
+            };
+            Pages = new List<Guid>();
         }
     }
 }
