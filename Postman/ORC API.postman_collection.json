@@ -623,8 +623,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var id = pm.response.json().characterID;",
-									"pm.environment.set(\"characterid\", id);"
+									"var id = pm.response.json().campaignID;",
+									"pm.environment.set(\"campaignid\", id);"
 								],
 								"type": "text/javascript"
 							}
@@ -647,6 +647,55 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"System\": \"{{systemid}}\",\r\n    \"Name\": \"My test campaign\",\r\n    \"Description\": \"We travel into space and fight monsters\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/campaign",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"campaign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CampaignID\": \"{{campaignid}}\",\r\n    \"AccountID\": \"a2350721-65f8-4c98-9b4b-28c1fee73893\",\r\n    \"PlayerType\": \"PLAYER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

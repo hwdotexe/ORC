@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BackendCore.Database.Models;
 using BackendCore.Models;
 using BackendCore.Models.GameSystem;
@@ -135,11 +136,7 @@ namespace BackendCore.Database
         #region campaigns
         public List<Campaign> GetCampaigns(Guid accountID)
         {
-            // TODO experimental
-            var ownerFilter = Builders<Campaign>.Filter.Eq("OwnerAccountID", accountID);
-            var memberFilter = Builders<Campaign>.Filter.Eq("Players.@keys", accountID);
-
-            var r = ReadRows<Campaign>(_campaignstable, new List<FilterDefinition<Campaign>>() { ownerFilter, memberFilter });
+            var r = ReadRows<Campaign>(_campaignstable, "Players.AccountID", accountID);
 
             if (r.Count > 0)
             {
@@ -156,30 +153,30 @@ namespace BackendCore.Database
             Insert(_campaignstable, campaign);
         }
 
-        public void UpdateCharacter(Campaign campaign)
+        public void UpdateCampaign(Campaign campaign)
         {
             Update(_campaignstable, "CampaignID", campaign.CampaignID, campaign);
         }
 
-        public void DeleteCharacter(Campaign campaign)
+        public void DeleteCampaign(Campaign campaign)
         {
             Delete<Campaign>(_campaignstable, "CampaignID", campaign.CampaignID);
         }
         #endregion
 
         #region database
-        private List<T> ReadRows<T>(string table, List<FilterDefinition<T>> filters)
-        {
-            var collection = database.GetCollection<T>(table);
-
-            // TODO: is this not async?
-            return collection.Find(Builders<T>.Filter.Or(filters)).ToList();
-        }
-
         private List<T> ReadRows<T>(string table, string field, object value)
         {
             var collection = database.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq(field, value);
+
+            // TODO: is this not async?
+            return collection.Find(filter).ToList();
+        }
+
+        private List<T> ReadRows<T>(string table, FilterDefinition<T> filter)
+        {
+            var collection = database.GetCollection<T>(table);
 
             // TODO: is this not async?
             return collection.Find(filter).ToList();
@@ -214,10 +211,24 @@ namespace BackendCore.Database
             await collection.ReplaceOneAsync(filter, record);
         }
 
+        private async void Update<T>(string table, FilterDefinition<T> filter, T record)
+        {
+            var collection = database.GetCollection<T>(table);
+
+            await collection.ReplaceOneAsync(filter, record);
+        }
+
         private async void Delete<T>(string table, string field, object value)
         {
             var collection = database.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq(field, value);
+
+            await collection.DeleteOneAsync(filter);
+        }
+
+        private async void Delete<T>(string table, FilterDefinition<T> filter)
+        {
+            var collection = database.GetCollection<T>(table);
 
             await collection.DeleteOneAsync(filter);
         }

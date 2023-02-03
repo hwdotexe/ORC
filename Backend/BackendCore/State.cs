@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BackendCore.Authentication;
 using BackendCore.Database;
 using BackendCore.Models;
@@ -39,25 +40,57 @@ namespace BackendCore
             // TODO: unload these later?
             LoadedAccounts.Add(account);
 
-            var userSystems = DB.GetSystems(account.AccountID);
-            var userCharacters = DB.GetCharacters(account.AccountID);
-            var userCampaigns = DB.GetCampaigns(account.AccountID);
+            Parallel.Invoke(
+                () => LoadUserSystems(account.AccountID),
+                () => LoadUserCharacters(account.AccountID),
+                () => LoadUserCampaigns(account.AccountID));
+        }
+
+        private void LoadUserSystems(Guid accountID)
+        {
+            var userSystems = DB.GetSystems(accountID);
 
             if (userSystems != null)
             {
-                LoadedSystems.AddRange(userSystems);
+                userSystems.ForEach(s =>
+                {
+                    if (!LoadedSystems.Exists(ls => ls.SystemID == s.SystemID))
+                    {
+                        LoadedSystems.Add(s);
+                    }
+                });
             }
+        }
+
+        private void LoadUserCharacters(Guid accountID)
+        {
+            var userCharacters = DB.GetCharacters(accountID);
 
             if (userCharacters != null)
             {
-                LoadedCharacters.AddRange(userCharacters);
+                userCharacters.ForEach(c =>
+                {
+                    if (!LoadedCharacters.Exists(lc => lc.CharacterID == c.CharacterID))
+                    {
+                        LoadedCharacters.Add(c);
+                    }
+                });
             }
+        }
 
-            // TODO: potential collision if User A and User B both load the same campaign.
-            // Keep the original in memory, as it has potential to have been modified.
+        private void LoadUserCampaigns(Guid accountID)
+        {
+            var userCampaigns = DB.GetCampaigns(accountID);
+
             if (userCampaigns != null)
             {
-                LoadedCampaigns.AddRange(userCampaigns);
+                userCampaigns.ForEach(c =>
+                {
+                    if (!LoadedCampaigns.Exists(lc => lc.CampaignID == c.CampaignID))
+                    {
+                        LoadedCampaigns.Add(c);
+                    }
+                });
             }
         }
     }

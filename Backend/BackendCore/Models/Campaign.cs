@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BackendCore.Models.Enum;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models
@@ -14,18 +13,18 @@ namespace BackendCore.Models
         public Guid System { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        [BsonRepresentation(BsonType.Document)] // TODO: experimental
-        public Dictionary<string, PlayerType> Players { get; set; }
+        public List<CampaignPlayer> Players { get; set; }
 
         public Campaign(string name, string description, Guid owner, Guid system)
         {
+            CampaignID = Guid.NewGuid();
             Name = name;
             Description = description;
             OwnerAccountID = owner;
             System = system;
-            Players = new Dictionary<string, PlayerType>();
+            Players = new List<CampaignPlayer>();
 
-            Players.Add(owner.ToString(), PlayerType.GameMaster);
+            Players.Add(new CampaignPlayer(owner, PlayerRole.Owner));
         }
     }
 }
