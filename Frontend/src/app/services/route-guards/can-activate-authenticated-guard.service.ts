@@ -22,7 +22,7 @@ export class CanActivateAuthenticatedGuardService implements CanActivate {
             this.router.navigate(['']);
           }
 
-          this.authStateService.onAuthDataCleared();
+          this.authStateService.onLogOut();
         }
       }),
       map(([isSessionActive]) => isSessionActive)

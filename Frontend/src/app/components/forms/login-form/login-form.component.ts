@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CaptchaService } from 'src/app/services/captcha/captcha.service';
-import { LoginFormComponentService } from 'src/app/services/forms/login-form-component-service/login-form-component.service';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 import { takeUntil, take } from 'rxjs/operators';
 import { AccountLoginRequest } from 'src/app/models/API/Request/account-login-request.interface';
+import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 
 @Component({
   selector: 'app-login-form',
@@ -23,7 +22,7 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
   showLoginError$: BehaviorSubject<boolean>;
 
   constructor(
-    private componentService: LoginFormComponentService,
+    private authStateService: AuthStateService,
     private formBuilder: UntypedFormBuilder,
     private pageLoadingService: PageLoadingService,
     private router: Router
@@ -62,20 +61,6 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
   }
 
   dispatch(dispatchData: AccountLoginRequest): void {
-    this.componentService
-      .sendLoginData(dispatchData)
-      .pipe(take(1), takeUntil(this.unsubscribe$))
-      .subscribe(responseCode => {
-        switch (responseCode) {
-          case 200:
-            this.router.navigate(['/']);
-            break;
-          case 401:
-            this.showInvalidLogin$.next(true);
-            break;
-          default:
-            this.showLoginError$.next(true);
-        }
-      });
+    this.authStateService.onLoginRequest(dispatchData);
   }
 }

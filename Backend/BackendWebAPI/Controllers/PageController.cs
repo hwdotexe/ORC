@@ -15,6 +15,7 @@ namespace BackendWebAPI.Controllers
     public class PageController : ControllerBase
     {
         // TODO: enforce user access to the page (owner? page belongs to object they own?)
+        // May need to implement access list like Campaigns
         [HttpGet("{pageID}")]
         public ActionResult GET_Get_Page(string pageID)
         {

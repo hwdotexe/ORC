@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AccountLoginRequest } from 'src/app/models/API/Request/account-login-request.interface';
 import { AccountType } from 'src/app/models/enum/account-type.enum';
 import { AuthStateActions } from './auth-state.actions';
 import { AuthStateSelectors } from './auth-state.selectors';
@@ -16,12 +17,12 @@ export class AuthStateService {
 
   constructor(private store: Store) {}
 
-  onAuthDataReceived(authToken: string, userid: string, displayName: string, accountType: AccountType): void {
-    this.store.dispatch(AuthStateActions.AUTH_DATA_RECEIVED({ authToken, userid, displayName, accountType }));
+  onLoginRequest(request: AccountLoginRequest): void {
+    this.store.dispatch(AuthStateActions.loginAttempt({ request }));
   }
 
-  onAuthDataCleared(): void {
-    this.store.dispatch(AuthStateActions.AUTH_DATA_CLEARED());
+  onLogOut(): void {
+    this.store.dispatch(AuthStateActions.logOutAttempt());
   }
 
   onAuthDataInfoUpdated(displayName: string): void {

@@ -6,13 +6,13 @@ import { AuthStateActions } from './auth-state.actions';
 const reducer = createReducer(
   authInitialState,
   on(
-    AuthStateActions.AUTH_DATA_RECEIVED,
+    AuthStateActions.loginSuccess,
     (state, action): AuthState => ({
       ...state,
-      authToken: action.authToken,
-      userID: action.userid,
-      displayName: action.displayName,
-      accountType: action.accountType
+      authToken: action.response.authToken,
+      accountID: action.response.accountID,
+      displayName: action.response.displayName,
+      accountType: action.response.accountType
     })
   ),
   on(AuthStateActions.AUTH_DATA_CLEARED, (state, action): AuthState => authInitialState),

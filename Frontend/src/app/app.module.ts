@@ -37,6 +37,8 @@ import { UpdateCharacterFormComponent } from './components/forms/update-characte
 import { TimePipe } from './pipes/time.pipe';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
 import { HomeComponent } from './components/pages/home/home.component';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthStateEffects } from './store/auth-state/auth-state.effects';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -76,7 +78,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     HttpClientModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
-    StoreModule.forRoot(rootReducer, { metaReducers })
+    StoreModule.forRoot(rootReducer, { metaReducers }),
+    EffectsModule.forRoot([AuthStateEffects])
   ],
   providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],
   bootstrap: [AppComponent]

@@ -13,6 +13,7 @@ import { HTTPService } from '../../httpservice/http.service';
 export class RegisterFormComponentService {
   constructor(private httpService: HTTPService, private authStateService: AuthStateService, private router: Router) {}
 
+  // TODO: fix this one next
   sendRegisterData(registerData: AccountCreateRequest): Observable<number> {
     return this.httpService.PUT<AccountAuthenticatedResponse>('user', registerData, 'REGISTER').pipe(
       take(1),

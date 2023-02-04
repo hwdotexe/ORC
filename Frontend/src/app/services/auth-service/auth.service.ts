@@ -38,6 +38,7 @@ export class AuthService {
     return this.authStateService.accountType$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
   }
 
+  // TODO: very deprecated, use authstateservice
   logOut$(): Observable<boolean> {
     return this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
       take(1),
