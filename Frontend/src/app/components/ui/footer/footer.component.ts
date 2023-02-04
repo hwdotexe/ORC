@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
@@ -13,7 +12,7 @@ import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 export class FooterComponent extends BaseUnsubscribeComponent implements OnInit {
   userID$: Observable<string>;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authStateService: AuthStateService, private authService: AuthService) {
     super();
   }
 
@@ -22,11 +21,6 @@ export class FooterComponent extends BaseUnsubscribeComponent implements OnInit 
   }
 
   clickLogOut(): void {
-    this.authService
-      .logOut$()
-      .pipe(take(1), takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.router.navigate(['/logged-out']);
-      });
+    this.authStateService.onLogOut();
   }
 }

@@ -15,7 +15,7 @@ export class UpdateCharacterFormComponentService {
     return this.httpService.PATCH<AccountUpdateResponse>('user', request, 'UPDATE_CHARACTER').pipe(
       take(1),
       map(response => {
-        return response.responseBody;
+        return response.body;
       })
     );
   }

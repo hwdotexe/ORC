@@ -1,10 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
 import { authInitialState } from './auth-initial-state';
-import { AuthState } from './auth-state.interface';
 import { AuthStateActions } from './auth-state.actions';
+import { AuthState } from './auth-state.interface';
 
 const reducer = createReducer(
   authInitialState,
+  on(
+    AuthStateActions.registerSuccess,
+    (state, action): AuthState => ({
+      ...state,
+      authToken: action.response.authToken,
+      accountID: action.response.accountID,
+      displayName: action.response.displayName,
+      accountType: action.response.accountType
+    })
+  ),
   on(
     AuthStateActions.loginSuccess,
     (state, action): AuthState => ({
@@ -15,7 +25,7 @@ const reducer = createReducer(
       accountType: action.response.accountType
     })
   ),
-  on(AuthStateActions.AUTH_DATA_CLEARED, (state, action): AuthState => authInitialState),
+  on(AuthStateActions.logOutSuccess, (state, action): AuthState => authInitialState),
   on(
     AuthStateActions.AUTH_DATA_INFO_UPDATED,
     (state, action): AuthState => ({

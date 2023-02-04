@@ -1,13 +1,12 @@
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
-import { Observable, of } from 'rxjs';
-import { catchError, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
-import { APIResponse } from 'src/app/models/API/Response/generic-api-response.interface';
-import { PageLoadingService } from '../page-loading-service/page-loading.service';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, finalize, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 import { environment } from 'src/environments/environment.dev';
 import { CaptchaService } from '../captcha/captcha.service';
+import { PageLoadingService } from '../page-loading-service/page-loading.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,7 @@ export class HTTPService {
     private captchaService: CaptchaService
   ) {}
 
-  GET<T>(url: string, action: string, isProtected: boolean = true): Observable<APIResponse<T>> {
+  GET<T>(url: string, action: string, isProtected: boolean = true): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
@@ -36,7 +35,7 @@ export class HTTPService {
     );
   }
 
-  POST<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<APIResponse<T>> {
+  POST<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
@@ -49,7 +48,7 @@ export class HTTPService {
     );
   }
 
-  PUT<T>(url: string, body: any, action: string): Observable<APIResponse<T>> {
+  PUT<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
@@ -62,7 +61,7 @@ export class HTTPService {
     );
   }
 
-  PATCH<T>(url: string, body: any, action: string): Observable<APIResponse<T>> {
+  PATCH<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
@@ -75,7 +74,7 @@ export class HTTPService {
     );
   }
 
-  DELETE<T>(url: string, body: any, action: string): Observable<APIResponse<T>> {
+  DELETE<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
@@ -99,22 +98,17 @@ export class HTTPService {
     }
   }
 
-  private mapResponse<T>(call: Observable<HttpEvent<T>>): Observable<APIResponse<T>> {
+  private mapResponse<T>(call: Observable<HttpEvent<T>>): Observable<HttpResponse<T>> {
     return call.pipe(
-      take(1),
-      switchMap((response: HttpResponse<T>) => {
-        return of({
-          statusCode: response.status,
-          responseBody: response.body
-        });
-      }),
+      map((response: HttpResponse<T>) => response),
       catchError((error: HttpErrorResponse) => {
-        return of({
-          statusCode: error.status,
-          responseBody: error.error
-        });
+        if (error.status === 500) {
+          this.router.navigate(['error']);
+        }
+
+        throw error;
       }),
-      tap(() => {
+      finalize(() => {
         this.pageLoadingService.clear();
       })
     );

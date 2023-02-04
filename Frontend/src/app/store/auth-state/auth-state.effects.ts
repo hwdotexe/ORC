@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, EMPTY, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, EMPTY, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
 import { AuthStateActions } from './auth-state.actions';
@@ -10,13 +10,34 @@ import { AuthStateActions } from './auth-state.actions';
 export class AuthStateEffects {
   constructor(private actions$: Actions, private httpService: HTTPService, private router: Router) {}
 
+  registerAttempt$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthStateActions.registerAttempt),
+      mergeMap(action =>
+        this.httpService.PUT<AccountAuthenticatedResponse>('account', action.request, 'REGISTER_ACCOUNT').pipe(
+          map(response => AuthStateActions.registerSuccess({ response: response.body })),
+          catchError(error => of(AuthStateActions.authFailure({ error })))
+        )
+      )
+    )
+  );
+
+  registerSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthStateActions.registerSuccess),
+        tap(() => this.router.navigate(['/']))
+      ),
+    { dispatch: false }
+  );
+
   loginAttempt$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthStateActions.loginAttempt),
-      mergeMap(action =>
-        this.httpService.POST<AccountAuthenticatedResponse>('user', action.request, 'LOGIN').pipe(
-          map(response => AuthStateActions.loginSuccess({ response: response.responseBody })),
-          catchError(error => of(AuthStateActions.loginFailure({ error })))
+      exhaustMap(action =>
+        this.httpService.POST<AccountAuthenticatedResponse>('account', action.request, 'LOGIN').pipe(
+          map(response => AuthStateActions.loginSuccess({ response: response.body })),
+          catchError(error => of(AuthStateActions.authFailure({ error })))
         )
       )
     )
@@ -39,7 +60,7 @@ export class AuthStateEffects {
       mergeMap(() =>
         this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
           map(() => AuthStateActions.logOutSuccess()),
-          catchError(() => EMPTY)
+          catchError(() => EMPTY) // TODO site-wide error page - add action to take them there.
         )
       )
     )
@@ -49,7 +70,7 @@ export class AuthStateEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthStateActions.logOutSuccess),
-        tap(() => this.router.navigate(['']))
+        tap(() => this.router.navigate(['/logged-out']))
       ),
     { dispatch: false }
   );

@@ -1,13 +1,16 @@
 import { createAction, props } from '@ngrx/store';
+import { AccountCreateRequest } from 'src/app/models/API/Request/account-create-request.interface';
 import { AccountLoginRequest } from 'src/app/models/API/Request/account-login-request.interface';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
 
 export abstract class AuthStateActions {
-  static readonly loginAttempt = createAction('AUTH_ATTEMPT', props<{ request: AccountLoginRequest }>());
-  static readonly loginSuccess = createAction('AUTH_SUCCESS', props<{ response: AccountAuthenticatedResponse }>());
-  static readonly loginFailure = createAction('AUTH_FAILURE', props<{ error: any }>());
-  static readonly logOutAttempt = createAction('AUTH_LOG_OUT_ATTEMPT');
-  static readonly logOutSuccess = createAction('AUTH_LOG_OUT_SUCCESS');
+  static readonly registerAttempt = createAction('@critcase/action/register/attempt', props<{ request: AccountCreateRequest }>());
+  static readonly registerSuccess = createAction('@critcase/action/register/success', props<{ response: AccountAuthenticatedResponse }>());
+  static readonly loginAttempt = createAction('@critcase/action/login/attempt', props<{ request: AccountLoginRequest }>());
+  static readonly loginSuccess = createAction('@critcase/action/login/success', props<{ response: AccountAuthenticatedResponse }>());
+  static readonly authFailure = createAction('@critcase/action/authentication/failure', props<{ error: any }>());
+  static readonly logOutAttempt = createAction('@critcase/action/logout/attempt');
+  static readonly logOutSuccess = createAction('@critcase/action/logout/success');
 
   static readonly AUTH_TOKEN_NOT_ACCEPTED = createAction('AUTH_TOKEN_NOT_ACCEPTED');
   static readonly AUTH_DATA_CLEARED = createAction('AUTH_DATA_CLEARED');

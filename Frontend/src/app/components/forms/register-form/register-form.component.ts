@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
 import { AccountCreateRequest } from 'src/app/models/API/Request/account-create-request.interface';
-import { CaptchaService } from 'src/app/services/captcha/captcha.service';
-import { RegisterFormComponentService } from 'src/app/services/forms/register-form-component-service/register-form-component.service';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
+import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
@@ -22,13 +19,7 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
   showInvalidRegistration$: BehaviorSubject<boolean>;
   showRegisterError$: BehaviorSubject<boolean>;
 
-  constructor(
-    private componentService: RegisterFormComponentService,
-    private formBuilder: UntypedFormBuilder,
-    private pageLoadingService: PageLoadingService,
-    private captchaService: CaptchaService,
-    private router: Router
-  ) {
+  constructor(private formBuilder: UntypedFormBuilder, private pageLoadingService: PageLoadingService, private authStateService: AuthStateService) {
     super();
   }
 
@@ -65,20 +56,6 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
   }
 
   dispatch(dispatchData: AccountCreateRequest): void {
-    this.componentService
-      .sendRegisterData(dispatchData)
-      .pipe(take(1), takeUntil(this.unsubscribe$))
-      .subscribe(responseCode => {
-        switch (responseCode) {
-          case 201:
-            this.router.navigate(['/account-created']);
-            break;
-          case 401:
-            this.showInvalidRegistration$.next(true);
-            break;
-          default:
-            this.showRegisterError$.next(true);
-        }
-      });
+    this.authStateService.onRegisterRequest(dispatchData);
   }
 }

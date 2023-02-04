@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, shareReplay, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
 import { AccountType } from 'src/app/models/enum/account-type.enum';
 import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 import { HTTPService } from '../httpservice/http.service';
@@ -20,29 +20,22 @@ export class AuthService {
   }
 
   checkUserSessionActive$(): Observable<boolean> {
-    return this.authStateService.authToken$.pipe(
-      switchMap(token => {
-        if (token) {
-          return this.httpService.GET<any>('heartbeat', 'HEARTBEAT', false).pipe(
-            take(1),
-            map(response => response.statusCode === 200)
-          );
-        } else {
-          return of(false);
-        }
-      })
-    );
+    return of(true);
+    // return this.authStateService.authToken$.pipe(
+    //   switchMap(token => {
+    //     if (token) {
+    //       return this.httpService.GET<any>('heartbeat', 'HEARTBEAT', false).pipe(
+    //         take(1),
+    //         map(response => response.statusCode === 200)
+    //       );
+    //     } else {
+    //       return of(false);
+    //     }
+    //   })
+    // );
   }
 
   getUserAccountType$(): Observable<AccountType> {
     return this.authStateService.accountType$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));
-  }
-
-  // TODO: very deprecated, use authstateservice
-  logOut$(): Observable<boolean> {
-    return this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
-      take(1),
-      map(() => true)
-    );
   }
 }

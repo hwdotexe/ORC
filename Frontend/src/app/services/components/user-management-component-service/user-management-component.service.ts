@@ -15,7 +15,7 @@ export class UserManagementComponentService {
     return this.httpService.GET<AccountListResponse>('user/status', 'LIST_USERS').pipe(
       take(1),
       map(response => {
-        return response.responseBody;
+        return response.body;
       })
     );
   }
@@ -24,7 +24,7 @@ export class UserManagementComponentService {
     return this.httpService.POST<any>('user/status', request, 'UPDATE_USER').pipe(
       take(1),
       map(response => {
-        return response.statusCode;
+        return response.status;
       })
     );
   }
