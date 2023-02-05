@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { AccountInfo } from 'src/app/models/account-info.interface';
 import { AccountType } from 'src/app/models/enum/account-type.enum';
 import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
-import { HTTPService } from '../httpservice/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private authStateService: AuthStateService, private httpService: HTTPService) {}
+  constructor(private authStateService: AuthStateService) {}
+
+  getAccountInfo$(): Observable<AccountInfo> {
+    return this.authStateService.userID$.pipe(
+      withLatestFrom(this.authStateService.displayName$, this.authStateService.accountType$),
+      map(([userID, displayName, accountType]) => {
+        return userID ? { userID, displayName, accountType } : undefined;
+      })
+    );
+  }
 
   getUserID$(): Observable<string> {
     return this.authStateService.userID$.pipe(shareReplay({ refCount: true, bufferSize: 1 }));

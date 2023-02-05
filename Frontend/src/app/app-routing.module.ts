@@ -1,23 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErrorComponent } from './components/pages/status-pages/error/error.component';
-import { LoginComponent } from './components/pages/login/login.component';
-import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
-import { HomeComponent } from './components/pages/home/home.component';
-import { RegisterComponent } from './components/pages/register/register.component';
-import { CanActivateAuthenticatedGuardService } from './services/route-guards/can-activate-authenticated-guard.service';
-import { AccountCreatedComponent } from './components/pages/status-pages/account-created/account-created.component';
-import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
-import { UpdateCharacterComponent } from './components/pages/update-character/update-character.component';
+import { DashboardComponent } from './components/pages/dashboard/dashboard.component';
+import { FrontPageComponent } from './components/pages/front-page/front-page.component';
 import { InfoComponent } from './components/pages/info/info.component';
+import { LoginComponent } from './components/pages/login/login.component';
+import { RegisterComponent } from './components/pages/register/register.component';
+import { AccountCreatedComponent } from './components/pages/status-pages/account-created/account-created.component';
+import { ErrorComponent } from './components/pages/status-pages/error/error.component';
+import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
+import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
+import { UpdateCharacterComponent } from './components/pages/update-character/update-character.component';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
+import { CanActivateAuthenticatedGuardService } from './services/route-guards/can-activate-authenticated-guard.service';
 import { CanActivateUserManagementGuardService } from './services/route-guards/can-activate-user-management-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: FrontPageComponent,
     pathMatch: 'full'
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: 'error',

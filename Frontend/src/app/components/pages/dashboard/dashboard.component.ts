@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { PermissionsService } from 'src/app/services/permissions-service/permissions.service';
@@ -9,10 +8,10 @@ import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class HomeComponent extends BaseUnsubscribeComponent implements OnInit {
+export class DashboardComponent extends BaseUnsubscribeComponent implements OnInit {
   isLoading$: Observable<boolean>;
   hasError$: BehaviorSubject<boolean>;
 

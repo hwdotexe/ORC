@@ -11,3 +11,11 @@ html {
   font-weight: 300;
   src: local('FFXIV'), url('../font/ffxiv.woff') format('woff');
 }
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
