@@ -47,6 +47,7 @@ import { AuthStateEffects } from './store/auth-state/auth-state.effects';
 import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.effects';
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
+import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -80,7 +81,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     UserManagementComponent,
     FrontPageComponent,
     NavComponent,
-    CaseNavComponent
+    CaseNavComponent,
+    SubmitButtonComponent
   ],
   imports: [
     BrowserModule,

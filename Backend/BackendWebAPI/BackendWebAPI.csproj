@@ -5,6 +5,7 @@
     <StartupObject>BackendWebAPI.Program</StartupObject>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'BackendWebAPI-Development' " />
   <ItemGroup>
     <ProjectReference Include="..\BackendCore\BackendCore.csproj" />
   </ItemGroup>

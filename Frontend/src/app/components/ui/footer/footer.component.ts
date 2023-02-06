@@ -9,18 +9,6 @@ import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent extends BaseUnsubscribeComponent implements OnInit {
-  userID$: Observable<string>;
-
-  constructor(private authStateService: AuthStateService, private authService: AuthService) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.userID$ = this.authService.getUserID$();
-  }
-
-  clickLogOut(): void {
-    this.authStateService.onLogOut();
-  }
+export class FooterComponent {
+  constructor() {}
 }
