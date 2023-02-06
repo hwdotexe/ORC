@@ -87,17 +87,6 @@ export class HTTPService {
     );
   }
 
-  handleNonSuccessResponseNavigation(responseCode: number): void {
-    switch (responseCode) {
-      case 401:
-        this.router.navigate(['/login']);
-        break;
-      case 500:
-        this.router.navigate(['/error']);
-        break;
-    }
-  }
-
   private mapResponse<T>(call: Observable<HttpEvent<T>>): Observable<HttpResponse<T>> {
     return call.pipe(
       map((response: HttpResponse<T>) => response),

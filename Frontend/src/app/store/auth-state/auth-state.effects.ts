@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, EMPTY, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
+import { AppStateActions } from '../app-state/app-state.actions';
 import { AuthStateActions } from './auth-state.actions';
 
 @Injectable()
@@ -26,7 +27,7 @@ export class AuthStateEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthStateActions.registerSuccess),
-        tap(() => this.router.navigate(['/']))
+        tap(() => this.router.navigate(['/dashboard']))
       ),
     { dispatch: false }
   );
@@ -60,7 +61,7 @@ export class AuthStateEffects {
       mergeMap(() =>
         this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
           map(() => AuthStateActions.logOutSuccess()),
-          catchError(() => EMPTY) // TODO site-wide error page - add action to take them there.
+          catchError(error => of(AppStateActions.serverError({ error })))
         )
       )
     )

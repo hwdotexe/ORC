@@ -36,12 +36,12 @@ import {
 } from './components/ui/button.directive';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { FormErrorComponent } from './components/ui/form-error/form-error/form-error.component';
-import { HeaderComponent } from './components/ui/header/header.component';
 import { InputDirective } from './components/ui/input.directive';
 import { NavComponent } from './components/ui/nav/nav.component';
 import { SelectDirective } from './components/ui/select.directive';
 import { TextareaDirective } from './components/ui/textarea.directive';
 import { TimePipe } from './pipes/time.pipe';
+import { AppStateEffects } from './store/app-state/app-state.effects';
 import { AuthStateEffects } from './store/auth-state/auth-state.effects';
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
@@ -51,7 +51,6 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     FooterComponent,
     LoginComponent,
     InputDirective,
@@ -94,7 +93,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
       autoPause: false
       //trace, traceLimit
     }),
-    EffectsModule.forRoot([AuthStateEffects]),
+    EffectsModule.forRoot([AuthStateEffects, AppStateEffects]),
     BrowserAnimationsModule
   ],
   providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],
