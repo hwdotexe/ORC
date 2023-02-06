@@ -3,9 +3,7 @@ module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
-      fontFamily: {
-        FFXIV: ['FFXIV', 'serif']
-      }
+      fontFamily: {}
     }
   },
   plugins: []

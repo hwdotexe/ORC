@@ -14,7 +14,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
-import { UpdateCharacterFormComponent } from './components/forms/update-character-form/update-character-form.component';
 import { DashboardComponent } from './components/pages/dashboard/dashboard.component';
 import { FrontPageComponent } from './components/pages/front-page/front-page.component';
 import { InfoComponent } from './components/pages/info/info.component';
@@ -24,7 +23,6 @@ import { AccountCreatedComponent } from './components/pages/status-pages/account
 import { ErrorComponent } from './components/pages/status-pages/error/error.component';
 import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
 import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
-import { UpdateCharacterComponent } from './components/pages/update-character/update-character.component';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
 import {
   ButtonDirectiveBlue,
@@ -40,6 +38,7 @@ import { FormErrorComponent } from './components/ui/form-error/form-error/form-e
 import { InputDirective } from './components/ui/input.directive';
 import { NavComponent } from './components/ui/nav/nav.component';
 import { SelectDirective } from './components/ui/select.directive';
+import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 import { TextareaDirective } from './components/ui/textarea.directive';
 import { TimePipe } from './pipes/time.pipe';
 import { AppStateEffects } from './store/app-state/app-state.effects';
@@ -47,7 +46,6 @@ import { AuthStateEffects } from './store/auth-state/auth-state.effects';
 import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.effects';
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
-import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -72,11 +70,9 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     RegisterComponent,
     AccountCreatedComponent,
     LoggedOutComponent,
-    UpdateCharacterComponent,
     InfoComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    UpdateCharacterFormComponent,
     TimePipe,
     UserManagementComponent,
     FrontPageComponent,

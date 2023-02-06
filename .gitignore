@@ -1,5 +1,4 @@
 Backend/.vs
-Frontend/.vscode
 deploy/*
 Backend/BackendAPI/bin/Debug
 Backend/BackendAPI/bin/Release

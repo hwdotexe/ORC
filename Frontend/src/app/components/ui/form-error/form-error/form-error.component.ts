@@ -1,41 +1,26 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlContainer, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
-import { BaseUnsubscribeComponent } from 'src/app/components/base-unsubscribe.component';
+import { AbstractControl, ControlContainer, NgForm, UntypedFormGroup } from '@angular/forms';
+import { map, Observable } from 'rxjs';
 
 @Component({
-  selector: '[formGroup] ui-form-error [errorFor][showErrors]',
+  selector: 'ui-form-error [form][errorFor]',
   templateUrl: './form-error.component.html',
   styleUrls: ['./form-error.component.css']
 })
-export class FormErrorComponent extends BaseUnsubscribeComponent implements OnInit {
+export class FormErrorComponent implements OnInit {
   @Input() errorFor: string;
-  @Input('showErrors') showErrors$: BehaviorSubject<boolean>;
+  @Input() form: NgForm;
 
-  showErrors: boolean;
-
-  parentForm: UntypedFormGroup;
+  errorMessage$: Observable<string>;
   control: AbstractControl;
-  errorMessage: string;
 
-  constructor(private controlContainer: ControlContainer) {
-    super();
-  }
+  constructor(private controlContainer: ControlContainer) {}
 
   ngOnInit(): void {
-    this.parentForm = <UntypedFormGroup>this.controlContainer.control;
-    this.control = this.parentForm.get(this.errorFor);
+    let parentForm = <UntypedFormGroup>this.controlContainer.control;
+    this.control = parentForm.get(this.errorFor);
 
-    this.showErrors$
-      .pipe(
-        tap(showErrors => {
-          this.showErrors = showErrors;
-          this.errorMessage = this.mapErrorMessage();
-        }),
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe();
+    this.errorMessage$ = this.form.ngSubmit.pipe(map(() => this.mapErrorMessage()));
   }
 
   private mapErrorMessage(): string {
@@ -46,5 +31,7 @@ export class FormErrorComponent extends BaseUnsubscribeComponent implements OnIn
     if (this.control.hasError('email')) {
       return 'Please enter a valid email address';
     }
+
+    return null;
   }
 }

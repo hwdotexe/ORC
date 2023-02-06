@@ -1,10 +1,10 @@
 <div class="container mx-auto my-2 p-5">
-  <p class="text-sm text-gray-600">CritCase</p>
+  <p [routerLink]="['']" class="text-sm text-gray-600 hover:text-gray-700 hover:cursor-pointer w-fit">CritCase</p>
   <hr class="border-gray-400 my-3" />
   <div class="flex">
     <p class="flex-initial text-sm text-gray-500">Copyright &copy; 2023 CritCase.com. All rights reserved.</p>
     <div class="flex-auto"></div>
-    <button class="flex-initial mx-1 text-sm text-gray-600 hover:text-gray-700">Privacy Policy</button>
-    <button class="flex-initial mx-1 text-sm text-gray-600 hover:text-gray-700">Terms of Use</button>
+    <a class="flex-initial mx-1 text-sm text-gray-600 hover:text-gray-700" [routerLink]="['']">Privacy Policy</a>
+    <a class="flex-initial mx-1 text-sm text-gray-600 hover:text-gray-700" [routerLink]="['']">Terms of Use</a>
   </div>
 </div>

@@ -1,87 +1,44 @@
-<form class="px-4 pb-5" [formGroup]="registerAccountForm" (ngSubmit)="this.submit()">
+<form class="p-4" [formGroup]="registerAccountForm" #form="ngForm" (ngSubmit)="this.submit()">
   <div class="text-center">
-    <h1 class="text-xl font-bold my-2">Create Reviewer Account</h1>
-    <p class="text-sm text-gray-600 mb-3">
-      Account creation is restricted to users with an Account Creation Token. You must receive this token from an admin in order to create your
-      account. Please reach out to our staff if you have any questions!
-    </p>
+    <h1 class="text-xl font-bold my-2">Start Your CritCase</h1>
+    <p class="text-sm text-gray-600 mb-3">Create an account to store all of your characters, notes, and campaigns in one easy place.</p>
   </div>
 
-  <div class="inline-block align-middle mt-4 mb-2">
-    <div class="inline-block text-left align-bottom my-2">
-      <p class="mx-2 text-sm text-gray-800 font-semibold">Email Address</p>
-      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'email'" [showErrors]="showErrorValidations$"></ui-form-error>
-      <input styled formControlName="email" placeholder="user@example.com" />
+  <div class="mt-10">
+    <div class="my-4">
+      <ui-form-error [form]="form" [errorFor]="'email'"></ui-form-error>
+      <input styled class="w-full" formControlName="email" placeholder="Email" />
     </div>
 
-    <div class="inline-block text-left align-bottom my-2">
-      <p class="mx-2 text-sm text-gray-800 font-semibold">Password</p>
-      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'password'" [showErrors]="showErrorValidations$"></ui-form-error>
-      <input styled formControlName="password" placeholder="•••••••" type="password" />
+    <div class="my-4">
+      <ui-form-error [form]="form" [errorFor]="'password'"></ui-form-error>
+      <input styled class="w-full" formControlName="password" placeholder="Password" type="password" />
     </div>
 
-    <div class="inline-block text-left align-bottom my-2">
-      <p class="mx-2 text-sm text-gray-800 font-semibold">Character Name</p>
-      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'characterName'" [showErrors]="showErrorValidations$"></ui-form-error>
-      <input styled formControlName="characterName" placeholder="Tymomo Tymo" />
+    <div class="my-4">
+      <ui-form-error [form]="form" [errorFor]="'confirmPassword'"></ui-form-error>
+      <input styled class="w-full" formControlName="confirmPassword" placeholder="Confirm Password" type="password" />
     </div>
 
-    <div class="inline-block text-left align-bottom my-2">
-      <p class="mx-2 text-sm text-gray-800 font-semibold">Home World</p>
-      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'characterServer'" [showErrors]="showErrorValidations$"></ui-form-error>
-      <select styled formControlName="characterServer">
-        <optgroup label="Aether">
-          <option>Adamantoise</option>
-          <option>Cactuar</option>
-          <option>Faerie</option>
-          <option>Gilgamesh</option>
-          <option>Jenova</option>
-          <option>Midgardsormr</option>
-          <option>Sargatanas</option>
-          <option>Siren</option>
-        </optgroup>
-        <optgroup label="Primal">
-          <option>Behemoth</option>
-          <option>Excalibur</option>
-          <option>Exodus</option>
-          <option>Famfrit</option>
-          <option>Hyperion</option>
-          <option>Lamia</option>
-          <option>Leviathan</option>
-          <option>Ultros</option>
-        </optgroup>
-        <optgroup label="Crystal">
-          <option>Balmung</option>
-          <option>Brynhildr</option>
-          <option>Coeurl</option>
-          <option>Diabolos</option>
-          <option>Goblin</option>
-          <option>Malboro</option>
-          <option>Mateus</option>
-          <option>Zalera</option>
-        </optgroup>
-      </select>
+    <div class="my-4">
+      <ui-form-error [form]="form" [errorFor]="'displayName'"></ui-form-error>
+      <input styled class="w-full" formControlName="displayName" placeholder="Display Name" />
     </div>
 
-    <div class="text-left align-bottom my-2">
-      <p class="mx-2 text-sm text-gray-800 font-semibold">Account Creation Token</p>
-      <ui-form-error [formGroup]="registerAccountForm" [errorFor]="'accountCreationToken'" [showErrors]="showErrorValidations$"></ui-form-error>
-      <input styled formControlName="accountCreationToken" placeholder="Token" />
+    <div class="my-4">
+      <ui-form-error [form]="form" [errorFor]="'agreeTOS'"></ui-form-error>
+      <input id="agreeTOS" type="checkbox" formControlName="agreeTOS" />
+      <!-- TODO: these destinations -->
+      <label for="agreeTOS" class="text-sm text-gray-600">
+        I agree to the
+        <a [routerLink]="['']" class="text-gray-700 hover:text-gray-800 hover:underline">Privacy Policy</a>
+        and
+        <a [routerLink]="['']" class="text-gray-700 hover:text-gray-800 hover:underline">Terms of Service</a>
+      </label>
     </div>
+
+    <app-submit-button label="Create Account"></app-submit-button>
   </div>
-
-  <p class="mx-2 text-sm text-gray-600 p-2">
-    Passwords must be at least 8 characters long and include a capital letter, lowercase letter, and a number.
-  </p>
-
-  <div *ngIf="{ value: isLoading$ | async } as isLoading">
-    <button styled-blue class="w-full mt-3" type="submit" *ngIf="!isLoading.value">Register Account</button>
-    <button styled-blue-disabled class="w-full mt-3 hover:cursor-progress" type="submit" disabled="disabled" *ngIf="isLoading.value">
-      <i class="fa-solid fa-spinner animate-spin mx-2"></i>
-      Register Account
-    </button>
-  </div>
-
   <p *ngIf="showInvalidRegistration$ | async" class="mx-2 text-sm text-red-500">
     Your registration was not accepted. Please make sure all your information is correct.
   </p>

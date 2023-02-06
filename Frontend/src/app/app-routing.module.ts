@@ -9,7 +9,6 @@ import { AccountCreatedComponent } from './components/pages/status-pages/account
 import { ErrorComponent } from './components/pages/status-pages/error/error.component';
 import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
 import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
-import { UpdateCharacterComponent } from './components/pages/update-character/update-character.component';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
 import { CanActivateAuthenticatedGuardService } from './services/route-guards/can-activate-authenticated-guard.service';
 import { CanActivateUserManagementGuardService } from './services/route-guards/can-activate-user-management-guard.service';
@@ -44,11 +43,6 @@ const routes: Routes = [
   {
     path: 'account-created',
     component: AccountCreatedComponent,
-    canActivate: [CanActivateAuthenticatedGuardService]
-  },
-  {
-    path: 'update-character',
-    component: UpdateCharacterComponent,
     canActivate: [CanActivateAuthenticatedGuardService]
   },
   {

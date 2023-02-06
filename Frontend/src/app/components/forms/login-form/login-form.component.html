@@ -1,16 +1,18 @@
-<form class="px-4 text-center" [formGroup]="loginInfoForm" (ngSubmit)="this.submit()">
-  <!-- Example image for development purposes -->
-  <img src="https://www.shareicon.net/data/256x256/2016/06/30/625014_chest_256x256.png" class="mx-auto" />
-  <h1 class="text-lg text-gray-600">Unlock your CritCase</h1>
+<form class="px-4" [formGroup]="loginInfoForm" #form="ngForm" (ngSubmit)="this.submit()">
+  <div class="text-center">
+    <!-- Example image for development purposes -->
+    <img src="https://www.shareicon.net/data/256x256/2016/06/30/625014_chest_256x256.png" class="mx-auto" />
+    <h1 class="text-lg text-gray-600">Unlock your CritCase</h1>
+  </div>
 
   <div class="mt-10">
     <div class="my-4">
-      <ui-form-error [formGroup]="loginInfoForm" [errorFor]="'email'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <ui-form-error [form]="form" [errorFor]="'email'"></ui-form-error>
       <input styled class="w-full" formControlName="email" placeholder="Email" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [formGroup]="loginInfoForm" [errorFor]="'password'" [showErrors]="showErrorValidations$"></ui-form-error>
+      <ui-form-error [form]="form" [errorFor]="'password'"></ui-form-error>
       <input styled class="w-full" formControlName="password" placeholder="Password" type="password" />
     </div>
   </div>
@@ -18,12 +20,12 @@
   <div class="flex items-center">
     <div class="flex-initial text-gray-500 text-sm">
       <p class="inline-block">Don't have an account?</p>
-      <button [routerLink]="['/register']" type="button" class="inline-block mx-1 underline hover:text-gray-600">Register</button>
+      <a [routerLink]="['/register']" type="button" class="inline-block mx-1 underline hover:text-gray-600">Register</a>
     </div>
 
     <div class="flex-auto"></div>
 
-    <app-submit-button class="flex-auto"></app-submit-button>
+    <app-submit-button class="flex-auto" label="Log In"></app-submit-button>
   </div>
 
   <p *ngIf="showInvalidLogin$ | async" class="mx-2 text-sm text-red-500">Invalid login details - please try again.</p>

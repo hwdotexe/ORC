@@ -6,16 +6,18 @@ html {
   background-color: #eaeaea;
 }
 
-@font-face {
-  font-family: 'FFXIV';
-  font-weight: 300;
-  src: local('FFXIV'), url('../font/ffxiv.woff') format('woff');
-}
-
 html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
+}
+
+.ng-submitted input.ng-invalid {
+  border: 2px solid rgb(244, 92, 92);
+}
+
+.ng-submitted input.ng-valid {
+  border: 2px solid rgb(102, 235, 133);
 }

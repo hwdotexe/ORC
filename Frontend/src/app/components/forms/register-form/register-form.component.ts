@@ -30,10 +30,13 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     this.showInvalidRegistration$ = new BehaviorSubject<boolean>(false);
     this.showRegisterError$ = new BehaviorSubject<boolean>(false);
 
+    // TODO: Custom validator for confirmPassword
     this.registerAccountForm = this.formBuilder.group({
       email: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required, Validators.email])] }),
       password: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
-      displayName: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] })
+      confirmPassword: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
+      displayName: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
+      agreeTOS: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.requiredTrue])] })
     });
   }
 
@@ -42,7 +45,7 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     this.showErrorValidations$.next(false);
     this.showRegisterError$.next(false);
 
-    if (this.registerAccountForm.valid) {
+    if (this.isFormValid()) {
       let registerData: AccountCreateRequest = {
         email: this.registerAccountForm.get('email').value,
         password: this.registerAccountForm.get('password').value,
@@ -57,5 +60,16 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
 
   dispatch(dispatchData: AccountCreateRequest): void {
     this.authStateService.onRegisterRequest(dispatchData);
+  }
+
+  private isFormValid(): boolean {
+    if (this.registerAccountForm.valid) {
+      let password = this.registerAccountForm.get('password').value;
+      let confirmPassword = this.registerAccountForm.get('confirmPassword').value;
+
+      return password === confirmPassword;
+    }
+
+    return false;
   }
 }

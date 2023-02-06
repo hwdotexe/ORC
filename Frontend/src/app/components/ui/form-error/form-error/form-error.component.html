@@ -1,7 +1,5 @@
-<div *ngIf="showErrors">
-  <div *ngIf="control.invalid && control.errors">
-    <p class="mx-2 text-sm text-red-500 font-semibold">
-      {{errorMessage}}
-    </p>
-  </div>
+<div *ngIf="errorMessage$ | async as errorMessage">
+  <p class="mx-2 text-sm text-red-500 font-semibold">
+    {{ errorMessage }}
+  </p>
 </div>
