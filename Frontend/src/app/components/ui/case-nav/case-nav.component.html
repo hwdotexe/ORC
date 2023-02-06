@@ -1,0 +1,55 @@
+<div class="h-96 border border-gray-500 rounded-md max-w-xs">
+  <!-- Root Level -->
+  <ng-container *ngIf="isRootLevel; else subLevel">
+    <div class="p-3">
+      <!-- Header -->
+      <div class="pb-3 border-b border-gray-400">
+        <h1 class="text-2xl font-semibold text-center">My CritCase</h1>
+      </div>
+
+      <!-- Campaigns -->
+      <div
+        class="px-2 py-4 border-b border-gray-400 text-gray-800 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+        (click)="loadSubLevel()">
+        <i class="fa-solid fa-map text-2xl inline-block self-center flex-initial w-9"></i>
+        <p class="inline-block self-center flex-auto px-3 text-lg font-semibold">Campaigns</p>
+        <i class="fa-solid fa-chevron-right text-3xl inline-block self-center flex-initial"></i>
+      </div>
+
+      <!-- Characters -->
+      <div class="px-2 py-4 border-b border-gray-400 text-gray-800 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200">
+        <i class="fa-solid fa-user text-2xl inline-block self-center flex-initial w-9"></i>
+        <p class="inline-block self-center flex-auto px-3 text-lg font-semibold">Characters</p>
+        <i class="fa-solid fa-chevron-right text-3xl inline-block self-center flex-initial"></i>
+      </div>
+
+      <!-- Characters -->
+      <div class="px-2 py-4 border-b border-gray-400 text-gray-800 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200">
+        <i class="fa-solid fa-pen-ruler text-2xl inline-block self-center flex-initial w-9"></i>
+        <p class="inline-block self-center flex-auto px-3 text-lg font-semibold">Systems</p>
+        <i class="fa-solid fa-chevron-right text-3xl inline-block self-center flex-initial"></i>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #subLevel>
+    <div class="flex h-full">
+      <div class="flex flex-initial p-2 border-r border-gray-400 hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200" (click)="loadRootLevel()">
+        <i class="fa-solid fa-chevron-left self-center"></i>
+      </div>
+      <div class="flex-1 p-2">
+        <!-- Subheader -->
+        <div class="pb-3 text-center border-b border-gray-400">
+          <i class="fa-solid fa-map text-3xl inline-block self-center flex-initial w-9"></i>
+          <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Campaigns</p>
+        </div>
+
+        <!-- Campaigns -->
+        <ng-container *ngFor="let campaign of campaigns$ | async">
+          <div class="px-2 py-4 border-b border-gray-400">
+            <p>{{ campaign.name }}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+</div>

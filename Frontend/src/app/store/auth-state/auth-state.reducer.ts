@@ -26,6 +26,7 @@ const reducer = createReducer(
     })
   ),
   on(AuthStateActions.logOutSuccess, (state, action): AuthState => authInitialState),
+  on(AuthStateActions.authDataCleared, (state, action): AuthState => authInitialState),
   on(
     AuthStateActions.AUTH_DATA_INFO_UPDATED,
     (state, action): AuthState => ({

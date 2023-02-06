@@ -11,6 +11,7 @@ export abstract class AuthStateActions {
   static readonly authFailure = createAction('@critcase/action/authentication/failure', props<{ error: any }>());
   static readonly logOutAttempt = createAction('@critcase/action/logout/attempt');
   static readonly logOutSuccess = createAction('@critcase/action/logout/success');
+  static readonly authDataCleared = createAction('@critcase/action/authentication/cleared');
 
   static readonly AUTH_TOKEN_NOT_ACCEPTED = createAction('AUTH_TOKEN_NOT_ACCEPTED');
   static readonly AUTH_DATA_CLEARED = createAction('AUTH_DATA_CLEARED');

@@ -34,6 +34,7 @@ import {
   ButtonDirectiveRed,
   ButtonDirectiveSimple
 } from './components/ui/button.directive';
+import { CaseNavComponent } from './components/ui/case-nav/case-nav.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { FormErrorComponent } from './components/ui/form-error/form-error/form-error.component';
 import { InputDirective } from './components/ui/input.directive';
@@ -43,6 +44,7 @@ import { TextareaDirective } from './components/ui/textarea.directive';
 import { TimePipe } from './pipes/time.pipe';
 import { AppStateEffects } from './store/app-state/app-state.effects';
 import { AuthStateEffects } from './store/auth-state/auth-state.effects';
+import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.effects';
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
 
@@ -77,7 +79,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     TimePipe,
     UserManagementComponent,
     FrontPageComponent,
-    NavComponent
+    NavComponent,
+    CaseNavComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +96,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
       autoPause: false
       //trace, traceLimit
     }),
-    EffectsModule.forRoot([AuthStateEffects, AppStateEffects]),
+    EffectsModule.forRoot([AuthStateEffects, AppStateEffects, CampaignStateEffects]),
     BrowserAnimationsModule
   ],
   providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],

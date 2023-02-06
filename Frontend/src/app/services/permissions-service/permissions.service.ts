@@ -24,7 +24,7 @@ export class PermissionsService {
     return this.accountType$.pipe(
       filter(accountType => !!accountType),
       map(accountType => {
-        return accountType === AccountType.ADMIN || accountType === AccountType.MODERATOR || accountType === AccountType.REVIEWER;
+        return accountType === AccountType.ADMIN;
       })
     );
   }
@@ -33,7 +33,7 @@ export class PermissionsService {
     return this.accountType$.pipe(
       filter(accountType => !!accountType),
       map(accountType => {
-        return accountType === AccountType.ADMIN || accountType === AccountType.MODERATOR;
+        return accountType === AccountType.ADMIN;
       })
     );
   }
@@ -61,7 +61,7 @@ export class PermissionsService {
       filter(accountType => !!accountType),
       withLatestFrom(this.userID$),
       map(([accountType, userID]) => {
-        return accountType === AccountType.ADMIN || accountType === AccountType.MODERATOR || reviewUserID === userID;
+        return accountType === AccountType.ADMIN || reviewUserID === userID;
       })
     );
   }

@@ -26,11 +26,6 @@ export class AccountCreatedComponent implements OnInit {
     switch (type) {
       case AccountType.ADMIN:
         permissions.push('Create Account Tokens');
-      case AccountType.MODERATOR:
-        permissions.push("Edit & Delete others' reviews");
-        permissions.push('View & Delete reports');
-      case AccountType.REVIEWER:
-        permissions.push('View & Delete user requests');
     }
 
     return permissions;

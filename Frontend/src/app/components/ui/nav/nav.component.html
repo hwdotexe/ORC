@@ -12,8 +12,18 @@
           <img src="https://avatars.githubusercontent.com/u/5459165?v=4" class="max-w-[40px] rounded-xl border border-gray-300" />
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item (click)="logOut()">Log out</button>
+          <button mat-menu-item>
+            <i class="fa-solid fa-gear pr-2"></i>
+            Account Settings
+          </button>
+          <button mat-menu-item>
+            <i class="fa-regular fa-circle-question pr-2"></i>
+            Help
+          </button>
+          <button mat-menu-item (click)="logOut()">
+            <i class="fa-solid fa-right-from-bracket pr-2"></i>
+            Log out
+          </button>
         </mat-menu>
       </ng-container>
       <ng-template #loggedOut>

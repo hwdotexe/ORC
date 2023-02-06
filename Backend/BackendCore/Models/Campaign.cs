@@ -9,8 +9,9 @@ namespace BackendCore.Models
     {
         [BsonId]
         public Guid CampaignID { get; set; }
+        // TODO: see if this field is necessary
         public Guid OwnerAccountID { get; set; }
-        public Guid System { get; set; }
+        public Guid SystemID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public List<CampaignPlayer> Players { get; set; }
@@ -22,7 +23,7 @@ namespace BackendCore.Models
             Name = name;
             Description = description;
             OwnerAccountID = owner;
-            System = system;
+            SystemID = system;
             Players = new List<CampaignPlayer>
             {
                 new CampaignPlayer(owner, PlayerRole.Owner)

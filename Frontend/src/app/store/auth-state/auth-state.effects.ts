@@ -5,6 +5,7 @@ import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
 import { AppStateActions } from '../app-state/app-state.actions';
+import { CampaignStateActions } from '../campaigns-state/campaigns-state.actions';
 import { AuthStateActions } from './auth-state.actions';
 
 @Injectable()
@@ -48,7 +49,7 @@ export class AuthStateEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthStateActions.loginSuccess),
-        tap(() => this.router.navigate(['/']))
+        tap(() => this.router.navigate(['/dashboard']))
       ),
     { dispatch: false }
   );
@@ -61,18 +62,17 @@ export class AuthStateEffects {
       mergeMap(() =>
         this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
           map(() => AuthStateActions.logOutSuccess()),
-          catchError(error => of(AppStateActions.serverError({ error })))
+          catchError(error => of(AppStateActions.serverError({ error }), AuthStateActions.authDataCleared()))
         )
       )
     )
   );
 
-  logOutSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthStateActions.logOutSuccess),
-        tap(() => this.router.navigate(['/logged-out']))
-      ),
-    { dispatch: false }
+  logOutSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthStateActions.logOutSuccess),
+      map(() => CampaignStateActions.campaignDataCleared()),
+      tap(() => this.router.navigate(['/logged-out']))
+    )
   );
 }
