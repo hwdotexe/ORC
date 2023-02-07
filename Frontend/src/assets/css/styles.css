@@ -15,9 +15,9 @@ body {
 }
 
 .ng-submitted input.ng-invalid {
-  border: 2px solid rgb(244, 92, 92);
+  border: 2px solid rgb(220, 38, 38);
 }
 
 .ng-submitted input.ng-valid {
-  border: 2px solid rgb(102, 235, 133);
+  border: 2px solid rgb(34, 197, 94);
 }
