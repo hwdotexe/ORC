@@ -1,0 +1,8 @@
+<div *ngIf="formErrors$ | async as errorMessages" class="bg-red-600 text-white font-semibold rounded-md">
+  <div *ngFor="let error of errorMessages" class="flex p-1">
+    <i class="flex-initial fa-solid fa-xmark inline-block p-2 text-lg self-center"></i>
+    <p class="flex-auto text-sm inline-block self-center">
+      {{ error.error }}
+    </p>
+  </div>
+</div>

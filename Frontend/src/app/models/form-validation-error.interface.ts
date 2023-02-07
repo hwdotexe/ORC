@@ -1,5 +1,6 @@
-export interface FormValidationError {
-  controlName: string;
-  errorText: string;
-  controlValue: string;
+import { FormName } from './enum/form-name.enum';
+
+export interface FormError {
+  form: FormName;
+  error: string;
 }

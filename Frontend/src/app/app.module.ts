@@ -34,18 +34,19 @@ import {
 } from './components/ui/button.directive';
 import { CaseNavComponent } from './components/ui/case-nav/case-nav.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
-import { FormErrorComponent } from './components/ui/form-error/form-error/form-error.component';
+import { FormFieldErrorComponent } from './components/ui/form-field-error/form-field-error.component';
 import { InputDirective } from './components/ui/input.directive';
 import { NavComponent } from './components/ui/nav/nav.component';
 import { SelectDirective } from './components/ui/select.directive';
 import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 import { TextareaDirective } from './components/ui/textarea.directive';
 import { TimePipe } from './pipes/time.pipe';
-import { AppStateEffects } from './store/app-state/app-state.effects';
+import { AppDetailsStateEffects } from './store/app-details-state/app-details-state.effects';
 import { AuthStateEffects } from './store/auth-state/auth-state.effects';
 import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.effects';
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
+import { FormErrorComponent } from './components/ui/form-error/form-error.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -63,7 +64,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     ButtonDirectiveOrange,
     SelectDirective,
     TextareaDirective,
-    FormErrorComponent,
+    FormFieldErrorComponent,
     DashboardComponent,
     ErrorComponent,
     NotFoundComponent,
@@ -78,7 +79,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     FrontPageComponent,
     NavComponent,
     CaseNavComponent,
-    SubmitButtonComponent
+    SubmitButtonComponent,
+    FormErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +96,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
       autoPause: false
       //trace, traceLimit
     }),
-    EffectsModule.forRoot([AuthStateEffects, AppStateEffects, CampaignStateEffects]),
+    EffectsModule.forRoot([AuthStateEffects, AppDetailsStateEffects, CampaignStateEffects]),
     BrowserAnimationsModule
   ],
   providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],

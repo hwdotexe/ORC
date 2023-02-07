@@ -1,10 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store/src/models';
 import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
+import { FormName } from 'src/app/models/enum/form-name.enum';
+import { FormError } from 'src/app/models/form-validation-error.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
-import { AppStateActions } from '../app-state/app-state.actions';
+import { AppDetailsStateActions } from '../app-details-state/app-details-state.actions';
 import { CampaignStateActions } from '../campaigns-state/campaigns-state.actions';
 import { AuthStateActions } from './auth-state.actions';
 
@@ -18,7 +22,7 @@ export class AuthStateEffects {
       mergeMap(action =>
         this.httpService.PUT<AccountAuthenticatedResponse>('account', action.request, 'REGISTER_ACCOUNT').pipe(
           map(response => AuthStateActions.registerSuccess({ response: response.body })),
-          catchError(error => of(AuthStateActions.authFailure({ error })))
+          catchError(error => of(this.handleError(error, AuthStateActions.authFailure({ form: FormName.REGISTER_ACCOUNT, error }))))
         )
       )
     )
@@ -39,7 +43,7 @@ export class AuthStateEffects {
       exhaustMap(action =>
         this.httpService.POST<AccountAuthenticatedResponse>('account', action.request, 'LOGIN').pipe(
           map(response => AuthStateActions.loginSuccess({ response: response.body })),
-          catchError(error => of(AuthStateActions.authFailure({ error })))
+          catchError(error => of(this.handleError(error, AuthStateActions.authFailure({ form: FormName.LOG_IN, error }))))
         )
       )
     )
@@ -62,7 +66,7 @@ export class AuthStateEffects {
       mergeMap(() =>
         this.httpService.POST<any>('logout', {}, 'LOGOUT').pipe(
           map(() => AuthStateActions.logOutSuccess()),
-          catchError(error => of(AppStateActions.serverError({ error }), AuthStateActions.authDataCleared()))
+          catchError(error => of(this.handleError(error), AuthStateActions.logOutSuccess()))
         )
       )
     )
@@ -75,4 +79,46 @@ export class AuthStateEffects {
       tap(() => this.router.navigate(['/logged-out']))
     )
   );
+
+  authFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthStateActions.authFailure),
+      map(payload => AppDetailsStateActions.formError({ error: this.mapAuthFailure(payload.form, payload.error) }))
+    )
+  );
+
+  private handleError(error: HttpErrorResponse, action?: Action) {
+    if (error.status >= 500) {
+      return AppDetailsStateActions.serverError({ error });
+    } else {
+      return action;
+    }
+  }
+
+  private mapAuthFailure(form: FormName, error: HttpErrorResponse): FormError {
+    switch (error.status) {
+      case 400:
+        return {
+          form,
+          error: 'There was an error processing your request. Please check your data and try again.'
+        };
+      case 401: {
+        return {
+          form,
+          error: 'Your email or password was incorrect.'
+        };
+      }
+      case 409: {
+        return {
+          form,
+          error: 'An account with that email address already exists.'
+        };
+      }
+      default:
+        return {
+          form,
+          error: 'There was an error with your request. Please try again.'
+        };
+    }
+  }
 }

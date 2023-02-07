@@ -2,13 +2,14 @@
   <h1 class="text-lg text-gray-600 text-center">Unlock your CritCase</h1>
 
   <div class="mt-10">
+    <ui-form-error [formName]="FormName.LOG_IN"></ui-form-error>
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'email'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'email'"></ui-form-field-error>
       <input styled class="w-full" formControlName="email" placeholder="Email" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'password'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'password'"></ui-form-field-error>
       <input styled class="w-full" formControlName="password" placeholder="Password" type="password" />
     </div>
   </div>
@@ -23,8 +24,4 @@
 
     <app-submit-button class="flex-auto" label="Log In"></app-submit-button>
   </div>
-
-  <p *ngIf="showInvalidLogin$ | async" class="mx-2 text-sm text-red-500">Invalid login details - please try again.</p>
-
-  <p *ngIf="showLoginError$ | async" class="mx-2 text-sm text-red-500">There was an error logging in. Please try again later.</p>
 </form>

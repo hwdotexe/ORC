@@ -3,11 +3,11 @@ import { AbstractControl, ControlContainer, NgForm, UntypedFormGroup } from '@an
 import { map, Observable } from 'rxjs';
 
 @Component({
-  selector: 'ui-form-error [form][errorFor]',
-  templateUrl: './form-error.component.html',
-  styleUrls: ['./form-error.component.css']
+  selector: 'ui-form-field-error [form][errorFor]',
+  templateUrl: './form-field-error.component.html',
+  styleUrls: ['./form-field-error.component.css']
 })
-export class FormErrorComponent implements OnInit {
+export class FormFieldErrorComponent implements OnInit {
   @Input() errorFor: string;
   @Input() form: NgForm;
 

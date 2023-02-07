@@ -5,28 +5,29 @@
   </div>
 
   <div class="mt-10">
+    <ui-form-error [formName]="FormName.REGISTER_ACCOUNT"></ui-form-error>
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'email'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'email'"></ui-form-field-error>
       <input styled class="w-full" formControlName="email" placeholder="Email" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'password'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'password'"></ui-form-field-error>
       <input styled class="w-full" formControlName="password" placeholder="Password" type="password" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'confirmPassword'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'confirmPassword'"></ui-form-field-error>
       <input styled class="w-full" formControlName="confirmPassword" placeholder="Confirm Password" type="password" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'displayName'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'displayName'"></ui-form-field-error>
       <input styled class="w-full" formControlName="displayName" placeholder="Display Name" />
     </div>
 
     <div class="my-4">
-      <ui-form-error [form]="form" [errorFor]="'agreeTOS'"></ui-form-error>
+      <ui-form-field-error [form]="form" [errorFor]="'agreeTOS'"></ui-form-field-error>
       <input id="agreeTOS" type="checkbox" formControlName="agreeTOS" />
       <!-- TODO: these destinations -->
       <label for="agreeTOS" class="text-sm text-gray-600">
@@ -39,9 +40,4 @@
 
     <app-submit-button label="Create Account"></app-submit-button>
   </div>
-  <p *ngIf="showInvalidRegistration$ | async" class="mx-2 text-sm text-red-500">
-    Your registration was not accepted. Please make sure all your information is correct.
-  </p>
-
-  <p *ngIf="showRegisterError$ | async" class="mx-2 text-sm text-red-500">Please double-check your email and password and try again.</p>
 </form>
