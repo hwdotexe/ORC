@@ -6,14 +6,13 @@ import { AppDetailsStateService } from 'src/app/store/app-details-state/app-deta
 import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 import { confirmPasswordValidator } from 'src/app/validators/confirm-password.validator';
 import { passwordStrengthValidator } from 'src/app/validators/password-strength.validator';
-import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.css']
 })
-export class RegisterFormComponent extends BaseUnsubscribeComponent implements OnInit {
+export class RegisterFormComponent implements OnInit {
   registerAccountForm: UntypedFormGroup;
   FormName = FormName;
 
@@ -21,12 +20,9 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     private formBuilder: UntypedFormBuilder,
     private authStateService: AuthStateService,
     private appDetailsStateService: AppDetailsStateService
-  ) {
-    super();
-  }
+  ) {}
 
   ngOnInit(): void {
-    // TODO: Custom validator for confirmPassword
     this.registerAccountForm = this.formBuilder.group({
       email: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required, Validators.email])] }),
       password: this.formBuilder.control('', {
@@ -52,7 +48,7 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
     // Must call this manually because the validator was added separately.
     this.registerAccountForm.get('confirmPassword').updateValueAndValidity();
 
-    if (this.isFormValid()) {
+    if (this.registerAccountForm.valid) {
       let registerData: AccountCreateRequest = {
         email: this.registerAccountForm.get('email').value,
         password: this.registerAccountForm.get('password').value,
@@ -65,16 +61,5 @@ export class RegisterFormComponent extends BaseUnsubscribeComponent implements O
 
   dispatch(dispatchData: AccountCreateRequest): void {
     this.authStateService.onRegisterRequest(dispatchData);
-  }
-
-  private isFormValid(): boolean {
-    if (this.registerAccountForm.valid) {
-      let password = this.registerAccountForm.get('password').value;
-      let confirmPassword = this.registerAccountForm.get('confirmPassword').value;
-
-      return password === confirmPassword;
-    }
-
-    return false;
   }
 }

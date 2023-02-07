@@ -4,14 +4,13 @@ import { AccountLoginRequest } from 'src/app/models/API/Request/account-login-re
 import { FormName } from 'src/app/models/enum/form-name.enum';
 import { AppDetailsStateService } from 'src/app/store/app-details-state/app-details-state.service';
 import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
-import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
-export class LoginFormComponent extends BaseUnsubscribeComponent implements OnInit {
+export class LoginFormComponent implements OnInit {
   loginInfoForm: UntypedFormGroup;
   FormName = FormName;
 
@@ -19,9 +18,7 @@ export class LoginFormComponent extends BaseUnsubscribeComponent implements OnIn
     private authStateService: AuthStateService,
     private formBuilder: UntypedFormBuilder,
     private appDetailsStateService: AppDetailsStateService
-  ) {
-    super();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loginInfoForm = this.formBuilder.group({
