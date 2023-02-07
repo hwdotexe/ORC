@@ -11,12 +11,16 @@ import { CampaignStateService } from 'src/app/store/campaigns-state/campaigns-st
 export class CaseNavComponent implements OnInit {
   campaigns$: Observable<Campaign[]>;
 
-  isRootLevel: boolean;
+  showCampaigns: boolean;
+  showCharacters: boolean;
+  showSystems: boolean;
 
   constructor(private campaignStateService: CampaignStateService) {}
 
   ngOnInit(): void {
-    this.isRootLevel = true;
+    this.showCampaigns = false;
+    this.showCharacters = false;
+    this.showSystems = false;
 
     this.campaigns$ = this.campaignStateService.isCampaignDataLoaded$().pipe(
       filter(loaded => loaded),
@@ -24,11 +28,27 @@ export class CaseNavComponent implements OnInit {
     );
   }
 
-  loadSubLevel(): void {
-    this.isRootLevel = false;
+  showCampaignsSection() {
+    this.showCampaigns = true;
+    this.showCharacters = false;
+    this.showSystems = false;
   }
 
-  loadRootLevel(): void {
-    this.isRootLevel = true;
+  showCharactersSection() {
+    this.showCampaigns = false;
+    this.showCharacters = true;
+    this.showSystems = false;
+  }
+
+  showSystemsSection() {
+    this.showCampaigns = false;
+    this.showCharacters = false;
+    this.showSystems = true;
+  }
+
+  hideAllMenus() {
+    this.showCampaigns = false;
+    this.showCharacters = false;
+    this.showSystems = false;
   }
 }
