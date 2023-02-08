@@ -34,6 +34,9 @@ namespace BackendWebAPI.Controllers
                         {
                             if (!App.GetState().Auth.AccountExists(requestValue.Email))
                             {
+                                // TODO: We're retrieving ALL accounts just to see if the count is 0?
+                                // Maybe we should generate an admun account when the app first starts
+                                // with an auto-generated password?
                                 var accountCount = App.GetState().DB.GetAccounts().Count;
                                 var accountType = accountCount == 0 ? AccountType.ADMIN : AccountType.USER;
                                 var account = new Account(requestValue.DisplayName, accountType);

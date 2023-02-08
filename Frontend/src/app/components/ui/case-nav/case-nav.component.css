@@ -1,0 +1,19 @@
+.slideIn {
+  animation: testAnimation;
+  animation-duration: 0.15s;
+}
+
+@keyframes testAnimation {
+  from {
+    width: 1px;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

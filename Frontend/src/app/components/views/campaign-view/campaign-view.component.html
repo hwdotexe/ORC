@@ -1,0 +1,15 @@
+<div *ngIf="campaign$ | async as campaign">
+  <!-- Header -->
+  <div class="flex border-b border-gray-500">
+    <div class="flex-initial">
+      <h2 class="text-xl font-semibold">{{ campaign.name }}</h2>
+      <p class="text-sm text-gray-700 my-2">{{ campaign.description }}</p>
+    </div>
+    <div class="flex-auto"></div>
+    <div class="flex-initial self-center text-xl text-gray-500 text-center">
+      <i class="p-2 w-9 fa-solid fa-pen-to-square inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+      <i class="p-2 w-9 mx-4 fa-solid fa-thumbtack rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+      <i class="p-2 w-9 fa-solid fa-trash-can inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+    </div>
+  </div>
+</div>

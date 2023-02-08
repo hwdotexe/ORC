@@ -26,6 +26,10 @@ export class CampaignStateService {
     );
   }
 
+  getCampaign(campaignID: string): Observable<Campaign> {
+    return this.campaigns$.pipe(map(campaigns => campaigns.find(c => c.campaignID === campaignID)));
+  }
+
   onCampaignDataRequest(): void {
     this.store.dispatch(CampaignStateActions.campaignDataRequest());
   }

@@ -47,6 +47,7 @@ import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.ef
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { rootReducer } from './store/store';
 import { FormErrorComponent } from './components/ui/form-error/form-error.component';
+import { CampaignViewComponent } from './components/views/campaign-view/campaign-view.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -80,7 +81,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     NavComponent,
     CaseNavComponent,
     SubmitButtonComponent,
-    FormErrorComponent
+    FormErrorComponent,
+    CampaignViewComponent
   ],
   imports: [
     BrowserModule,
