@@ -17,6 +17,7 @@ namespace BackendCore.Database
         private readonly string _charactersstable = "Characters";
         private readonly string _campaignstable = "Campaigns";
         private readonly string _pagestable = "Pages";
+        private readonly string _pagefolderstable = "Pages";
         private IMongoDatabase database;
 
         public DBHandler(string databaseName)
@@ -166,9 +167,24 @@ namespace BackendCore.Database
         #endregion
 
         #region pages
-        public List<Campaign> GetPages(Guid accountID)
+        public List<Page> GetPages(Guid accountID)
         {
-            var r = ReadRows<Campaign>(_pagestable, "OwnerAccountID", accountID);
+            var r = ReadRows<Page>(_pagestable, "OwnerAccountID", accountID);
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public List<Page> GetPages(List<Guid> pageIDs)
+        {
+            var filter = Builders<Page>.Filter.In("PageID", pageIDs);
+            var r = ReadRows<Page>(_pagestable, filter);
 
             if (r.Count > 0)
             {
@@ -210,6 +226,53 @@ namespace BackendCore.Database
         }
         #endregion
 
+        #region pagefolders
+        public List<PageFolder> GetPageFolders(Guid accountID)
+        {
+            var ownerFilter = Builders<PageFolder>.Filter.Eq("OwnerAccountID", accountID);
+            var sharedFilter = Builders<PageFolder>.Filter.Eq("Shares.AccountID", accountID);
+            var r = ReadRows<PageFolder>(_pagefolderstable, new List<FilterDefinition<PageFolder>> { ownerFilter, sharedFilter });
+
+            if (r.Count > 0)
+            {
+                return r;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public PageFolder GetPageFolder(Guid folderID)
+        {
+            var r = ReadRows<PageFolder>(_pagefolderstable, "FolderID", folderID);
+
+            if (r.Count > 0)
+            {
+                return r[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void InsertPageFolder(PageFolder folder)
+        {
+            Insert(_pagefolderstable, folder);
+        }
+
+        public void UpdatePageFolder(PageFolder folder)
+        {
+            Update(_pagefolderstable, "FolderID", folder.FolderID, folder);
+        }
+
+        public void DeletePageFolder(PageFolder folder)
+        {
+            Delete<PageFolder>(_pagefolderstable, "FolderID", folder.FolderID);
+        }
+        #endregion
+
         #region database
         private List<T> ReadRows<T>(string table, string field, object value)
         {
@@ -223,6 +286,15 @@ namespace BackendCore.Database
         private List<T> ReadRows<T>(string table, FilterDefinition<T> filter)
         {
             var collection = database.GetCollection<T>(table);
+
+            // TODO: is this not async?
+            return collection.Find(filter).ToList();
+        }
+
+        private List<T> ReadRows<T>(string table, List<FilterDefinition<T>> filters)
+        {
+            var collection = database.GetCollection<T>(table);
+            var filter = Builders<T>.Filter.Or(filters);
 
             // TODO: is this not async?
             return collection.Find(filter).ToList();

@@ -14,9 +14,11 @@ namespace BackendCore
         public List<GameSystem> LoadedSystems { get; }
         public List<Character> LoadedCharacters { get; set; }
         public List<Campaign> LoadedCampaigns { get; set; }
-        public List<Page> CachedPages { get; set; }
+        public List<PageFolder> LoadedPageFolders { get; set; }
         public Gatekeeper Auth { get; }
         public DBHandler DB { get; set; }
+
+        private List<Page> CachedPages { get; set; }
 
         public State()
         {
@@ -26,6 +28,7 @@ namespace BackendCore
             LoadedSystems = new List<GameSystem>();
             LoadedCharacters = new List<Character>();
             LoadedCampaigns = new List<Campaign>();
+            LoadedPageFolders = new List<PageFolder>();
             CachedPages = new List<Page>();
 
             Auth = new Gatekeeper();
@@ -44,7 +47,31 @@ namespace BackendCore
             Parallel.Invoke(
                 () => LoadUserSystems(account.AccountID),
                 () => LoadUserCharacters(account.AccountID),
-                () => LoadUserCampaigns(account.AccountID));
+                () => LoadUserCampaigns(account.AccountID),
+                () => LoadUserPageFolders(account.AccountID));
+        }
+
+        public List<Page> GetPages(List<Guid> pageIDs)
+        {
+            var cachedPages = CachedPages.FindAll(p => pageIDs.Contains(p.PageID));
+            var notCachedPages = pageIDs.FindAll(id => !CachedPages.Exists(p => p.PageID == id));
+
+            if (cachedPages.Count > 0 && notCachedPages.Count == 0)
+            {
+                return cachedPages;
+            }
+            else
+            {
+                var pagesFromDB = App.GetState().DB.GetPages(notCachedPages);
+
+                if (pagesFromDB != null)
+                {
+                    App.GetState().CachedPages.AddRange(pagesFromDB);
+                    cachedPages.AddRange(pagesFromDB);
+                }
+
+                return cachedPages;
+            }
         }
 
         private void LoadUserSystems(Guid accountID)
@@ -90,6 +117,22 @@ namespace BackendCore
                     if (!LoadedCampaigns.Exists(lc => lc.CampaignID == c.CampaignID))
                     {
                         LoadedCampaigns.Add(c);
+                    }
+                });
+            }
+        }
+
+        private void LoadUserPageFolders(Guid accountID)
+        {
+            var userPageFolders = DB.GetPageFolders(accountID);
+
+            if (userPageFolders != null)
+            {
+                userPageFolders.ForEach(c =>
+                {
+                    if (!LoadedPageFolders.Exists(pf => pf.FolderID == c.FolderID))
+                    {
+                        LoadedPageFolders.Add(c);
                     }
                 });
             }

@@ -7,16 +7,18 @@ namespace BackendCore.Models
     public class PageFolder
     {
         public Guid FolderID { get; set; }
-        public string FolderName { get; set; }  
-        public PagePrivacy Privacy { get; set; }
+        public Guid OwnerAccountID { get; set; }
+        public string FolderName { get; set; }
         public List<Guid> Pages { get; set; }
+        public List<Share> Shares { get; set; }
 
-        public PageFolder(string folderName, PagePrivacy privacy)
+        public PageFolder(Guid owner, string folderName)
         {
             this.FolderID = Guid.NewGuid();
+            this.OwnerAccountID = owner;
             this.FolderName = folderName;
-            this.Privacy = privacy;
             this.Pages = new List<Guid>();
+            this.Shares = new List<Share>();
         }
     }
 }

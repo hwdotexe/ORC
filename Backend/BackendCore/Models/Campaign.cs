@@ -15,7 +15,7 @@ namespace BackendCore.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public List<CampaignPlayer> Players { get; set; }
-        public List<PageFolder> PageFolders { get; set; }
+        public List<Guid> PageFolders { get; set; }
 
         /*
          * Design idea: Folders should be independent of Characters/Campaigns (list of folder IDs)
@@ -33,7 +33,7 @@ namespace BackendCore.Models
             {
                 new CampaignPlayer(owner, PlayerRole.Owner)
             };
-            PageFolders = new List<PageFolder>();
+            PageFolders = new List<Guid>();
         }
     }
 }

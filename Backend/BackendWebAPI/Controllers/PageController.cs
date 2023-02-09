@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using BackendAPI.Mappers;
 using BackendCore;
 using BackendCore.Extensions;
@@ -15,10 +16,14 @@ namespace BackendWebAPI.Controllers
     [Route("v1/page")]
     public class PageController : ControllerBase
     {
-        // TODO: enforce user access to the page (owner? page belongs to object they own?)
-        // May need to implement access list like Campaigns
-        [HttpGet("{pageID}")]
-        public ActionResult GET_Get_Page(string pageID)
+        /*
+         * Updating pages will require permission checks.
+         * Creating a folder - Different endpoint for Campaign/Character?
+         * 
+         */
+
+        [HttpGet]
+        public ActionResult GET_List_Page_Folders()
         {
             var session = HttpContext.GetAccountSession();
 
@@ -29,29 +34,13 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "GET_PAGE"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "LIST_PAGE_FOLDERS"))
                 {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                     var sessionValue = session.Value;
 
-                    try
-                    {
-                        var pageGuid = Guid.Parse(pageID);
-                        var page = FetchPage(pageGuid);
+                    var folders = App.GetState().LoadedPageFolders.FindAll(pf => pf.OwnerAccountID == sessionValue.AccountID || pf.Shares.Exists(s => s.AccountID == sessionValue.AccountID));
 
-                        if (page != null)
-                        {
-                            return Ok(page);
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        return BadRequest();
-                    }
+                    return Ok(folders);
                 }
                 else
                 {
@@ -66,8 +55,8 @@ namespace BackendWebAPI.Controllers
             }
         }
 
-        [HttpPut("campaign/{campaignID}")]
-        public ActionResult PUT_Create_Page_Campaign(string campaignID)
+        [HttpPut]
+        public ActionResult PUT_Create_Page()
         {
             var session = HttpContext.GetAccountSession();
 
@@ -82,284 +71,43 @@ namespace BackendWebAPI.Controllers
                 {
                     var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                     var request = APIRequestMapper.MapRequestToModel<PageCreateRequest>(body);
-                    var sessionValue = session.Value;
-                    var campaign = App.GetState().LoadedCampaigns.Find(c => c.CampaignID == Guid.Parse(campaignID) && c.Players.Exists(p => p.AccountID == sessionValue.AccountID));
-
-                    if (request != null)
-                    {
-                        if (campaign != null)
-                        {
-                            var playerRole = campaign.Players.Find(p => p.AccountID == sessionValue.AccountID).Role;
-
-                            if (playerRole != PlayerRole.Player)
-                            {
-                                var requestValue = request.Value;
-                                var folder = campaign.PageFolders.Find(f => f.FolderID == requestValue.FolderID);
-
-                                if (folder != null)
-                                {
-                                    var page = new Page(requestValue.Title, sessionValue.AccountID, requestValue.Privacy);
-
-                                    folder.Pages.Add(page.PageID);
-                                    App.GetState().DB.InsertPage(page);
-                                    App.GetState().DB.UpdateCampaign(campaign);
-
-                                    return Created(Url.ToString(), page);
-                                }
-                                else
-                                {
-                                    return NotFound();
-                                }
-                            }
-                            else
-                            {
-                                // TODO test this - does it cause errors?
-                                return Forbid();
-                            }
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
-                }
-                else
-                {
-                    return StatusCode(429);
-                }
-            }
-            catch (Exception e)
-            {
-                HTTPServerUtilities.LogServerError(e);
-
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPut("campaign/{campaignID}/folder")]
-        public ActionResult PUT_Create_Page_Campaign_Folder(string campaignID)
-        {
-            var session = HttpContext.GetAccountSession();
-
-            if (session == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE_FOLDER"))
-                {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                    var request = APIRequestMapper.MapRequestToModel<PageFolderCreateRequest>(body);
-                    var sessionValue = session.Value;
-                    var campaign = App.GetState().LoadedCampaigns.Find(c => c.CampaignID == Guid.Parse(campaignID) && c.Players.Exists(p => p.AccountID == sessionValue.AccountID));
-
-                    if (request != null)
-                    {
-                        if (campaign != null)
-                        {
-                            var playerRole = campaign.Players.Find(p => p.AccountID == sessionValue.AccountID).Role;
-
-                            if (playerRole != PlayerRole.Player)
-                            {
-                                var requestValue = request.Value;
-                                var folder = new PageFolder(requestValue.Name, requestValue.Privacy);
-
-                                campaign.PageFolders.Add(folder);
-                                App.GetState().DB.UpdateCampaign(campaign);
-
-                                return Created(Url.ToString(), folder);
-                            }
-                            else
-                            {
-                                // TODO test this - does it cause errors?
-                                return Forbid();
-                            }
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
-                }
-                else
-                {
-                    return StatusCode(429);
-                }
-            }
-            catch (Exception e)
-            {
-                HTTPServerUtilities.LogServerError(e);
-
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPut("character/{characterID}")]
-        public ActionResult PUT_Create_Page_Character(string characterID)
-        {
-            var session = HttpContext.GetAccountSession();
-
-            if (session == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE"))
-                {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                    var request = APIRequestMapper.MapRequestToModel<PageCreateRequest>(body);
-                    var sessionValue = session.Value;
-                    var character = App.GetState().LoadedCharacters.Find(c => c.CharacterID == Guid.Parse(characterID) && c.OwnerAccountID == sessionValue.AccountID);
-
-                    if (request != null)
-                    {
-                        if (character != null)
-                        {
-                            var requestValue = request.Value;
-                            var folder = character.PageFolders.Find(f => f.FolderID == requestValue.FolderID);
-
-                            if (folder != null)
-                            {
-                                var page = new Page(requestValue.Title, sessionValue.AccountID, requestValue.Privacy);
-
-                                folder.Pages.Add(page.PageID);
-                                App.GetState().DB.InsertPage(page);
-                                App.GetState().DB.UpdateCharacter(character);
-
-                                return Created(Url.ToString(), page);
-                            }
-                            else
-                            {
-                                return NotFound();
-                            }
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
-                }
-                else
-                {
-                    return StatusCode(429);
-                }
-            }
-            catch (Exception e)
-            {
-                HTTPServerUtilities.LogServerError(e);
-
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPut("character/{characterID}/folder")]
-        public ActionResult PUT_Create_Page_Character_Folder(string characterID)
-        {
-            var session = HttpContext.GetAccountSession();
-
-            if (session == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE_FOLDER"))
-                {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                    var request = APIRequestMapper.MapRequestToModel<PageFolderCreateRequest>(body);
-                    var sessionValue = session.Value;
-                    var character = App.GetState().LoadedCharacters.Find(c => c.CharacterID == Guid.Parse(characterID) && c.OwnerAccountID == sessionValue.AccountID);
-
-                    if (request != null)
-                    {
-                        if (character != null)
-                        {
-                            var requestValue = request.Value;
-                            var folder = new PageFolder(requestValue.Name, requestValue.Privacy);
-
-                            character.PageFolders.Add(folder);
-                            App.GetState().DB.UpdateCharacter(character);
-
-                            return Created(Url.ToString(), folder);
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
-                }
-                else
-                {
-                    return StatusCode(429);
-                }
-            }
-            catch (Exception e)
-            {
-                HTTPServerUtilities.LogServerError(e);
-
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult POST_Update_Page()
-        {
-            var session = HttpContext.GetAccountSession();
-
-            if (session == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_PAGE"))
-                {
-                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
-                    var request = APIRequestMapper.MapRequestToModel<PageUpdateRequest>(body);
                     var sessionValue = session.Value;
 
                     if (request != null)
                     {
                         var requestValue = request.Value;
-                        var page = FetchPage(requestValue.PageID);
+                        var folder = App.GetState().LoadedPageFolders.Find(pf => pf.FolderID == requestValue.FolderID);
 
-                        if (page != null)
+                        if (folder != null)
                         {
-                            page.Title = requestValue.Title;
-                            page.Body = requestValue.Body;
-                            page.Privacy = requestValue.Privacy;
+                            var isOwner = folder.OwnerAccountID == sessionValue.AccountID;
+                            var folderShare = folder.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType != ShareType.VIEW);
 
-                            App.GetState().DB.UpdatePage(page);
+                            if (isOwner || folderShare != null)
+                            {
+                                var page = new Page(requestValue.Title, folder.OwnerAccountID, requestValue.Privacy);
 
-                            return Ok();
+                                // If this user does not own the folder, share this note with them in full.
+                                if (!isOwner)
+                                {
+                                    page.Shares.Add(new Share(sessionValue.AccountID, ShareType.FULL));
+                                }
+
+                                folder.Pages.Add(page.PageID);
+                                App.GetState().DB.InsertPage(page);
+                                App.GetState().DB.UpdatePageFolder(folder);
+
+                                return Created(Url.ToString(), page);
+                            }
+                            else
+                            {
+                                return Forbid();
+                            }
                         }
                         else
                         {
                             return NotFound();
                         }
-
                     }
                     else
                     {
@@ -379,24 +127,51 @@ namespace BackendWebAPI.Controllers
             }
         }
 
-        private Page FetchPage(Guid pageID)
+        // TODO this might be temporary or permanent, who knows!
+        // Might be possible to dispatch another request to add it to a campaign or character.
+        [HttpPut("folder")]
+        public ActionResult PUT_Create_Page_Folder()
         {
-            var cached = App.GetState().CachedPages.Find(p => p.PageID == pageID);
+            var session = HttpContext.GetAccountSession();
 
-            if (cached != null)
+            if (session == null)
             {
-                return cached;
+                return Unauthorized();
             }
-            else
+
+            try
             {
-                var pageFromDB = App.GetState().DB.GetPage(pageID);
-
-                if (pageFromDB != null)
+                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE_FOLDER"))
                 {
-                    App.GetState().CachedPages.Add(pageFromDB);
-                }
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<PageFolderCreateRequest>(body);
+                    var sessionValue = session.Value;
 
-                return pageFromDB;
+                    if (request != null)
+                    {
+                        var requestValue = request.Value;
+                        var folder = new PageFolder(sessionValue.AccountID, requestValue.Name);
+
+                        App.GetState().LoadedPageFolders.Add(folder);
+                        App.GetState().DB.InsertPageFolder(folder);
+
+                        return Created(Url.ToString(), folder);
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
             }
         }
     }
