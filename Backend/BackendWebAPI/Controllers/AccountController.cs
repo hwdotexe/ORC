@@ -56,7 +56,8 @@ namespace BackendWebAPI.Controllers
                                 {
                                     AuthToken = token,
                                     AccountID = account.AccountID,
-                                    AccountType = account.AccountType.ToString()
+                                    AccountType = account.AccountType.ToString(),
+                                    DisplayName = account.DisplayName
                                 };
 
                                 return Created(Url.ToString(), responseObj);

@@ -3,10 +3,9 @@ using BackendCore.Models.Enum;
 
 namespace BackendCore.Models.API.Request
 {
-    public struct PageCreateRequest
+    public struct PageFolderCreateRequest
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
         public PagePrivacy Privacy { get; set; }
-        public Guid FolderID { get; set; }
     }
 }

@@ -8,8 +8,16 @@
     <div class="flex-auto"></div>
     <div class="flex-initial self-center text-xl text-gray-500 text-center">
       <i class="p-2 w-9 fa-solid fa-pen-to-square inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
-      <i class="p-2 w-9 mx-4 fa-solid fa-thumbtack rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+      <i class="p-2 w-9 mx-3 fa-solid fa-thumbtack rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
       <i class="p-2 w-9 fa-solid fa-trash-can inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+    </div>
+  </div>
+
+  <!-- Folders -->
+  <div class="my-2">
+    <div *ngFor="let folder of campaign.pageFolders" class="inline-block p-2 rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400">
+      <i class="fa-solid fa-folder inline-block"></i>
+      <p class="inline-block px-2">{{ folder.folderName }}</p>
     </div>
   </div>
 </div>

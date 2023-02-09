@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7545ff5a-4296-429e-8e7d-2e1c4cf6a296",
+		"_postman_id": "80f51459-99e0-4492-97ed-82985c4b5bd1",
 		"name": "ORC API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -646,7 +646,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"System\": \"{{systemid}}\",\r\n    \"Name\": \"My test campaign\",\r\n    \"Description\": \"We travel into space and fight monsters\"\r\n}",
+							"raw": "{\r\n    \"System\": \"{{systemid}}\",\r\n    \"Name\": \"Another campaign\",\r\n    \"Description\": \"This is my second campaign and I love it a lot.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -774,7 +774,60 @@
 					"response": []
 				},
 				{
-					"name": "Create",
+					"name": "Create Page Folder Campaign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().folderID;",
+									"pm.environment.set(\"folderid\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"My test page folder\",\r\n    \"Privacy\": \"PRIVATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page/campaign/{{campaignid}}/folder",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page",
+								"campaign",
+								"{{campaignid}}",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page Campaign",
 					"event": [
 						{
 							"listen": "test",
@@ -803,7 +856,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Title\": \"My test page\",\r\n    \"Privacy\": \"PRIVATE\"\r\n}",
+							"raw": "{\r\n    \"Title\": \"My test page 2\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -811,13 +864,120 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/page",
+							"raw": "{{serverAddress}}/v1/page/campaign/{{campaignid}}",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"page"
+								"page",
+								"campaign",
+								"{{campaignid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page Folder Character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().folderID;",
+									"pm.environment.set(\"folderid\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"My test page\",\r\n    \"Privacy\": \"PRIVATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page/character/{{characterid}}/folder",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page",
+								"character",
+								"{{characterid}}",
+								"folder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page Character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().pageID;",
+									"pm.environment.set(\"pageid\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Title\": \"My test page 1\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page/character/{{characterid}}",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page",
+								"character",
+								"{{characterid}}"
 							]
 						}
 					},

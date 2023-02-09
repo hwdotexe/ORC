@@ -17,6 +17,11 @@ namespace BackendCore.Models
         public List<CampaignPlayer> Players { get; set; }
         public List<PageFolder> PageFolders { get; set; }
 
+        /*
+         * Design idea: Folders should be independent of Characters/Campaigns (list of folder IDs)
+         * Do we cache them or load them all at login? Pages are cached, folders will be lighter load.
+         */ 
+
         public Campaign(string name, string description, Guid owner, Guid system)
         {
             CampaignID = Guid.NewGuid();
