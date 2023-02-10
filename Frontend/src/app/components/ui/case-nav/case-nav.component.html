@@ -29,6 +29,14 @@
         <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Systems</p>
         <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
       </div>
+
+      <div
+        class="px-2 py-4 border-b border-gray-400 text-gray-700 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+        (mouseenter)="showNotesSection()">
+        <i class="fa-solid fa-book-open text-2xl inline-block self-center text-center flex-initial w-9"></i>
+        <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Notes</p>
+        <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
+      </div>
     </div>
     <!-- Campaigns Sidebar -->
     <div *ngIf="showCampaigns" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
@@ -87,6 +95,29 @@
               <p>{{ campaign.name }}</p>
             </div>
           </ng-container> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes Sidebar -->
+    <div *ngIf="showNotes" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
+      <div class="flex h-full">
+        <div class="flex-1 p-2">
+          <!-- Subheader -->
+          <div class="pb-3 text-center border-b border-gray-400">
+            <i class="fa-solid fa-book-open text-3xl inline-block self-center flex-initial w-9"></i>
+            <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Notes</p>
+          </div>
+
+          <ng-container *ngFor="let pageFolder of pageFolders$ | async">
+            <button
+              class="w-full px-2 py-4 border-b border-gray-400 hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+              [routerLink]="['/dashboard']"
+              [queryParams]="{ pageFolder: pageFolder.folderID }"
+              (click)="hideAllMenus()">
+              {{ pageFolder.folderName }} - {{ pageFolder.pageCount + ' pages' }}
+            </button>
+          </ng-container>
         </div>
       </div>
     </div>

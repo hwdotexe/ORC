@@ -1,4 +1,6 @@
 export interface PageFolder {
+  folderID: string;
   folderName: string;
-  pages: string[];
+  pageCount: number;
+  shareCount: number;
 }

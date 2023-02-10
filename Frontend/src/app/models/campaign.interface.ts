@@ -1,5 +1,4 @@
 import { CampaignPlayer } from './campaign-player.interface';
-import { PageFolder } from './page-folder.interface';
 
 export interface Campaign {
   campaignID: string;
@@ -8,5 +7,4 @@ export interface Campaign {
   name: string;
   description: string;
   players: CampaignPlayer[];
-  pageFolders: PageFolder[];
 }

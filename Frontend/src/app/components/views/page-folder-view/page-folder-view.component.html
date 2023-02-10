@@ -1,9 +1,8 @@
-<div *ngIf="campaign$ | async as campaign">
+<div *ngIf="pageFolder$ | async as folder">
   <!-- Header -->
   <div class="flex border-b border-gray-500">
     <div class="flex-initial">
-      <h2 class="text-xl font-semibold">{{ campaign.name }}</h2>
-      <p class="text-sm text-gray-700 my-2">{{ campaign.description }}</p>
+      <h2 class="text-xl font-semibold">{{ folder.FolderName }}</h2>
     </div>
     <div class="flex-auto"></div>
     <div class="flex-initial self-center text-xl text-gray-500 text-center">
@@ -13,11 +12,8 @@
     </div>
   </div>
 
-  <!-- Folders -->
+  <!-- Pages -->
   <div class="my-2">
-    <!-- TODO: Folders aren't a member of campaigns. Need to get from state/API -->
-    <ng-container *ngFor="let folder of campaign.pageFolders">
-      <app-page-folder-button [folder]="folder"></app-page-folder-button>
-    </ng-container>
+    <p>Pages will load here</p>
   </div>
 </div>
