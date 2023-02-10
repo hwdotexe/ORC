@@ -773,21 +773,23 @@
 					"response": []
 				},
 				{
-					"name": "Create Page",
+					"name": "Get Page Folder",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var id = pm.response.json().folderID;",
-									"pm.environment.set(\"folderid\", id);"
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [
 							{
 								"key": "X-Captcha-Token",
@@ -802,7 +804,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Title\": \"My test page\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -810,13 +812,68 @@
 							}
 						},
 						"url": {
-							"raw": "{{serverAddress}}/v1/page",
+							"raw": "{{serverAddress}}/v1/page/folder/{{folderid}}",
 							"host": [
 								"{{serverAddress}}"
 							],
 							"path": [
 								"v1",
-								"page"
+								"page",
+								"folder",
+								"{{folderid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page/{{pageid}}",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page",
+								"{{pageid}}"
 							]
 						}
 					},
@@ -868,6 +925,56 @@
 								"v1",
 								"page",
 								"folder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().pageID;",
+									"pm.environment.set(\"pageid\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Title\": \"My test page\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page"
 							]
 						}
 					},

@@ -51,6 +51,27 @@ namespace BackendCore
                 () => LoadUserPageFolders(account.AccountID));
         }
 
+        public Page GetPage(Guid pageID)
+        {
+            var cachedPage = CachedPages.Find(p => p.PageID == pageID);
+
+            if (cachedPage != null)
+            {
+                return cachedPage;
+            }
+            else
+            {
+                var pageFromDB = App.GetState().DB.GetPage(pageID);
+
+                if (pageFromDB != null)
+                {
+                    App.GetState().CachedPages.Add(pageFromDB);
+                }
+
+                return pageFromDB;
+            }
+        }
+
         public List<Page> GetPages(List<Guid> pageIDs)
         {
             var cachedPages = CachedPages.FindAll(p => pageIDs.Contains(p.PageID));

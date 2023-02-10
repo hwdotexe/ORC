@@ -17,7 +17,7 @@ namespace BackendCore.Database
         private readonly string _charactersstable = "Characters";
         private readonly string _campaignstable = "Campaigns";
         private readonly string _pagestable = "Pages";
-        private readonly string _pagefolderstable = "Pages";
+        private readonly string _pagefolderstable = "PageFolders";
         private IMongoDatabase database;
 
         public DBHandler(string databaseName)

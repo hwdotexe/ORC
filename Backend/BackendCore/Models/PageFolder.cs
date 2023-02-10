@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using BackendCore.Models.Enum;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models
 {
     public class PageFolder
     {
+        [BsonId]
         public Guid FolderID { get; set; }
         public Guid OwnerAccountID { get; set; }
         public string FolderName { get; set; }
