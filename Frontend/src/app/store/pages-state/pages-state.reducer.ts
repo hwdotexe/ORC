@@ -12,6 +12,14 @@ const reducer = createReducer(
       pageFolders: action.response
     })
   ),
+  on(PagesStateActions.pageFoldersDataReceived, (state, action): PagesState => {
+    var currentPages = state?.pages || [];
+
+    return {
+      ...state,
+      pages: currentPages.concat(action.response.pages)
+    };
+  }),
   on(PagesStateActions.pagesDataCleared, (state, action): PagesState => pagesInitialState)
 );
 

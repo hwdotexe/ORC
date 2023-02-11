@@ -1,6 +1,9 @@
+import { ShareMapping } from './share-mapping.interface';
+
 export interface PageFolder {
   folderID: string;
+  accountOwnerID: string;
   folderName: string;
-  pageCount: number;
-  shareCount: number;
+  shares: ShareMapping;
+  pages: string[];
 }

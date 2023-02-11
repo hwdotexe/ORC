@@ -1,3 +1,6 @@
-import { PageFolderData } from '../../page-folder-data.interface';
+import { Page } from '../../page.interface';
 
-export interface PageFolderDataResponse extends PageFolderData {}
+export interface PageFolderDataResponse {
+  folderID: string;
+  pages: Page[];
+}

@@ -135,7 +135,7 @@ namespace BackendWebAPI.Controllers
 
                     var folders = App.GetState().LoadedPageFolders.FindAll(pf => pf.OwnerAccountID == sessionValue.AccountID || pf.Shares.Exists(s => s.AccountID == sessionValue.AccountID));
 
-                    return Ok(MapPageFolders(folders));
+                    return Ok(folders);
                 }
                 else
                 {
@@ -270,30 +270,11 @@ namespace BackendWebAPI.Controllers
             }
         }
 
-        private List<PageFolderListResponse> MapPageFolders(List<PageFolder> folders)
-        {
-            var response = new List<PageFolderListResponse>();
-
-            folders.ForEach(r =>
-                response.Add(new PageFolderListResponse
-                {
-                    FolderID = r.FolderID,
-                    FolderName = r.FolderName,
-                    PageCount = r.Pages.Count,
-                    ShareCount = r.Shares.Count
-                }));
-
-            return response;
-        }
-
         private PageFolderGetResponse MapPageFolder(Guid callerID, PageFolder folder, List<Page> pages)
         {
             var response = new PageFolderGetResponse
             {
-                FolderID = folder.FolderID,
-                FolderName = folder.FolderName,
-                OwnerAccountID = folder.OwnerAccountID,
-                Shares = folder.Shares
+                FolderID = folder.FolderID
             };
 
             response.Pages = pages.FindAll(p => p.OwnerAccountID == callerID || p.Shares.Exists(s => s.AccountID == callerID));
