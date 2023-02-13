@@ -115,7 +115,7 @@
               [routerLink]="['/dashboard']"
               [queryParams]="{ pageFolder: pageFolder.folderID }"
               (click)="hideAllMenus()">
-              {{ pageFolder.folderName }} - {{ pageFolder.pageCount + ' pages' }}
+              {{ pageFolder.folderName }} - {{ pageFolder.pages.length + ' pages' }}
             </button>
           </ng-container>
         </div>

@@ -74,24 +74,31 @@ namespace BackendCore
 
         public List<Page> GetPages(List<Guid> pageIDs)
         {
-            var cachedPages = CachedPages.FindAll(p => pageIDs.Contains(p.PageID));
-            var notCachedPages = pageIDs.FindAll(id => !CachedPages.Exists(p => p.PageID == id));
-
-            if (cachedPages.Count > 0 && notCachedPages.Count == 0)
+            if (pageIDs.Count > 0)
             {
-                return cachedPages;
+                var cachedPages = CachedPages.FindAll(p => pageIDs.Contains(p.PageID));
+                var notCachedPages = pageIDs.FindAll(id => !CachedPages.Exists(p => p.PageID == id));
+
+                if (cachedPages.Count > 0 && notCachedPages.Count == 0)
+                {
+                    return cachedPages;
+                }
+                else
+                {
+                    var pagesFromDB = App.GetState().DB.GetPages(notCachedPages);
+
+                    if (pagesFromDB != null)
+                    {
+                        App.GetState().CachedPages.AddRange(pagesFromDB);
+                        cachedPages.AddRange(pagesFromDB);
+                    }
+
+                    return cachedPages;
+                }
             }
             else
             {
-                var pagesFromDB = App.GetState().DB.GetPages(notCachedPages);
-
-                if (pagesFromDB != null)
-                {
-                    App.GetState().CachedPages.AddRange(pagesFromDB);
-                    cachedPages.AddRange(pagesFromDB);
-                }
-
-                return cachedPages;
+                return new List<Page>();
             }
         }
 

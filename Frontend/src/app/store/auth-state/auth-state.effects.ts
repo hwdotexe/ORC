@@ -9,7 +9,6 @@ import { FormName } from 'src/app/models/enum/form-name.enum';
 import { FormError } from 'src/app/models/form-validation-error.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
 import { AppDetailsStateActions } from '../app-details-state/app-details-state.actions';
-import { CampaignStateActions } from '../campaigns-state/campaigns-state.actions';
 import { AuthStateActions } from './auth-state.actions';
 
 @Injectable()
@@ -75,7 +74,7 @@ export class AuthStateEffects {
   logOutSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthStateActions.logOutSuccess),
-      map(() => CampaignStateActions.campaignDataCleared()),
+      map(() => AppDetailsStateActions.clearFullState()),
       tap(() => this.router.navigate(['/logged-out']))
     )
   );

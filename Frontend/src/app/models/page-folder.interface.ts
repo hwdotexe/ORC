@@ -4,6 +4,6 @@ export interface PageFolder {
   folderID: string;
   accountOwnerID: string;
   folderName: string;
-  shares: ShareMapping;
+  shares: ShareMapping[];
   pages: string[];
 }

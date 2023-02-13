@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap, withLatestFrom } from 'rxjs';
+import { mergeMap, tap, withLatestFrom } from 'rxjs';
+import { CampaignStateActions } from '../campaigns-state/campaigns-state.actions';
+import { PagesStateActions } from '../pages-state/pages-state.actions';
 import { AppDetailsStateActions } from './app-details-state.actions';
 import { AppDetailsStateService } from './app-details-state.service';
 
@@ -41,5 +43,12 @@ export class AppDetailsStateEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  stateCleared$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppDetailsStateActions.clearFullState),
+      mergeMap(() => [CampaignStateActions.campaignDataCleared(), PagesStateActions.pagesDataCleared()])
+    )
   );
 }

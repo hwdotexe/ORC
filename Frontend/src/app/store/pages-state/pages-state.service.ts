@@ -28,13 +28,24 @@ export class PagesStateService {
     );
   }
 
-  getPage(pageID: string): Observable<Page> {
-    return this.pages$.pipe(map(pages => pages.find(c => c.pageID === pageID)));
+  getPageFolderFromID$(folderID: string): Observable<PageFolder> {
+    return this.pageFolders$.pipe(map(folders => folders?.find(f => f.folderID == folderID)));
   }
 
-  // TODO: This does not return the PageFolderData object.
-  getPageFolder(pageFolderID: string): Observable<PageFolder> {
-    return this.pageFolders$.pipe(map(folder => folder.find(c => c.folderID === pageFolderID)));
+  isPageDataLoaded$(folder: PageFolder): Observable<boolean> {
+    return this.pages$.pipe(
+      take(1),
+      map(data => {
+        // Check that the IDs in folder match IDs in pages. If no match, get data.
+        console.log('PAGE DATA: ', data);
+
+        if (!data || !this.folderMatchState(data, folder)) {
+          this.onPageFolderDataRequest(folder.folderID);
+        }
+
+        return true;
+      })
+    );
   }
 
   onPageFolderListRequest(): void {
@@ -47,5 +58,29 @@ export class PagesStateService {
 
   onPageDataCleared() {
     this.store.dispatch(PagesStateActions.pagesDataCleared());
+  }
+
+  private folderMatchState(statePages: Page[], folder: PageFolder) {
+    // If there are pages to compare at all, compare them. Otherwise, only compare the length.
+    if (folder.pages.length > 0) {
+      // If the folder count is different than state, we don't have a match.
+      if (folder.pages.length !== statePages.length) {
+        return false;
+      }
+
+      // Counts are equal, so we have some IDs to check.
+      var match = true;
+
+      for (var page of statePages) {
+        if (!folder.pages.includes(page.pageID)) {
+          match = false;
+          break;
+        }
+      }
+
+      return match;
+    } else {
+      return statePages.length === folder.pages.length;
+    }
   }
 }
