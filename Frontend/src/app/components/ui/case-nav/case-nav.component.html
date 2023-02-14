@@ -1,125 +1,66 @@
-<div class="h-96">
-  <div class="flex" (mouseleave)="hideAllMenus()">
+<div>
+  <div class="flex">
     <!-- Main Menu -->
-    <div class="flex-initial h-96 w-60 pr-2 border-r border-gray-400">
+    <div class="flex-initial w-60 pr-2 border-r border-gray-400">
       <div class="pb-5 px-2 border-b border-gray-400">
         <h1 class="text-2xl font-semibold">My CritCase</h1>
       </div>
 
-      <div
-        class="px-2 py-4 border-b border-gray-400 text-gray-700 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
-        (mouseenter)="showCampaignsSection()">
-        <i class="fa-solid fa-map text-2xl inline-block self-center text-center flex-initial w-9"></i>
-        <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Campaigns</p>
-        <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
-      </div>
-
-      <div
-        class="px-2 py-4 border-b border-gray-400 text-gray-700 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
-        (mouseenter)="showCharactersSection()">
-        <i class="fa-solid fa-user text-2xl inline-block self-center text-center flex-initial w-9"></i>
-        <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Characters</p>
-        <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
-      </div>
-
-      <div
-        class="px-2 py-4 border-b border-gray-400 text-gray-700 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
-        (mouseenter)="showSystemsSection()">
-        <i class="fa-solid fa-pen-ruler text-2xl inline-block self-center text-center flex-initial w-9"></i>
-        <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Systems</p>
-        <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
-      </div>
-
-      <div
-        class="px-2 py-4 border-b border-gray-400 text-gray-700 flex hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
-        (mouseenter)="showNotesSection()">
-        <i class="fa-solid fa-book-open text-2xl inline-block self-center text-center flex-initial w-9"></i>
-        <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">Notes</p>
-        <i class="fa-solid fa-chevron-right text-3xl text-gray-400 inline-block self-center flex-initial"></i>
-      </div>
-    </div>
-    <!-- Campaigns Sidebar -->
-    <div *ngIf="showCampaigns" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
-      <div class="flex h-full">
-        <div class="flex-1 p-2">
-          <!-- Subheader -->
-          <div class="pb-3 text-center border-b border-gray-400">
-            <i class="fa-solid fa-map text-3xl inline-block self-center flex-initial w-9"></i>
-            <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Campaigns</p>
-          </div>
-
-          <ng-container *ngFor="let campaign of campaigns$ | async">
+      <ui-case-nav-category label="Campaigns" fa_icon="fa-solid fa-map">
+        <ng-container *ngFor="let campaign of campaigns$ | async">
+          <div class="flex px-3 py-1 rounded-md hover:bg-gray-300">
+            <i class="flex-initial self-center fa-solid fa-bookmark"></i>
             <button
-              class="w-full px-2 py-4 border-b border-gray-400 hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+              class="flex-auto self-center ml-2 text-left hover:cursor-pointer active:bg-gray-200"
               [routerLink]="['/dashboard']"
-              [queryParams]="{ campaign: campaign.campaignID }"
-              (click)="hideAllMenus()">
+              [queryParams]="{ campaign: campaign.campaignID }">
               {{ campaign.name }}
             </button>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-
-    <!-- Characters Sidebar -->
-    <div *ngIf="showCharacters" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
-      <div class="flex h-full">
-        <div class="flex-1 p-2">
-          <!-- Subheader -->
-          <div class="pb-3 text-center border-b border-gray-400">
-            <i class="fa-solid fa-user text-3xl inline-block self-center flex-initial w-9"></i>
-            <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Characters</p>
           </div>
+        </ng-container>
+      </ui-case-nav-category>
 
-          <!-- <ng-container *ngFor="let campaign of campaigns$ | async">
-            <div class="px-2 py-4 border-b border-gray-400">
-              <p>{{ campaign.name }}</p>
-            </div>
-          </ng-container> -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Systems Sidebar -->
-    <div *ngIf="showSystems" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
-      <div class="flex h-full">
-        <div class="flex-1 p-2">
-          <!-- Subheader -->
-          <div class="pb-3 text-center border-b border-gray-400">
-            <i class="fa-solid fa-pen-ruler text-3xl inline-block self-center flex-initial w-9"></i>
-            <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Systems</p>
-          </div>
-
-          <!-- <ng-container *ngFor="let campaign of campaigns$ | async">
-            <div class="px-2 py-4 border-b border-gray-400">
-              <p>{{ campaign.name }}</p>
-            </div>
-          </ng-container> -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Notes Sidebar -->
-    <div *ngIf="showNotes" class="slideIn absolute translate-x-full bg-white flex-initial w-60 h-96 border-r border-gray-400">
-      <div class="flex h-full">
-        <div class="flex-1 p-2">
-          <!-- Subheader -->
-          <div class="pb-3 text-center border-b border-gray-400">
-            <i class="fa-solid fa-book-open text-3xl inline-block self-center flex-initial w-9"></i>
-            <p class="inline-block self-center flex-auto px-3 text-xl font-semibold">Notes</p>
-          </div>
-
-          <ng-container *ngFor="let pageFolder of pageFolders$ | async">
+      <ui-case-nav-category label="Characters" fa_icon="fa-solid fa-user">
+        <!-- <ng-container *ngFor="let campaign of campaigns$ | async">
+          <div class="flex px-3 py-1 rounded-md hover:bg-gray-300">
+            <i class="flex-initial self-center fa-solid fa-bookmark"></i>
             <button
-              class="w-full px-2 py-4 border-b border-gray-400 hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+              class="flex-auto self-center ml-2 text-left hover:cursor-pointer active:bg-gray-200"
               [routerLink]="['/dashboard']"
-              [queryParams]="{ pageFolder: pageFolder.folderID }"
-              (click)="hideAllMenus()">
-              {{ pageFolder.folderName }} - {{ pageFolder.pages.length + ' pages' }}
+              [queryParams]="{ campaign: campaign.campaignID }">
+              {{ campaign.name }}
             </button>
-          </ng-container>
-        </div>
-      </div>
+          </div>
+        </ng-container> -->
+      </ui-case-nav-category>
+
+      <ui-case-nav-category label="Systems" fa_icon="fa-solid fa-pen-ruler">
+        <!-- <ng-container *ngFor="let campaign of campaigns$ | async">
+          <div class="flex px-3 py-1 rounded-md hover:bg-gray-300">
+            <i class="flex-initial self-center fa-solid fa-bookmark"></i>
+            <button
+              class="flex-auto self-center ml-2 text-left hover:cursor-pointer active:bg-gray-200"
+              [routerLink]="['/dashboard']"
+              [queryParams]="{ campaign: campaign.campaignID }">
+              {{ campaign.name }}
+            </button>
+          </div>
+        </ng-container> -->
+      </ui-case-nav-category>
+
+      <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open">
+        <ng-container *ngFor="let pageFolder of pageFolders$ | async">
+          <div class="flex px-3 py-1 rounded-md hover:bg-gray-300">
+            <i class="flex-initial self-center fa-solid fa-folder"></i>
+            <button
+              class="flex-auto self-center ml-2 text-left hover:cursor-pointer active:bg-gray-200"
+              [routerLink]="['/dashboard']"
+              [queryParams]="{ pageFolder: pageFolder.folderID }">
+              {{ pageFolder.folderName }}
+            </button>
+          </div>
+        </ng-container>
+      </ui-case-nav-category>
     </div>
   </div>
 </div>

@@ -29,6 +29,7 @@ export class PagesStateService {
   }
 
   getPageFolderFromID$(folderID: string): Observable<PageFolder> {
+    // TODO: call action to navigate to Not Found?
     return this.pageFolders$.pipe(map(folders => folders?.find(f => f.folderID == folderID)));
   }
 
@@ -37,8 +38,6 @@ export class PagesStateService {
       take(1),
       map(data => {
         // Check that the IDs in folder match IDs in pages. If no match, get data.
-        console.log('PAGE DATA: ', data);
-
         if (!data || !this.folderMatchState(data, folder)) {
           this.onPageFolderDataRequest(folder.folderID);
         }

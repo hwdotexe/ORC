@@ -1,0 +1,12 @@
+<div class="px-2 py-2 border-b border-gray-400 text-gray-700 hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200">
+  <div class="flex py-2" (click)="toggleExpand()">
+    <i class="{{ fa_icon }} text-2xl inline-block self-center text-center flex-initial w-9"></i>
+    <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">{{ label }}</p>
+    <div class="text-2xl px-1.5 text-gray-400 inline-block self-center flex-initial">
+      <i class="fa-solid fa-plus plus {{ expanded ? 'opened' : '' }}"></i>
+    </div>
+  </div>
+  <div class="ml-4" *ngIf="expanded">
+    <ng-content></ng-content>
+  </div>
+</div>

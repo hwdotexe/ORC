@@ -27,6 +27,7 @@ export class CampaignStateService {
   }
 
   getCampaign(campaignID: string): Observable<Campaign> {
+    // TODO: call action to navigate to Not Found?
     return this.campaigns$.pipe(map(campaigns => campaigns.find(c => c.campaignID === campaignID)));
   }
 

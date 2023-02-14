@@ -51,6 +51,7 @@ import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
 import { PageFolderViewComponent } from './components/views/page-folder-view/page-folder-view.component';
+import { CaseNavCategoryComponent } from './components/ui/case-nav-category/case-nav-category.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -87,7 +88,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     FormErrorComponent,
     CampaignViewComponent,
     PageFolderButtonComponent,
-    PageFolderViewComponent
+    PageFolderViewComponent,
+    CaseNavCategoryComponent
   ],
   imports: [
     BrowserModule,

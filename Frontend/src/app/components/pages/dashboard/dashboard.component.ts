@@ -6,11 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  makeSelection: boolean;
-
   constructor() {}
 
-  ngOnInit(): void {
-    this.makeSelection = true;
-  }
+  ngOnInit(): void {}
 }

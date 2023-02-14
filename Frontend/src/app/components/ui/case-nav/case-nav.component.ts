@@ -14,18 +14,9 @@ export class CaseNavComponent implements OnInit {
   campaigns$: Observable<Campaign[]>;
   pageFolders$: Observable<PageFolder[]>;
 
-  showCampaigns: boolean;
-  showCharacters: boolean;
-  showSystems: boolean;
-  showNotes: boolean;
-
   constructor(private campaignStateService: CampaignStateService, private pagesStateService: PagesStateService) {}
 
   ngOnInit(): void {
-    this.showCampaigns = false;
-    this.showCharacters = false;
-    this.showSystems = false;
-
     this.campaigns$ = this.campaignStateService.isCampaignDataLoaded$().pipe(
       filter(loaded => loaded),
       switchMap(() => this.campaignStateService.campaigns$)
@@ -35,32 +26,5 @@ export class CaseNavComponent implements OnInit {
       filter(loaded => loaded),
       switchMap(() => this.pagesStateService.pageFolders$)
     );
-  }
-
-  showCampaignsSection() {
-    this.hideAllMenus();
-    this.showCampaigns = true;
-  }
-
-  showCharactersSection() {
-    this.hideAllMenus();
-    this.showCharacters = true;
-  }
-
-  showSystemsSection() {
-    this.hideAllMenus();
-    this.showSystems = true;
-  }
-
-  showNotesSection() {
-    this.hideAllMenus();
-    this.showNotes = true;
-  }
-
-  hideAllMenus() {
-    this.showCampaigns = false;
-    this.showCharacters = false;
-    this.showSystems = false;
-    this.showNotes = false;
   }
 }

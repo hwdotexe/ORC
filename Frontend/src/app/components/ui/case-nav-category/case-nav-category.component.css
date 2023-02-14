@@ -1,0 +1,7 @@
+.plus {
+  transition: 0.3s all;
+}
+
+.plus.opened {
+  rotate: 135deg;
+}
