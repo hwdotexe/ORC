@@ -18,6 +18,23 @@ const reducer = createReducer(
       pages: action.response.pages
     };
   }),
+  on(PagesStateActions.pageUpdateReceived, (state, action): PagesState => {
+    var currentPages = state.pages;
+    var newPages = [];
+
+    currentPages.forEach(page => {
+      if (page.pageID == action.response.pageID) {
+        newPages = [...newPages, action.response];
+      } else {
+        newPages = [...newPages, page];
+      }
+    });
+
+    return {
+      ...state,
+      pages: newPages
+    };
+  }),
   on(PagesStateActions.pagesDataCleared, (state, action): PagesState => pagesInitialState)
 );
 

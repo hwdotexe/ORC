@@ -19,7 +19,6 @@ namespace BackendWebAPI.Controllers
     public class PageController : ControllerBase
     {
         /*
-         * Updating pages will require permission checks.
          * TODO: endpoint for adding a folder to a campaign/character (notes can exist outside of these, so they must be added. Client will add automatically)
          */
 
@@ -303,6 +302,7 @@ namespace BackendWebAPI.Controllers
                                 page.Body = requestValue.Body;
                                 page.Privacy = requestValue.Privacy;
                                 page.Title = requestValue.Title;
+                                page.DateModified = DateTimeOffset.Now;
 
                                 App.GetState().DB.UpdatePage(page);
 

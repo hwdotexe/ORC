@@ -1,0 +1,36 @@
+<div class="my-2 p-5 border border-gray-300 rounded-md">
+  <!-- Header -->
+  <ng-container *ngIf="isEditing; else renderedPageHeader">
+    <div class="flex">
+      <div class="flex-auto"></div>
+      <button class="flex-initial text-gray-500 hover:underline" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </ng-container>
+  <ng-template #renderedPageHeader>
+    <div class="flex">
+      <div class="flex-initial">
+        <h1 class="self-center text-xl">{{ page.title }}</h1>
+        <div class="mt-1">
+          <h2 class="inline-block text-xs italic text-gray-500">Created {{ page.dateCreated | date : 'MMM d, y' }}</h2>
+          <h2 class="inline-block mx-2 text-xs italic text-gray-500">Modified {{ page.dateModified | date : 'MMM d, y' }}</h2>
+        </div>
+      </div>
+      <div class="flex-auto"></div>
+      <div class="flex-initial text-gray-500 text-center">
+        <i
+          class="self-center p-2 w-9 text-xl fa-solid fa-pen-to-square rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
+          (click)="startEdit()"></i>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Form or rendered content -->
+  <ng-container *ngIf="isEditing; else renderedPage">
+    <!-- TODO: on submit, force parent component to reload page object from state. -->
+    <app-page-edit-form [page]="page" (onSubmit)="cancelEdit()"></app-page-edit-form>
+  </ng-container>
+  <ng-template #renderedPage>
+    <hr class="my-2" />
+    <markdown emoji ngPreserveWhitespaces>{{ page.body }}</markdown>
+  </ng-template>
+</div>

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of } from 'rxjs';
 import { PageFolderDataResponse } from 'src/app/models/API/Response/page-folder-data-response.interface';
 import { PageFoldersListResponse } from 'src/app/models/API/Response/page-folders-list-response.interface';
+import { Page } from 'src/app/models/page.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
 import { PagesStateActions } from './pages-state.actions';
 
@@ -29,6 +30,18 @@ export class PagesStateEffects {
       mergeMap(request =>
         this.httpService.GET<PageFolderDataResponse>('page/folder/' + request.folderID, 'GET_PAGE_FOLDER').pipe(
           map(response => PagesStateActions.pageFoldersDataReceived({ response: response.body })),
+          catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
+        )
+      )
+    )
+  );
+
+  pageEditRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pageUpdateRequest),
+      exhaustMap(action =>
+        this.httpService.PATCH<Page>('page', action.request, 'UPDATE_PAGE').pipe(
+          map(response => PagesStateActions.pageUpdateReceived({ response: response.body })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
       )

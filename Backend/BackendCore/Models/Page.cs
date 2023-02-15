@@ -14,6 +14,8 @@ namespace BackendCore.Models
         public string Body { get; set; }
         public PagePrivacy Privacy { get; set; }
         public List<Share> Shares { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
+        public DateTimeOffset DateModified { get; set; }
 
         public Page(string title, Guid owner, PagePrivacy privacy)
         {
@@ -23,6 +25,8 @@ namespace BackendCore.Models
             Body = string.Empty;
             Privacy = privacy;
             this.Shares = new List<Share>();
+            this.DateCreated = DateTimeOffset.Now;
+            this.DateModified = DateTimeOffset.Now;
         }
     }
 }

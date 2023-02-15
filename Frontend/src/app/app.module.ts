@@ -54,6 +54,8 @@ import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.ef
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
+import { PageViewComponent } from './components/views/page-view/page-view.component';
+import { PageEditFormComponent } from './components/forms/page-edit-form/page-edit-form.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -92,7 +94,9 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     PageFolderButtonComponent,
     PageFolderViewComponent,
     CaseNavCategoryComponent,
-    PageItemComponent
+    PageItemComponent,
+    PageViewComponent,
+    PageEditFormComponent
   ],
   imports: [
     BrowserModule,

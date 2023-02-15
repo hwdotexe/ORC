@@ -8,4 +8,6 @@ export interface Page {
   body: string;
   privacy: SharePrivacy;
   shares: ShareMapping[];
+  dateCreated: Date;
+  dateModified: Date;
 }

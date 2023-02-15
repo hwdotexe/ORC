@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable, take } from 'rxjs';
+import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
 import { PagesStateActions } from './pages-state.actions';
@@ -33,6 +34,11 @@ export class PagesStateService {
     return this.pageFolders$.pipe(map(folders => folders?.find(f => f.folderID == folderID)));
   }
 
+  getPageFromID$(pageID: string): Observable<Page> {
+    // TODO: call action to navigate to Not Found?
+    return this.pages$.pipe(map(pages => pages?.find(p => p.pageID == pageID)));
+  }
+
   isPageDataLoaded$(folder: PageFolder): Observable<boolean> {
     return this.pages$.pipe(
       take(1),
@@ -57,6 +63,10 @@ export class PagesStateService {
 
   onPageDataCleared() {
     this.store.dispatch(PagesStateActions.pagesDataCleared());
+  }
+
+  onPageEditRequest(request: PageEditRequest) {
+    this.store.dispatch(PagesStateActions.pageUpdateRequest({ request }));
   }
 
   private folderMatchState(statePages: Page[], folder: PageFolder) {
