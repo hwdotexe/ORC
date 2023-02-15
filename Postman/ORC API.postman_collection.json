@@ -909,7 +909,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"My test folder\"\r\n}",
+							"raw": "{\r\n    \"Name\": \"This is a test folder with a rather long name\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -960,7 +960,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Title\": \"My test page\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
+							"raw": "{\r\n    \"Title\": \"How about another test page with a very long name which will definitely overflow\",\r\n    \"Privacy\": \"PRIVATE\",\r\n    \"FolderID\": \"{{folderid}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -981,7 +981,7 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Update Page",
 					"event": [
 						{
 							"listen": "test",
@@ -994,7 +994,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "X-Captcha-Token",
@@ -1009,7 +1009,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"PageID\": \"{{pageid}}\",\r\n    \"Title\": \"Yuh\",\r\n    \"Body\": \"Yuh\",\r\n    \"Privacy\": \"PUBLIC\"\r\n}",
+							"raw": "{\r\n    \"PageID\": \"{{pageid}}\",\r\n    \"Title\": \"Hey look I updated my page!\",\r\n    \"Body\": \"# Title\\n**This is an exciting new opportunity in text editing technology**\\n_Please use Markdown._\",\r\n    \"Privacy\": \"PUBLIC\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -25,7 +25,9 @@
         <div class="flex-auto"></div>
       </div>
 
+      <!-- TODO: Don't throw them straight into editing, we need a rendered version to display connections and links. Might want to use route URL after all... -->
       <div class="my-2 p-5 border border-gray-300 rounded-md">
+        <markdown emoji ngPreserveWhitespaces>{{ displayPage.body }}</markdown>
         <!-- TODO should this be a form? -->
         <input styled type="text" value="{{ displayPage.title }}" />
         <!-- TODO: markdown renderer -->

@@ -270,6 +270,72 @@ namespace BackendWebAPI.Controllers
             }
         }
 
+        [HttpPatch]
+        public ActionResult PATCH_Update_Page()
+        {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_PAGE"))
+                {
+                    var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
+                    var request = APIRequestMapper.MapRequestToModel<PageUpdateRequest>(body);
+                    var sessionValue = session.Value;
+
+                    if (request != null)
+                    {
+                        var requestValue = request.Value;
+                        var page = App.GetState().GetPage(requestValue.PageID);
+
+                        if (page != null)
+                        {
+                            var isOwner = page.OwnerAccountID == sessionValue.AccountID;
+                            var pageShare = page.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType != ShareType.VIEW);
+
+                            if (isOwner || pageShare != null)
+                            {
+                                page.Body = requestValue.Body;
+                                page.Privacy = requestValue.Privacy;
+                                page.Title = requestValue.Title;
+
+                                App.GetState().DB.UpdatePage(page);
+
+                                return Ok(page);
+                            }
+                            else
+                            {
+                                return Forbid();
+                            }
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
+            }
+        }
+
         private PageFolderGetResponse MapPageFolder(Guid callerID, PageFolder folder, List<Page> pages)
         {
             var response = new PageFolderGetResponse

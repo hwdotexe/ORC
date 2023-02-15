@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { MarkdownModule } from 'ngx-markdown';
 import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import {
   ButtonDirectiveRed,
   ButtonDirectiveSimple
 } from './components/ui/button.directive';
+import { CaseNavCategoryComponent } from './components/ui/case-nav-category/case-nav-category.component';
 import { CaseNavComponent } from './components/ui/case-nav/case-nav.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { FormErrorComponent } from './components/ui/form-error/form-error.component';
@@ -39,10 +41,12 @@ import { FormFieldErrorComponent } from './components/ui/form-field-error/form-f
 import { InputDirective } from './components/ui/input.directive';
 import { NavComponent } from './components/ui/nav/nav.component';
 import { PageFolderButtonComponent } from './components/ui/page-folder-button/page-folder-button.component';
+import { PageItemComponent } from './components/ui/page-item/page-item.component';
 import { SelectDirective } from './components/ui/select.directive';
 import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 import { TextareaDirective } from './components/ui/textarea.directive';
 import { CampaignViewComponent } from './components/views/campaign-view/campaign-view.component';
+import { PageFolderViewComponent } from './components/views/page-folder-view/page-folder-view.component';
 import { TimePipe } from './pipes/time.pipe';
 import { AppDetailsStateEffects } from './store/app-details-state/app-details-state.effects';
 import { AuthStateEffects } from './store/auth-state/auth-state.effects';
@@ -50,9 +54,6 @@ import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.ef
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
-import { PageFolderViewComponent } from './components/views/page-folder-view/page-folder-view.component';
-import { CaseNavCategoryComponent } from './components/ui/case-nav-category/case-nav-category.component';
-import { PageItemComponent } from './components/ui/page-item/page-item.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -107,6 +108,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
       autoPause: false
       //trace, traceLimit
     }),
+    MarkdownModule.forRoot(),
     EffectsModule.forRoot([AuthStateEffects, AppDetailsStateEffects, CampaignStateEffects, PagesStateEffects]),
     BrowserAnimationsModule
   ],
