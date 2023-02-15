@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, Observable, of, switchMap } from 'rxjs';
+import { filter, Observable, of, switchMap, tap } from 'rxjs';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
 import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
@@ -15,6 +15,8 @@ export class PageFolderViewComponent implements OnInit {
   pageFolder$: Observable<PageFolder>;
   isDataLoaded$: Observable<boolean>;
 
+  displayPage: Page;
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private pagesStateService: PagesStateService) {}
 
   ngOnInit(): void {
@@ -26,7 +28,16 @@ export class PageFolderViewComponent implements OnInit {
 
     this.isDataLoaded$ = this.pageFolder$.pipe(
       filter(folder => !!folder),
-      switchMap(folder => this.pagesStateService.isPageDataLoaded$(folder))
+      switchMap(folder => this.pagesStateService.isPageDataLoaded$(folder)),
+      tap(() => (this.displayPage = null))
     );
+  }
+
+  showPage(page: Page): void {
+    this.displayPage = page;
+  }
+
+  hidePage(): void {
+    this.displayPage = null;
   }
 }

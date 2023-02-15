@@ -1,21 +1,51 @@
 <div *ngIf="isDataLoaded$ | async">
   <div *ngIf="pageFolder$ | async as folder">
     <!-- Header -->
-    <div class="flex border-b border-gray-500">
-      <div class="flex-initial">
-        <h2 class="text-xl font-semibold">{{ folder.folderName }}</h2>
+    <div class="flex pb-4 mb-4 border-b border-gray-500">
+      <div class="flex-initial self-center">
+        <i class="inline-block text-xl mr-2 fa-solid fa-folder"></i>
+        <h2 class="inline-block text-xl font-semibold">{{ folder.folderName }}</h2>
       </div>
       <div class="flex-auto"></div>
       <div class="flex-initial self-center text-xl text-gray-500 text-center">
-        <i class="p-2 w-9 fa-solid fa-pen-to-square inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
-        <i class="p-2 w-9 mx-3 fa-solid fa-thumbtack rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
-        <i class="p-2 w-9 fa-solid fa-trash-can inline-block rounded-md hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400"></i>
+        <i class="p-2 w-9 fa-solid fa-pen-to-square inline-block rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
+        <i class="p-2 w-9 fa-solid fa-thumbtack rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
+        <i class="p-2 w-9 fa-solid fa-share-nodes rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
+        <i class="p-2 w-9 fa-solid fa-trash-can inline-block rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
       </div>
     </div>
 
     <!-- Pages -->
-    <div class="my-2">
-      <p *ngFor="let page of pages$ | async">Title: {{ page.title }}</p>
-    </div>
+    <ng-container *ngIf="displayPage; else pageList">
+      <div class="flex">
+        <div class="flex-initial p-2 rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200" (click)="hidePage()">
+          <i class="inline-block align-middle text-lg fa-solid fa-chevron-left"></i>
+          <p class="inline-block align-middle px-2">Back</p>
+        </div>
+        <div class="flex-auto"></div>
+      </div>
+
+      <div class="my-2 p-5 border border-gray-300 rounded-md">
+        <!-- TODO should this be a form? -->
+        <input styled type="text" value="{{ displayPage.title }}" />
+        <!-- TODO: markdown renderer -->
+        <textarea styled>{{ displayPage.body }}</textarea>
+      </div>
+    </ng-container>
+    <ng-template #pageList>
+      <div class="my-2">
+        <div *ngIf="pages$ | async as pages">
+          <div *ngIf="pages.length > 0; else empty">
+            <ng-container *ngFor="let page of pages">
+              <ui-page-item [page]="page" (click)="showPage(page)"></ui-page-item>
+            </ng-container>
+          </div>
+
+          <ng-template #empty>
+            <p>There aren't any pages in this folder.</p>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>

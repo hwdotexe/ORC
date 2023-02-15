@@ -1,0 +1,22 @@
+<div class="p-3 mr-2 rounded-md border inline-block border-gray-400 hover:bg-gray-100 active:bg-gray-200 hover:cursor-pointer">
+  <div class="flex">
+    <i class="flex-initial self-center mr-3 text-2xl fa-solid fa-clipboard"></i>
+    <div class="flex-auto self-center">
+      <p class="max-w-[15rem] overflow-hidden text-ellipsis whitespace-nowrap">{{ page.title }}</p>
+
+      <div class="flex">
+        <div class="flex-auto"></div>
+        <div class="flex-initial text-gray-500">
+          <ng-container *ngIf="page.privacy === SharePrivacy.PRIVATE; else public">
+            <i class="text-xs px-1 self-center inline-block fa-solid fa-lock"></i>
+            <p class="text-xs inline-block">Private</p>
+          </ng-container>
+          <ng-template #public>
+            <i class="text-xs px-1 self-center inline-block fa-solid fa-globe"></i>
+            <p class="text-xs inline-block">Public</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
