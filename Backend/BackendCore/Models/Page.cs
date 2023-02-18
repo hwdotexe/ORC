@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BackendCore.Models.Enum;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BackendCore.Models
@@ -12,6 +13,7 @@ namespace BackendCore.Models
         public Guid OwnerAccountID { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        [BsonRepresentation(BsonType.String)]
         public PagePrivacy Privacy { get; set; }
         public List<Share> Shares { get; set; }
         public DateTimeOffset DateCreated { get; set; }
