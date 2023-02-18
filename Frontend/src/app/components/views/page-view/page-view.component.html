@@ -31,6 +31,6 @@
   </ng-container>
   <ng-template #renderedPage>
     <hr class="my-2" />
-    <markdown emoji ngPreserveWhitespaces>{{ page.body }}</markdown>
+    <markdown emoji ngPreserveWhitespaces [data]="page.body"></markdown>
   </ng-template>
 </div>

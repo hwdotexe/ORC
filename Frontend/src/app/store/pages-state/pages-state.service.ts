@@ -44,8 +44,10 @@ export class PagesStateService {
       take(1),
       map(data => {
         // Check that the IDs in folder match IDs in pages. If no match, get data.
-        if (!data || !this.folderMatchState(data, folder)) {
-          this.onPageFolderDataRequest(folder.folderID);
+        if (folder) {
+          if (!data || !this.folderMatchState(data, folder)) {
+            this.onPageFolderDataRequest(folder.folderID);
+          }
         }
 
         return true;

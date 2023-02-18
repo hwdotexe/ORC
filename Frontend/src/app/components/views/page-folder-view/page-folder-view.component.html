@@ -8,10 +8,31 @@
       </div>
       <div class="flex-auto"></div>
       <div class="flex-initial self-center text-xl text-gray-500 text-center">
-        <i class="p-2 w-9 fa-solid fa-pen-to-square inline-block rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
-        <i class="p-2 w-9 fa-solid fa-thumbtack rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
-        <i class="p-2 w-9 fa-solid fa-user-plus rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
-        <i class="p-2 w-9 fa-solid fa-trash-can inline-block rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"></i>
+        <button mat-button [matMenuTriggerFor]="folderMenu" class="align-middle">
+          <i class="p-2 w-9 fa-solid fa-ellipsis-vertical rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
+        </button>
+        <mat-menu #folderMenu="matMenu">
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-plus pr-1"></i>
+            New Note
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-pen-to-square pr-1"></i>
+            Edit Folder
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-thumbtack pr-1"></i>
+            Pin Folder
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-user-plus pr-1"></i>
+            Share Folder
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-trash-can pr-1"></i>
+            Delete Folder
+          </button>
+        </mat-menu>
       </div>
     </div>
 

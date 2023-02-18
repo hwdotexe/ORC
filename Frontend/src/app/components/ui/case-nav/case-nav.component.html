@@ -18,11 +18,37 @@
             </button>
           </div>
         </ng-container>
+        <div class="flex px-3 py-1 rounded-md hover:bg-gray-200 active:bg-gray-300">
+          <i class="flex-initial self-center fa-solid fa-plus"></i>
+          <button
+            class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+            [routerLink]="['/dashboard']">
+            New Campaign
+          </button>
+        </div>
       </ui-case-nav-category>
 
-      <ui-case-nav-category label="Characters" fa_icon="fa-solid fa-user"></ui-case-nav-category>
+      <ui-case-nav-category label="Characters" fa_icon="fa-solid fa-user">
+        <div class="flex px-3 py-1 rounded-md hover:bg-gray-200 active:bg-gray-300">
+          <i class="flex-initial self-center fa-solid fa-plus"></i>
+          <button
+            class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+            [routerLink]="['/dashboard']">
+            New Character
+          </button>
+        </div>
+      </ui-case-nav-category>
 
-      <ui-case-nav-category label="Systems" fa_icon="fa-solid fa-pen-ruler"></ui-case-nav-category>
+      <ui-case-nav-category label="Systems" fa_icon="fa-solid fa-pen-ruler">
+        <div class="flex px-3 py-1 rounded-md hover:bg-gray-200 active:bg-gray-300">
+          <i class="flex-initial self-center fa-solid fa-plus"></i>
+          <button
+            class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+            [routerLink]="['/dashboard']">
+            New System
+          </button>
+        </div>
+      </ui-case-nav-category>
 
       <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open">
         <ng-container *ngFor="let pageFolder of pageFolders$ | async">
@@ -36,6 +62,14 @@
             </button>
           </div>
         </ng-container>
+        <div class="flex px-3 py-1 rounded-md hover:bg-gray-200 active:bg-gray-300">
+          <i class="flex-initial self-center fa-solid fa-plus"></i>
+          <button
+            class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+            [routerLink]="['/dashboard']">
+            New Folder
+          </button>
+        </div>
       </ui-case-nav-category>
     </div>
   </div>

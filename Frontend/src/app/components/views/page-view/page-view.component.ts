@@ -8,14 +8,11 @@ import { Page } from 'src/app/models/page.interface';
 })
 export class PageViewComponent implements OnInit {
   @Input() page: Page;
-
-  isEditing: boolean;
+  @Input() isEditing = false;
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.isEditing = false;
-  }
+  ngOnInit(): void {}
 
   startEdit(): void {
     this.isEditing = true;

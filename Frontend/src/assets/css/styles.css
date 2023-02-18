@@ -21,3 +21,11 @@ body {
 .ng-submitted input.ng-valid {
   border: 2px solid rgb(34, 197, 94);
 }
+
+.ng-submitted textarea.ng-invalid {
+  border: 2px solid rgb(220, 38, 38);
+}
+
+.ng-submitted textarea.ng-valid {
+  border: 2px solid rgb(34, 197, 94);
+}

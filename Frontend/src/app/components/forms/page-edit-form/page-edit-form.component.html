@@ -1,9 +1,17 @@
 <form [formGroup]="editPageForm" #form="ngForm" (ngSubmit)="this.submit()">
   <ui-form-error [formName]="FormName.EDIT_PAGE"></ui-form-error>
-  <ui-form-field-error [form]="form" [errorFor]="'title'"></ui-form-field-error>
-  <input styled formControlName="title" placeholder="Title" />
-  <ui-form-field-error [form]="form" [errorFor]="'body'"></ui-form-field-error>
-  <textarea styled formControlName="body" placeholder="Once upon a time..."></textarea>
+
+  <div class="my-2">
+    <ui-form-field-error [form]="form" [errorFor]="'title'"></ui-form-field-error>
+    <p class="text-sm font-semibold">Title</p>
+    <input styled formControlName="title" placeholder="Title" />
+  </div>
+
+  <div class="my-2">
+    <ui-form-field-error [form]="form" [errorFor]="'body'"></ui-form-field-error>
+    <p class="text-sm font-semibold">Body</p>
+    <textarea styled formControlName="body" placeholder="Once upon a time..."></textarea>
+  </div>
 
   <app-submit-button label="Save"></app-submit-button>
 </form>
