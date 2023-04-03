@@ -4,6 +4,7 @@ import { map, Observable, take } from 'rxjs';
 import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
+import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { PagesStateActions } from './pages-state.actions';
 import { PagesStateSelectors } from './pages-state.selectors';
 
@@ -14,7 +15,7 @@ export class PagesStateService {
   pages$: Observable<Page[]> = this.store.select(PagesStateSelectors.pages);
   pageFolders$: Observable<PageFolder[]> = this.store.select(PagesStateSelectors.pageFolders);
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private pageLoadingService: PageLoadingService) {}
 
   isPageFolderListLoaded$(): Observable<boolean> {
     return this.pageFolders$.pipe(
@@ -46,6 +47,7 @@ export class PagesStateService {
         // Check that the IDs in folder match IDs in pages. If no match, get data.
         if (folder) {
           if (!data || !this.folderMatchState(data, folder)) {
+            this.pageLoadingService.loading();
             this.onPageFolderDataRequest(folder.folderID);
           }
         }

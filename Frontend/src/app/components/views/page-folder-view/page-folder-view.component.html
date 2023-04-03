@@ -56,21 +56,24 @@
     </ng-container>
     <ng-template #pageList>
       <div class="my-2">
-        <div *ngIf="pages$ | async as pages">
-          <div *ngIf="pages.length > 0; else empty">
-            <ng-container *ngFor="let page of pages">
-              <!-- TODO: put this component on its own route? -->
-              <ui-page-item
-                [page]="page"
-                [routerLink]="['/dashboard']"
-                [queryParams]="{ pageFolder: folder.folderID, page: page.pageID }"></ui-page-item>
-            </ng-container>
-          </div>
+        <ui-loading-spinner *ngIf="isLoading$ | async; else loaded"></ui-loading-spinner>
+        <ng-template #loaded>
+          <div *ngIf="pages$ | async as pages">
+            <div *ngIf="pages.length > 0; else empty">
+              <ng-container *ngFor="let page of pages">
+                <!-- TODO: put this component on its own route? -->
+                <ui-page-item
+                  [page]="page"
+                  [routerLink]="['/dashboard']"
+                  [queryParams]="{ pageFolder: folder.folderID, page: page.pageID }"></ui-page-item>
+              </ng-container>
+            </div>
 
-          <ng-template #empty>
-            <p>There aren't any pages in this folder.</p>
-          </ng-template>
-        </div>
+            <ng-template #empty>
+              <p>There aren't any pages in this folder.</p>
+            </ng-template>
+          </div>
+        </ng-template>
       </div>
     </ng-template>
   </div>

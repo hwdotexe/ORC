@@ -56,6 +56,8 @@ import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
 import { PageViewComponent } from './components/views/page-view/page-view.component';
 import { PageEditFormComponent } from './components/forms/page-edit-form/page-edit-form.component';
+import { CaseNavNewItemComponent } from './components/ui/case-nav-new-item/case-nav-new-item.component';
+import { LoadingSpinnerComponent } from './components/ui/loading-spinner/loading-spinner.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -96,7 +98,9 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     CaseNavCategoryComponent,
     PageItemComponent,
     PageViewComponent,
-    PageEditFormComponent
+    PageEditFormComponent,
+    CaseNavNewItemComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

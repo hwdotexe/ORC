@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
+import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
 import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
 
 @Component({
@@ -14,9 +15,15 @@ export class PageFolderViewComponent implements OnInit {
   pages$: Observable<Page[]>;
   pageFolder$: Observable<PageFolder>;
   isDataLoaded$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
   displayPage$: Observable<Page>;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private pagesStateService: PagesStateService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private pagesStateService: PagesStateService,
+    private pageLoadingService: PageLoadingService
+  ) {}
 
   ngOnInit(): void {
     this.pageFolder$ = this.activatedRoute.queryParamMap.pipe(
@@ -28,7 +35,7 @@ export class PageFolderViewComponent implements OnInit {
     );
 
     this.pages$ = this.pagesStateService.pages$;
-
     this.isDataLoaded$ = this.pageFolder$.pipe(switchMap(folder => this.pagesStateService.isPageDataLoaded$(folder)));
+    this.isLoading$ = this.pageLoadingService.showLoadingIcon$;
   }
 }
