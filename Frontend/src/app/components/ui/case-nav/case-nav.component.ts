@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, Observable, switchMap } from 'rxjs';
+import { Observable, filter, switchMap } from 'rxjs';
 import { Campaign } from 'src/app/models/campaign.interface';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { CampaignStateService } from 'src/app/store/campaigns-state/campaigns-state.service';
@@ -26,5 +26,9 @@ export class CaseNavComponent implements OnInit {
       filter(loaded => loaded),
       switchMap(() => this.pagesStateService.pageFolders$)
     );
+  }
+
+  dispatchCreateFolder(title: string) {
+    this.pagesStateService.onPageFolderCreateRequest(title);
   }
 }

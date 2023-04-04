@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-case-nav-new-item',
@@ -8,6 +8,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 export class CaseNavNewItemComponent implements OnInit {
   @Input() label: string;
   @ViewChild('input') input: ElementRef;
+  @Output() onSubmit = new EventEmitter<string>();
 
   isTyping: boolean;
 
@@ -31,7 +32,7 @@ export class CaseNavNewItemComponent implements OnInit {
 
   submit(): void {
     if (this.isTyping) {
-      // TODO dispatch create folder call
+      this.onSubmit.emit(this.input.nativeElement.value);
 
       this.input.nativeElement.value = '';
       this.input.nativeElement.blur();

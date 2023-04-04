@@ -62,7 +62,7 @@
             </button>
           </div>
         </ng-container>
-        <app-case-nav-new-item label="New Folder"></app-case-nav-new-item>
+        <app-case-nav-new-item label="New Folder" (onSubmit)="dispatchCreateFolder($event)"></app-case-nav-new-item>
       </ui-case-nav-category>
     </div>
   </div>

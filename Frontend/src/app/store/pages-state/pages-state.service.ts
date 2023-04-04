@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable, take } from 'rxjs';
 import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
+import { PageFolderCreateRequest } from 'src/app/models/API/Request/page-folder-create-request.interface';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
@@ -63,6 +64,14 @@ export class PagesStateService {
 
   onPageFolderDataRequest(folderID: string): void {
     this.store.dispatch(PagesStateActions.pageFoldersDataRequest({ folderID }));
+  }
+
+  onPageFolderCreateRequest(name: string): void {
+    let request: PageFolderCreateRequest = {
+      name
+    };
+
+    this.store.dispatch(PagesStateActions.pageFolderCreateRequest({ request }));
   }
 
   onPageDataCleared() {

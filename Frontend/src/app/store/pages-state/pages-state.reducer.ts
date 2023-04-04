@@ -12,6 +12,14 @@ const reducer = createReducer(
       pageFolders: action.response
     })
   ),
+  on(PagesStateActions.pageFolderCreateReceived, (state, action): PagesState => {
+    var currentFolders = state.pageFolders;
+
+    return {
+      ...state,
+      pageFolders: [...currentFolders, action.response]
+    };
+  }),
   on(PagesStateActions.pageFoldersDataReceived, (state, action): PagesState => {
     return {
       ...state,

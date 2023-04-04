@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, mergeMap, of } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { PageFolderDataResponse } from 'src/app/models/API/Response/page-folder-data-response.interface';
 import { PageFoldersListResponse } from 'src/app/models/API/Response/page-folders-list-response.interface';
 import { Page } from 'src/app/models/page.interface';
@@ -34,6 +34,27 @@ export class PagesStateEffects {
         )
       )
     )
+  );
+
+  pageFolderCreateRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pageFolderCreateRequest),
+      mergeMap(action =>
+        this.httpService.PUT<any>('page/folder/', action.request, 'CREATE_PAGE_FOLDER').pipe(
+          map(response => PagesStateActions.pageFolderCreateReceived({ response: response.body })),
+          catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
+        )
+      )
+    )
+  );
+
+  pageFolderCreateReceived$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(PagesStateActions.pageFolderCreateReceived),
+        tap(action => this.router.navigate(['/dashboard'], { queryParams: { pageFolder: action.response.folderID } }))
+      ),
+    { dispatch: false }
   );
 
   pageEditRequest$ = createEffect(() =>
