@@ -8,6 +8,6 @@
     (input)="handleInput($event)" />
 
   <div *ngIf="isTyping" class="mx-2">
-    <button class="self-center px-1"><i class="fa-solid fa-check"></i></button>
+    <button class="self-center px-1 rounded-sm hover:bg-gray-300 active:bg-gray-400" (click)="submit()"><i class="fa-solid fa-check"></i></button>
   </div>
 </div>
