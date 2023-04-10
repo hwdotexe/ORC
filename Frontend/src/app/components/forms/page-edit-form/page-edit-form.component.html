@@ -1,10 +1,24 @@
 <form [formGroup]="editPageForm" #form="ngForm" (ngSubmit)="this.submit()">
   <ui-form-error [formName]="FormName.EDIT_PAGE"></ui-form-error>
 
-  <div class="my-2">
-    <ui-form-field-error [form]="form" [errorFor]="'title'"></ui-form-field-error>
-    <p class="text-sm font-semibold">Title</p>
-    <input styled formControlName="title" placeholder="Title" />
+  <div class="my-2 flex">
+    <div>
+      <ui-form-field-error [form]="form" [errorFor]="'title'"></ui-form-field-error>
+      <p class="text-sm font-semibold">Title</p>
+      <input styled formControlName="title" placeholder="Title" />
+    </div>
+    <div class="mx-2">
+      <ui-form-field-error [form]="form" [errorFor]="'privacy'"></ui-form-field-error>
+      <p class="text-sm font-semibold">Privacy</p>
+      <div class="inline-block">
+        <input type="radio" id="public" formControlName="privacy" value="{{ SharePrivacy.PUBLIC }}" class="mx-1" />
+        <label for="public">Public</label>
+      </div>
+      <div class="inline-block mx-2">
+        <input type="radio" id="private" formControlName="privacy" value="{{ SharePrivacy.PRIVATE }}" class="mx-1" />
+        <label for="private">Private</label>
+      </div>
+    </div>
   </div>
 
   <div class="my-2">

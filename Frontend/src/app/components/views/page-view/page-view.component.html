@@ -10,16 +10,44 @@
     <div class="flex">
       <div class="flex-initial">
         <h1 class="self-center text-xl">{{ page.title }}</h1>
-        <div class="mt-1">
-          <h2 class="inline-block text-xs italic text-gray-500">Created {{ page.dateCreated | date : 'MMM d, y' }}</h2>
-          <h2 class="inline-block mx-2 text-xs italic text-gray-500">Modified {{ page.dateModified | date : 'MMM d, y' }}</h2>
+
+        <div class="mt-1 text-xs italic text-gray-500">
+          <div class="inline-block">
+            <ng-container *ngIf="page.privacy === SharePrivacy.PRIVATE; else public">
+              <i class="px-1 self-center inline-block fa-solid fa-lock"></i>
+              <p class="inline-block">Private</p>
+            </ng-container>
+            <ng-template #public>
+              <i class="px-1 self-center inline-block fa-solid fa-globe"></i>
+              <p class="inline-block">Public</p>
+            </ng-template>
+          </div>
+
+          <p class="inline-block mx-1">•</p>
+          <h2 class="inline-block">Created {{ page.dateCreated | date : 'MMM d, y' }}</h2>
+          <p class="inline-block mx-1">•</p>
+          <h2 class="inline-block">Modified {{ page.dateModified | date : 'MMM d, y' }}</h2>
         </div>
       </div>
       <div class="flex-auto"></div>
-      <div class="flex-initial text-gray-500 text-center">
+      <div class="flex flex-initial text-gray-500 text-center">
         <i
           class="self-center p-2 w-9 text-xl fa-solid fa-pencil rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
           (click)="startEdit()"></i>
+
+        <button mat-button [matMenuTriggerFor]="pageEditMenu" class="self-center align-middle">
+          <i class="p-2 w-9 text-xl fa-solid fa-ellipsis-vertical rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
+        </button>
+        <mat-menu #pageEditMenu="matMenu">
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-user-plus pr-1"></i>
+            Share Page
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-trash-can pr-1"></i>
+            Delete Page
+          </button>
+        </mat-menu>
       </div>
     </div>
   </ng-template>

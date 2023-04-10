@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map, takeUntil } from 'rxjs';
+import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { Page } from 'src/app/models/page.interface';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
@@ -12,6 +13,8 @@ import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 export class PageViewComponent extends BaseUnsubscribeComponent implements OnInit {
   @Input() page: Page;
   @Input() isEditing = false;
+
+  SharePrivacy = SharePrivacy;
 
   constructor(private activatedRoute: ActivatedRoute) {
     super();

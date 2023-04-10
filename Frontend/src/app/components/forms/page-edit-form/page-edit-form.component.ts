@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
 import { FormName } from 'src/app/models/enum/form-name.enum';
+import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { Page } from 'src/app/models/page.interface';
 import { AppDetailsStateService } from 'src/app/store/app-details-state/app-details-state.service';
 import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
@@ -17,6 +18,7 @@ export class PageEditFormComponent implements OnInit {
 
   editPageForm: UntypedFormGroup;
   FormName = FormName;
+  SharePrivacy = SharePrivacy;
 
   constructor(
     private pagesStateService: PagesStateService,
@@ -27,7 +29,8 @@ export class PageEditFormComponent implements OnInit {
   ngOnInit(): void {
     this.editPageForm = this.formBuilder.group({
       title: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
-      body: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] })
+      body: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] }),
+      privacy: this.formBuilder.control('', { updateOn: 'submit', validators: [Validators.compose([Validators.required])] })
     });
 
     this.patchValues();
@@ -36,14 +39,15 @@ export class PageEditFormComponent implements OnInit {
   submit(): void {
     this.appDetailsStateService.onFormErrorsCleared();
 
-    // TODO: let privacy be customizable.
     if (this.editPageForm.valid) {
       let editData: PageEditRequest = {
         pageID: this.page.pageID,
         title: this.editPageForm.get('title').value,
         body: this.editPageForm.get('body').value,
-        privacy: this.page.privacy
+        privacy: this.editPageForm.get('privacy').value
       };
+
+      // TODO: replace "\n" with "\s\s\n" (but not instances that are already converted) to support markdown newlines.
 
       this.dispatch(editData);
 
@@ -54,6 +58,7 @@ export class PageEditFormComponent implements OnInit {
   patchValues() {
     this.editPageForm.get('title').patchValue(this.page.title);
     this.editPageForm.get('body').patchValue(this.page.body);
+    this.editPageForm.get('privacy').patchValue(this.page.privacy);
   }
 
   dispatch(dispatchData: PageEditRequest): void {
