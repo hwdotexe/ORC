@@ -8,7 +8,7 @@
       </div>
       <div class="flex-auto"></div>
       <div class="flex-initial self-center text-xl text-gray-500 text-center">
-        <button class="align-middle">
+        <button class="align-middle" (click)="dispatchCreatePage(folder.folderID)">
           <i class="p-2 w-9 fa-solid fa-plus rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
         </button>
         <button mat-button [matMenuTriggerFor]="folderMenu" class="align-middle">
@@ -38,6 +38,7 @@
     <!-- Pages -->
     <ng-container *ngIf="displayPage$ | async as page; else pageList">
       <!-- Back button header -->
+      <!-- TODO: Replace Back button with breadcrumbs inside folder name header (flex buttons in dropdown as well?) -->
       <div class="flex">
         <div
           class="flex-initial p-2 rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"

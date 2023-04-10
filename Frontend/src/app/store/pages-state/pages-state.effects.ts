@@ -57,6 +57,29 @@ export class PagesStateEffects {
     { dispatch: false }
   );
 
+  pageCreateRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pageCreateRequest),
+      mergeMap(action =>
+        this.httpService.PUT<any>('page', action.request, 'CREATE_PAGE').pipe(
+          map(response => PagesStateActions.pageCreateReceived({ response: response.body, folderID: action.request.folderID })),
+          catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
+        )
+      )
+    )
+  );
+
+  pageCreateReceived$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(PagesStateActions.pageCreateReceived),
+        tap(action =>
+          this.router.navigate(['/dashboard'], { queryParams: { pageFolder: action.folderID, page: action.response.pageID, isEditing: true } })
+        )
+      ),
+    { dispatch: false }
+  );
+
   pageEditRequest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PagesStateActions.pageUpdateRequest),

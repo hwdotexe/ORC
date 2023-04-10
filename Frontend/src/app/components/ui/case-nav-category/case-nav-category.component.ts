@@ -8,14 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CaseNavCategoryComponent implements OnInit {
   @Input() label: string = 'Default Label';
   @Input() fa_icon: string = 'fa-regular fa-circle-question';
-
-  expanded: boolean;
+  @Input() expanded: boolean = false;
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.expanded = false;
-  }
+  ngOnInit(): void {}
 
   toggleExpand(): void {
     this.expanded = !this.expanded;

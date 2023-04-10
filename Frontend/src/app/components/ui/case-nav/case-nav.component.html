@@ -50,22 +50,22 @@
         </div>
       </ui-case-nav-category>
 
-      <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open">
-        <ng-container *ngFor="let pageFolder of pageFolders$ | async">
-          <div
-            *ngIf="queryParamID$ | async as paramID"
-            class="flex rounded-md {{ paramID === pageFolder.folderID ? 'bg-gray-300' : 'hover:bg-gray-200' }} active:bg-gray-300">
-            <button
-              class="flex-auto self-center py-1 px-3 text-left overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-              [routerLink]="['/dashboard']"
-              [queryParams]="{ pageFolder: pageFolder.folderID }">
-              <i class="flex-initial mr-2 self-center fa-solid fa-folder"></i>
-              {{ pageFolder.folderName }}
-            </button>
-          </div>
-        </ng-container>
-        <app-case-nav-new-item label="New Folder" (onSubmit)="dispatchCreateFolder($event)"></app-case-nav-new-item>
-      </ui-case-nav-category>
+      <div *ngIf="queryParamID$ | async as paramID">
+        <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open" [expanded]="paramID !== 'none'">
+          <ng-container *ngFor="let pageFolder of pageFolders$ | async">
+            <div class="flex rounded-md {{ paramID === pageFolder.folderID ? 'bg-gray-300' : 'hover:bg-gray-200' }} active:bg-gray-300">
+              <button
+                class="flex-auto self-center py-1 px-3 text-left overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+                [routerLink]="['/dashboard']"
+                [queryParams]="{ pageFolder: pageFolder.folderID }">
+                <i class="flex-initial mr-2 self-center fa-solid fa-folder"></i>
+                {{ pageFolder.folderName }}
+              </button>
+            </div>
+          </ng-container>
+          <app-case-nav-new-item label="New Folder" (onSubmit)="dispatchCreateFolder($event)"></app-case-nav-new-item>
+        </ui-case-nav-category>
+      </div>
     </div>
   </div>
 </div>

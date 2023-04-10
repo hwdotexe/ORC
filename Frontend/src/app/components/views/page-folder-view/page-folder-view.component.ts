@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { PageCreateRequest } from 'src/app/models/API/Request/page-create-request.interface';
+import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
@@ -37,5 +39,15 @@ export class PageFolderViewComponent implements OnInit {
     this.pages$ = this.pagesStateService.pages$;
     this.isDataLoaded$ = this.pageFolder$.pipe(switchMap(folder => this.pagesStateService.isPageDataLoaded$(folder)));
     this.isLoading$ = this.pageLoadingService.showLoadingIcon$;
+  }
+
+  dispatchCreatePage(folderID: string): void {
+    let request: PageCreateRequest = {
+      title: 'New Page',
+      privacy: SharePrivacy.PRIVATE,
+      folderID
+    };
+
+    this.pagesStateService.onPageCreateRequest(request);
   }
 }

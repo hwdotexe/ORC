@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { PageFolder } from 'src/app/models/page-folder.interface';
 import { pagesInitialState } from './pages-initial-state';
 import { PagesStateActions } from './pages-state.actions';
 import { PagesState } from './pages-state.interface';
@@ -31,7 +32,7 @@ const reducer = createReducer(
     var newPages = [];
 
     currentPages.forEach(page => {
-      if (page.pageID == action.response.pageID) {
+      if (page.pageID === action.response.pageID) {
         newPages = [...newPages, action.response];
       } else {
         newPages = [...newPages, page];
@@ -41,6 +42,26 @@ const reducer = createReducer(
     return {
       ...state,
       pages: newPages
+    };
+  }),
+  on(PagesStateActions.pageCreateReceived, (state, action): PagesState => {
+    var currentPages = state.pages;
+    var pageFolder = state.pageFolders.find(f => f.folderID === action.folderID);
+    var newFolder: PageFolder = { ...pageFolder, pages: [...pageFolder.pages, action.response.pageID] };
+    var newFolders = [];
+
+    state.pageFolders.forEach(folder => {
+      if (folder.folderID === action.folderID) {
+        newFolders = [...newFolders, newFolder];
+      } else {
+        newFolders = [...newFolders, folder];
+      }
+    });
+
+    return {
+      ...state,
+      pages: [...currentPages, action.response],
+      pageFolders: newFolders
     };
   }),
   on(PagesStateActions.pagesDataCleared, (state, action): PagesState => pagesInitialState)

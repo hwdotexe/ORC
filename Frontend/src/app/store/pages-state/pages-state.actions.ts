@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
+import { PageCreateRequest } from 'src/app/models/API/Request/page-create-request.interface';
 import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
 import { PageFolderCreateRequest } from 'src/app/models/API/Request/page-folder-create-request.interface';
+import { PageCreateResponse } from 'src/app/models/API/Response/page-create-response.interface';
 import { PageFolderCreateResponse } from 'src/app/models/API/Response/page-folder-create-response.interface';
 import { PageFolderDataResponse } from 'src/app/models/API/Response/page-folder-data-response.interface';
 import { PageFoldersListResponse } from 'src/app/models/API/Response/page-folders-list-response.interface';
@@ -21,6 +23,11 @@ export abstract class PagesStateActions {
   static readonly pageFolderCreateReceived = createAction(
     '@critcase/action/page_folder_create/received',
     props<{ response: PageFolderCreateResponse }>()
+  );
+  static readonly pageCreateRequest = createAction('@critcase/action/page_create/request', props<{ request: PageCreateRequest }>());
+  static readonly pageCreateReceived = createAction(
+    '@critcase/action/page_create/received',
+    props<{ response: PageCreateResponse; folderID: string }>()
   );
   static readonly pagesDataFailure = createAction('@critcase/action/page/failure', props<{ error: any }>());
   static readonly pagesDataCleared = createAction('@critcase/action/page/cleared');
