@@ -1,60 +1,66 @@
 <div *ngIf="isDataLoaded$ | async">
   <div *ngIf="pageFolder$ | async as folder">
-    <!-- Header -->
-    <div class="flex pb-4 mb-4 border-b border-gray-500">
-      <div class="flex-initial self-center">
-        <i class="inline-block text-xl mr-2 fa-solid fa-folder"></i>
-        <h2 class="inline-block text-xl font-semibold">{{ folder.folderName }}</h2>
-      </div>
-      <div class="flex-auto"></div>
-      <div class="flex-initial self-center text-xl text-gray-500 text-center">
-        <button class="align-middle" (click)="dispatchCreatePage(folder.folderID)">
-          <i class="p-2 w-9 fa-solid fa-plus rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
-        </button>
-        <button mat-button [matMenuTriggerFor]="folderMenu" class="align-middle">
-          <i class="p-2 w-9 fa-solid fa-ellipsis-vertical rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
-        </button>
-        <mat-menu #folderMenu="matMenu">
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-pen-to-square pr-1"></i>
-            Edit Folder
-          </button>
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-thumbtack pr-1"></i>
-            Pin Folder
-          </button>
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-user-plus pr-1"></i>
-            Share Folder
-          </button>
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-trash-can pr-1"></i>
-            Delete Folder
-          </button>
-        </mat-menu>
-      </div>
-    </div>
-
-    <!-- Pages -->
+    <!-- Viewing page -->
     <ng-container *ngIf="displayPage$ | async as page; else pageList">
-      <!-- Back button header -->
-      <!-- TODO: Replace Back button with breadcrumbs inside folder name header (flex buttons in dropdown as well?) -->
-      <div class="flex">
-        <div
-          class="flex-initial p-2 rounded-md hover:bg-gray-100 hover:cursor-pointer active:bg-gray-200"
-          [routerLink]="['/dashboard']"
-          [queryParams]="{ pageFolder: folder.folderID }">
-          <i class="inline-block align-middle text-lg fa-solid fa-chevron-left"></i>
-          <p class="inline-block align-middle px-2">Back</p>
-        </div>
-        <div class="flex-auto">
-          <!-- (TODO: other buttons) -->
+      <!-- Header -->
+      <div class="pb-4 mb-4 border-b border-gray-500">
+        <div class="flex self-center">
+          <i class="flex-initial self-center text-xl mr-2 fa-solid fa-folder"></i>
+          <h2
+            class="flex-initial self-center text-xl font-semibold underline rounded-md p-1 max-w-xs overflow-hidden text-ellipsis whitespace-nowrap hover:bg-gray-100 active:bg-gray-200 hover:cursor-pointer"
+            [routerLink]="['/dashboard']"
+            [queryParams]="{ pageFolder: folder.folderID }">
+            {{ folder.folderName }}
+          </h2>
+          <i class="flex-initial self-center mx-2 fa-solid fa-chevron-right"></i>
+          <h2 class="flex-initial self-center text-lg font-semibold max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">{{ page.title }}</h2>
         </div>
       </div>
 
+      <!-- Page Info -->
       <app-page-view [page]="page"></app-page-view>
     </ng-container>
+
+    <!-- Viewing page list -->
     <ng-template #pageList>
+      <!-- Header -->
+      <div class="flex pb-4 mb-4 border-b border-gray-500">
+        <div class="flex-initial self-center">
+          <i class="inline-block text-xl mr-2 fa-solid fa-folder"></i>
+          <h2 class="inline-block text-xl font-semibold p-1">
+            {{ folder.folderName }}
+          </h2>
+        </div>
+        <div class="flex-auto"></div>
+        <div class="flex-initial self-center text-xl text-gray-500 text-center">
+          <button class="align-middle" (click)="dispatchCreatePage(folder.folderID)">
+            <i class="p-2 w-9 fa-solid fa-file-circle-plus rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
+          </button>
+          <button mat-button [matMenuTriggerFor]="folderMenu" class="align-middle">
+            <i class="p-2 w-9 fa-solid fa-ellipsis-vertical rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
+          </button>
+          <mat-menu #folderMenu="matMenu">
+            <button mat-menu-item>
+              <i class="w-7 fa-solid fa-pen-to-square pr-1"></i>
+              Edit Folder
+            </button>
+            <button mat-menu-item>
+              <i class="w-7 fa-solid fa-thumbtack pr-1"></i>
+              Pin Folder
+            </button>
+            <button mat-menu-item>
+              <i class="w-7 fa-solid fa-user-plus pr-1"></i>
+              Share Folder
+            </button>
+            <button mat-menu-item>
+              <i class="w-7 fa-solid fa-trash-can pr-1"></i>
+              Delete Folder
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <!-- Pages -->
       <div class="my-2">
         <ui-loading-spinner *ngIf="isLoading$ | async; else loaded"></ui-loading-spinner>
         <ng-template #loaded>
