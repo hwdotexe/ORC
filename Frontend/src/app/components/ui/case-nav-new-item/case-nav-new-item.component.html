@@ -2,12 +2,12 @@
   <i class="flex-initial self-center fa-solid fa-plus"></i>
   <input
     #input
-    class="max-w-[8.5rem] ml-2 px-1 rounded-sm bg-transparent placeholder-slate-600"
+    class="{{ canSubmit ? 'max-w-[9rem]' : 'max-w-[11rem]' }} ml-2 px-1 rounded-sm bg-transparent placeholder-slate-600"
     placeholder="{{ label }}"
     (keypress)="checkCanSubmit($event)"
     (input)="handleInput($event)" />
 
-  <div *ngIf="isTyping" class="mx-2">
+  <div *ngIf="canSubmit" class="mx-2">
     <button class="self-center px-1 rounded-sm hover:bg-gray-300 active:bg-gray-400" (click)="submit()"><i class="fa-solid fa-check"></i></button>
   </div>
 </div>

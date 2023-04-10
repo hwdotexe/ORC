@@ -52,12 +52,14 @@
 
       <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open">
         <ng-container *ngFor="let pageFolder of pageFolders$ | async">
-          <div class="flex px-3 py-1 rounded-md hover:bg-gray-200 active:bg-gray-300">
-            <i class="flex-initial self-center fa-solid fa-folder"></i>
+          <div
+            *ngIf="queryParamID$ | async as paramID"
+            class="flex rounded-md {{ paramID === pageFolder.folderID ? 'bg-gray-300' : 'hover:bg-gray-200' }} active:bg-gray-300">
             <button
-              class="flex-auto self-center ml-2 text-left max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
+              class="flex-auto self-center py-1 px-3 text-left overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
               [routerLink]="['/dashboard']"
               [queryParams]="{ pageFolder: pageFolder.folderID }">
+              <i class="flex-initial mr-2 self-center fa-solid fa-folder"></i>
               {{ pageFolder.folderName }}
             </button>
           </div>

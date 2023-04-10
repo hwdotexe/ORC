@@ -10,33 +10,33 @@ export class CaseNavNewItemComponent implements OnInit {
   @ViewChild('input') input: ElementRef;
   @Output() onSubmit = new EventEmitter<string>();
 
-  isTyping: boolean;
+  canSubmit: boolean;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   checkCanSubmit(event: any) {
-    if (this.isTyping && event?.key === 'Enter') {
+    if (this.canSubmit && event?.key === 'Enter') {
       this.submit();
     }
   }
 
   handleInput(event: any) {
     if (event?.target?.value?.length > 0) {
-      this.isTyping = true;
+      this.canSubmit = true;
     } else {
-      this.isTyping = false;
+      this.canSubmit = false;
     }
   }
 
   submit(): void {
-    if (this.isTyping) {
+    if (this.canSubmit) {
       this.onSubmit.emit(this.input.nativeElement.value);
 
       this.input.nativeElement.value = '';
       this.input.nativeElement.blur();
-      this.isTyping = false;
+      this.canSubmit = false;
     }
   }
 }

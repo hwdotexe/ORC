@@ -8,14 +8,13 @@
       </div>
       <div class="flex-auto"></div>
       <div class="flex-initial self-center text-xl text-gray-500 text-center">
+        <button class="align-middle">
+          <i class="p-2 w-9 fa-solid fa-plus rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
+        </button>
         <button mat-button [matMenuTriggerFor]="folderMenu" class="align-middle">
           <i class="p-2 w-9 fa-solid fa-ellipsis-vertical rounded-md hover:bg-gray-100 active:bg-gray-200"></i>
         </button>
         <mat-menu #folderMenu="matMenu">
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-plus pr-1"></i>
-            New Note
-          </button>
           <button mat-menu-item>
             <i class="w-7 fa-solid fa-pen-to-square pr-1"></i>
             Edit Folder
