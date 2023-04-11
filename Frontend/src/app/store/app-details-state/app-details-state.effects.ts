@@ -58,7 +58,7 @@ export class AppDetailsStateEffects {
   stateCleared$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppDetailsStateActions.clearFullState),
-      mergeMap(() => [CampaignStateActions.campaignDataCleared(), PagesStateActions.pagesDataCleared()])
+      mergeMap(() => [CampaignStateActions.campaignDataCleared(), PagesStateActions.pagesDataCleared(), AuthStateActions.authDataCleared()])
     )
   );
 

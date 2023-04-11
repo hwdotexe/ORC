@@ -43,7 +43,7 @@ body {
 }
 
 .mdHeading4 {
-  @apply text-lg my-1;
+  @apply text-lg my-1 font-semibold;
 }
 
 .mdHeading5 {
