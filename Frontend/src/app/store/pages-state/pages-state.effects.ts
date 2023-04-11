@@ -6,6 +6,8 @@ import { PageFolderDataResponse } from 'src/app/models/API/Response/page-folder-
 import { PageFoldersListResponse } from 'src/app/models/API/Response/page-folders-list-response.interface';
 import { Page } from 'src/app/models/page.interface';
 import { HTTPService } from 'src/app/services/httpservice/http.service';
+import { AppDetailsStateActions } from '../app-details-state/app-details-state.actions';
+import { AuthStateActions } from '../auth-state/auth-state.actions';
 import { PagesStateActions } from './pages-state.actions';
 
 @Injectable()
@@ -104,5 +106,16 @@ export class PagesStateEffects {
     )
   );
 
-  // TODO catch the failure and display something
+  pageDataFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pagesDataFailure),
+      map(error => {
+        if (error.error.status >= 500) {
+          return AppDetailsStateActions.serverError({ error });
+        } else if (error.error.status === 401) {
+          return AuthStateActions.authExpired({ error });
+        }
+      })
+    )
+  );
 }

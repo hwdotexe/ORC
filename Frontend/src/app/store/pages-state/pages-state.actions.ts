@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import { PageCreateRequest } from 'src/app/models/API/Request/page-create-request.interface';
 import { PageEditRequest } from 'src/app/models/API/Request/page-edit-request.interface';
@@ -29,7 +30,7 @@ export abstract class PagesStateActions {
     '@critcase/action/page_create/received',
     props<{ response: PageCreateResponse; folderID: string }>()
   );
-  static readonly pagesDataFailure = createAction('@critcase/action/page/failure', props<{ error: any }>());
+  static readonly pagesDataFailure = createAction('@critcase/action/page/failure', props<{ error: HttpErrorResponse }>());
   static readonly pagesDataCleared = createAction('@critcase/action/page/cleared');
   static readonly pageUpdateRequest = createAction('@critcase/action/page/update/request', props<{ request: PageEditRequest }>());
   static readonly pageUpdateReceived = createAction('@critcase/action/page/update/received', props<{ response: Page }>());

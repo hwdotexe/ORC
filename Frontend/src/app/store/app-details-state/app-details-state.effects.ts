@@ -70,7 +70,7 @@ export class AppDetailsStateEffects {
           map(() => {
             return AppDetailsStateActions.authenticationHeartbeatSucceeded();
           }),
-          catchError(() => of(AuthStateActions.logOutAttempt()))
+          catchError(error => of(AuthStateActions.authExpired(error)))
         )
       )
     )

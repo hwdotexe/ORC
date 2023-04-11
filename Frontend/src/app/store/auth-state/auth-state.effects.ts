@@ -86,6 +86,14 @@ export class AuthStateEffects {
     )
   );
 
+  authExpired$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthStateActions.authExpired),
+      tap(() => this.router.navigate(['/timed-out'])),
+      map(() => AppDetailsStateActions.clearFullState())
+    )
+  );
+
   private handleError(error: HttpErrorResponse, action?: Action) {
     if (error.status >= 500) {
       return AppDetailsStateActions.serverError({ error });

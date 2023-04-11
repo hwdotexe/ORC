@@ -58,6 +58,7 @@ import { PageViewComponent } from './components/views/page-view/page-view.compon
 import { PageEditFormComponent } from './components/forms/page-edit-form/page-edit-form.component';
 import { CaseNavNewItemComponent } from './components/ui/case-nav-new-item/case-nav-new-item.component';
 import { LoadingSpinnerComponent } from './components/ui/loading-spinner/loading-spinner.component';
+import { TimedOutComponent } from './components/pages/status-pages/timed-out/timed-out.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -100,7 +101,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     PageViewComponent,
     PageEditFormComponent,
     CaseNavNewItemComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TimedOutComponent
   ],
   imports: [
     BrowserModule,

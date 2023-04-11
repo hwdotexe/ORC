@@ -9,6 +9,7 @@ import { AccountCreatedComponent } from './components/pages/status-pages/account
 import { ErrorComponent } from './components/pages/status-pages/error/error.component';
 import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
 import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
+import { TimedOutComponent } from './components/pages/status-pages/timed-out/timed-out.component';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
 import { CanActivateAuthenticatedGuardService } from './services/route-guards/can-activate-authenticated-guard.service';
 import { CanActivateUserManagementGuardService } from './services/route-guards/can-activate-user-management-guard.service';
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'logged-out',
     component: LoggedOutComponent
+  },
+  {
+    path: 'timed-out',
+    component: TimedOutComponent
   },
   {
     path: 'info',

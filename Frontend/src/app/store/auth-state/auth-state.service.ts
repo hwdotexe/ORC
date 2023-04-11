@@ -33,8 +33,4 @@ export class AuthStateService {
   onAuthDataCleared(): void {
     this.store.dispatch(AuthStateActions.authDataCleared());
   }
-
-  onAuthDataInfoUpdated(displayName: string): void {
-    this.store.dispatch(AuthStateActions.AUTH_DATA_INFO_UPDATED({ displayName }));
-  }
 }
