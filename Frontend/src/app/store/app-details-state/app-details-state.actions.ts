@@ -6,4 +6,6 @@ export abstract class AppDetailsStateActions {
   static readonly formError = createAction('@critcase/action/error/form', props<{ error: FormError }>());
   static readonly formErrorsCleared = createAction('@critcase/action/error/form/clear');
   static readonly clearFullState = createAction('@critcase/action/state/cleared');
+  static readonly authenticationHeartbeatAttempt = createAction('@critcase/action/heartbeat/attempt');
+  static readonly authenticationHeartbeatSucceeded = createAction('@critcase/action/heartbeat/succeed');
 }

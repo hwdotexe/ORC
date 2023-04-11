@@ -54,7 +54,6 @@
 
   <!-- Form or rendered content -->
   <ng-container *ngIf="isEditing; else renderedPage">
-    <!-- TODO: on submit, force parent component to reload page object from state. -->
     <app-page-edit-form [page]="page" (onSubmit)="cancelEdit()"></app-page-edit-form>
   </ng-container>
   <ng-template #renderedPage>

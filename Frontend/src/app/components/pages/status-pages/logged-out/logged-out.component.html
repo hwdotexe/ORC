@@ -1,13 +1,9 @@
-<div class="my-5 py-3 text-center">
-  <i class="fa-solid fa-right-from-bracket text-5xl text-yellow-600"></i>
-  <h1 class="text-4xl font-semibold text-gray-800 text-center my-2">Logged Out</h1>
-</div>
-
-<div class="mx-auto w-11/12 lg:w-4/5 bg-gray-50 text-center rounded-md shadow-md p-5 my-4">
-  <p class="text-gray-700 font-semibold my-3">You have been logged out</p>
-  <p class="text-gray-700">
-    You can still view the list of reviews by using the button below. Or, if you need to log in again, simply use the link at the bottom of the page.
+<div class="max-w-md mx-auto">
+  <!-- TODO: Image is for demonstration purposes only -->
+  <img src="../../../../assets/img/undraw/agree.svg" class="max-w-xs mx-auto" />
+  <h1 class="text-lg text-gray-600 text-center">You've Been Logged Out</h1>
+  <p class="mt-12 text-gray-500">
+    You have been logged out from your CritCase. To log back in,
+    <a [routerLink]="['/login']" class="underline hover:text-gray-600">click here</a>
   </p>
-
-  <button styled-blue [routerLink]="['']" class="mt-4">Go to Reviews</button>
 </div>
