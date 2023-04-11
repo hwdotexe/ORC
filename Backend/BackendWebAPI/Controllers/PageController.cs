@@ -221,8 +221,6 @@ namespace BackendWebAPI.Controllers
             }
         }
 
-        // TODO this might be temporary or permanent, who knows!
-        // Might be possible to dispatch another request to add it to a campaign or character.
         [HttpPut("folder")]
         public ActionResult PUT_Create_Page_Folder()
         {
@@ -357,11 +355,77 @@ namespace BackendWebAPI.Controllers
                     if (page != null)
                     {
                         var isOwner = page.OwnerAccountID == sessionValue.AccountID;
-                        var pageShare = page.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType != ShareType.FULL);
+                        var pageShare = page.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType == ShareType.FULL);
 
                         if (isOwner || pageShare != null)
                         {
-                            App.GetState().DeletePage(page.PageID);
+                            var folder = App.GetState().LoadedPageFolders.Find(f => f.Pages.Contains(page.PageID));
+
+                            if (folder != null)
+                            {
+                                folder.Pages.Remove(page.PageID);
+
+                                App.GetState().DB.UpdatePageFolder(folder);
+                                App.GetState().DeletePage(page.PageID);
+
+                                return Ok();
+                            }
+                            else
+                            {
+                                return NotFound();
+                            }
+                        }
+                        else
+                        {
+                            return Forbid();
+                        }
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete("folder/{folderID}")]
+        public ActionResult DELETE_Delete_Folder(string folderID)
+        {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_FOLDER"))
+                {
+                    var sessionValue = session.Value;
+                    var folder = App.GetState().LoadedPageFolders.Find(f => f.FolderID == Guid.Parse(folderID));
+
+                    if (folder != null)
+                    {
+                        var isOwner = folder.OwnerAccountID == sessionValue.AccountID;
+                        var folderShare = folder.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType == ShareType.FULL);
+
+                        if (isOwner || folderShare != null)
+                        {
+                            App.GetState().DeletePages(folder.Pages);
+                            App.GetState().DB.DeletePageFolder(folder);
+
+                            App.GetState().LoadedPageFolders.Remove(folder);
 
                             return Ok();
                         }
