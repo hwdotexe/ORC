@@ -29,3 +29,64 @@ body {
 .ng-submitted textarea.ng-valid {
   border: 2px solid rgb(34, 197, 94);
 }
+
+.mdHeading1 {
+  @apply text-3xl my-1 mb-2 font-bold border-b border-gray-400;
+}
+
+.mdHeading2 {
+  @apply text-2xl my-1 font-bold;
+}
+
+.mdHeading3 {
+  @apply text-xl my-1 font-semibold;
+}
+
+.mdHeading4 {
+  @apply text-lg my-1;
+}
+
+.mdHeading5 {
+  @apply font-bold my-1;
+}
+
+.mdHeading6 {
+  @apply text-sm font-semibold my-1;
+}
+
+.mdBlockquote {
+  @apply p-3 my-2 bg-gray-100 max-w-fit border-l-8 border-gray-400 rounded-sm;
+}
+
+.mdUL,
+.mdOL {
+  @apply my-1;
+}
+
+.mdUL .mdListItem {
+  @apply list-disc ml-5;
+}
+
+.mdOL .mdListItem {
+  @apply list-decimal ml-5;
+}
+
+.mdHr {
+  @apply my-3;
+}
+
+.mdA {
+  @apply text-gray-400 font-semibold hover:text-gray-500 active:text-gray-600;
+}
+
+.mdImg {
+  @apply max-w-xs my-1;
+}
+
+.mdCode {
+  @apply font-mono text-sm bg-gray-200 p-1 rounded-sm;
+}
+
+.mdCodespan {
+  @apply font-mono text-sm bg-gray-200 p-2 my-1 rounded-sm;
+}

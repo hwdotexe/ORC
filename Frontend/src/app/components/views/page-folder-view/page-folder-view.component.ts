@@ -50,4 +50,9 @@ export class PageFolderViewComponent implements OnInit {
 
     this.pagesStateService.onPageCreateRequest(request);
   }
+
+  deleteFolder(folderID: string): void {
+    // TODO show an ARE YOU SURE? message/modal!
+    this.pagesStateService.onPageFolderDeleteRequest(folderID);
+  }
 }

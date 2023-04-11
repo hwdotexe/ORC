@@ -27,6 +27,21 @@ const reducer = createReducer(
       pages: action.response.pages
     };
   }),
+  on(PagesStateActions.pageFolderDeleteReceived, (state, action): PagesState => {
+    var currentFolders = state.pageFolders;
+    var newFolders = [];
+
+    currentFolders.forEach(folder => {
+      if (folder.folderID !== action.folderID) {
+        newFolders = [...newFolders, folder];
+      }
+    });
+
+    return {
+      ...state,
+      pageFolders: newFolders
+    };
+  }),
   on(PagesStateActions.pageUpdateReceived, (state, action): PagesState => {
     var currentPages = state.pages;
     var newPages = [];

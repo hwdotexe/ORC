@@ -11,14 +11,14 @@
       <div class="flex-initial">
         <h1 class="self-center text-xl">{{ page.title }}</h1>
 
-        <div class="mt-1 text-xs italic text-gray-500">
+        <div class="my-2 text-xs italic text-gray-500">
           <div class="inline-block">
             <ng-container *ngIf="page.privacy === SharePrivacy.PRIVATE; else public">
-              <i class="px-1 self-center inline-block fa-solid fa-lock"></i>
+              <i class="pr-1 self-center inline-block fa-solid fa-lock"></i>
               <p class="inline-block">Private</p>
             </ng-container>
             <ng-template #public>
-              <i class="px-1 self-center inline-block fa-solid fa-globe"></i>
+              <i class="pr-1 self-center inline-block fa-solid fa-globe"></i>
               <p class="inline-block">Public</p>
             </ng-template>
           </div>
@@ -57,7 +57,7 @@
     <app-page-edit-form [page]="page" (onSubmit)="cancelEdit()"></app-page-edit-form>
   </ng-container>
   <ng-template #renderedPage>
-    <hr class="my-2" />
+    <hr class="my-2 mb-4" />
     <markdown emoji ngPreserveWhitespaces [data]="page.body"></markdown>
   </ng-template>
 </div>

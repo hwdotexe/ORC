@@ -75,6 +75,10 @@ export class PagesStateService {
     this.store.dispatch(PagesStateActions.pageFolderCreateRequest({ request }));
   }
 
+  onPageFolderDeleteRequest(folderID: string) {
+    this.store.dispatch(PagesStateActions.pageFolderDeleteRequest({ folderID }));
+  }
+
   onPageCreateRequest(request: PageCreateRequest): void {
     this.store.dispatch(PagesStateActions.pageCreateRequest({ request }));
   }

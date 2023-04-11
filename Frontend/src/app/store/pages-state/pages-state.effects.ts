@@ -59,6 +59,27 @@ export class PagesStateEffects {
     { dispatch: false }
   );
 
+  pageFolderDeleteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pageFolderDeleteRequest),
+      exhaustMap(action =>
+        this.httpService.DELETE<any>('page/folder/' + action.folderID, null, 'DELETE_FOLDER').pipe(
+          map(() => PagesStateActions.pageFolderDeleteReceived({ folderID: action.folderID })),
+          catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
+        )
+      )
+    )
+  );
+
+  pageFolderDeleteReceived$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(PagesStateActions.pageFolderDeleteReceived),
+        tap(action => this.router.navigate(['/dashboard']))
+      ),
+    { dispatch: false }
+  );
+
   pageCreateRequest$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PagesStateActions.pageCreateRequest),

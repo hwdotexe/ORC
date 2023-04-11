@@ -10,21 +10,23 @@ import { PageFoldersListResponse } from 'src/app/models/API/Response/page-folder
 import { Page } from 'src/app/models/page.interface';
 
 export abstract class PagesStateActions {
-  static readonly pageFoldersListRequest = createAction('@critcase/action/page_folder_list/request');
+  static readonly pageFoldersListRequest = createAction('@critcase/action/page_folder/list/request');
   static readonly pageFoldersListReceived = createAction(
-    '@critcase/action/page_folder_list/received',
+    '@critcase/action/page_folder/list/received',
     props<{ response: PageFoldersListResponse }>()
   );
-  static readonly pageFoldersDataRequest = createAction('@critcase/action/page_folder_data/request', props<{ folderID: string }>());
-  static readonly pageFoldersDataReceived = createAction('@critcase/action/page_folder_data/received', props<{ response: PageFolderDataResponse }>());
+  static readonly pageFoldersDataRequest = createAction('@critcase/action/page_folder/data/request', props<{ folderID: string }>());
+  static readonly pageFoldersDataReceived = createAction('@critcase/action/page_folder/data/received', props<{ response: PageFolderDataResponse }>());
   static readonly pageFolderCreateRequest = createAction(
-    '@critcase/action/page_folder_create/request',
+    '@critcase/action/page_folder/create/request',
     props<{ request: PageFolderCreateRequest }>()
   );
   static readonly pageFolderCreateReceived = createAction(
-    '@critcase/action/page_folder_create/received',
+    '@critcase/action/page_folder/create/received',
     props<{ response: PageFolderCreateResponse }>()
   );
+  static readonly pageFolderDeleteRequest = createAction('@critcase/action/page_folder/delete/request', props<{ folderID: string }>());
+  static readonly pageFolderDeleteReceived = createAction('@critcase/action/page_folder/delete/received', props<{ folderID: string }>());
   static readonly pageCreateRequest = createAction('@critcase/action/page_create/request', props<{ request: PageCreateRequest }>());
   static readonly pageCreateReceived = createAction(
     '@critcase/action/page_create/received',
