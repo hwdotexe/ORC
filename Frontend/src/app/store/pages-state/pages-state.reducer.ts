@@ -64,6 +64,21 @@ const reducer = createReducer(
       pageFolders: newFolders
     };
   }),
+  on(PagesStateActions.pageDeleteReceived, (state, action): PagesState => {
+    var currentPages = state.pages;
+    var newPages = [];
+
+    currentPages.forEach(page => {
+      if (page.pageID !== action.pageID) {
+        newPages = [...newPages, page];
+      }
+    });
+
+    return {
+      ...state,
+      pages: newPages
+    };
+  }),
   on(PagesStateActions.pagesDataCleared, (state, action): PagesState => pagesInitialState)
 );
 

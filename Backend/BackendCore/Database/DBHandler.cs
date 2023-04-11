@@ -224,6 +224,18 @@ namespace BackendCore.Database
         {
             Delete<Page>(_pagestable, "PageID", page.PageID);
         }
+
+        public void DeletePage(Guid pageID)
+        {
+            Delete<Page>(_pagestable, "PageID", pageID);
+        }
+
+        public void DeletePages(List<Guid> pageIDs)
+        {
+            var filter = Builders<Page>.Filter.In("PageID", pageIDs);
+            DeleteMany<Page>(_pagestable, filter);
+        }
+
         #endregion
 
         #region pagefolders
@@ -355,6 +367,13 @@ namespace BackendCore.Database
         {
             var collection = database.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq(field, value);
+
+            await collection.DeleteManyAsync(filter);
+        }
+
+        private async void DeleteMany<T>(string table, FilterDefinition<T> filter)
+        {
+            var collection = database.GetCollection<T>(table);
 
             await collection.DeleteManyAsync(filter);
         }

@@ -102,6 +102,50 @@ namespace BackendCore
             }
         }
 
+        public void DeletePage(Guid pageID)
+        {
+            
+            var cachedPage = CachedPages.Find(p => p.PageID == pageID);
+
+            if (cachedPage != null)
+            {
+                CachedPages.Remove(cachedPage);
+            }
+
+            App.GetState().DB.DeletePage(pageID);
+        }
+
+        // TODO: This is not implemented.
+        public List<Page> DeletePages(List<Guid> pageIDs)
+        {
+            if (pageIDs.Count > 0)
+            {
+                var cachedPages = CachedPages.FindAll(p => pageIDs.Contains(p.PageID));
+                var notCachedPages = pageIDs.FindAll(id => !CachedPages.Exists(p => p.PageID == id));
+
+                if (cachedPages.Count > 0 && notCachedPages.Count == 0)
+                {
+                    return cachedPages;
+                }
+                else
+                {
+                    var pagesFromDB = App.GetState().DB.GetPages(notCachedPages);
+
+                    if (pagesFromDB != null)
+                    {
+                        App.GetState().CachedPages.AddRange(pagesFromDB);
+                        cachedPages.AddRange(pagesFromDB);
+                    }
+
+                    return cachedPages;
+                }
+            }
+            else
+            {
+                return new List<Page>();
+            }
+        }
+
         private void LoadUserSystems(Guid accountID)
         {
             var userSystems = DB.GetSystems(accountID);

@@ -1009,7 +1009,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"PageID\": \"{{pageid}}\",\r\n    \"Title\": \"Hey look I updated my page!\",\r\n    \"Body\": \"# Title\\n**This is an exciting new opportunity in text editing technology**\\n_Please use Markdown._\",\r\n    \"Privacy\": \"PUBLIC\"\r\n}",
+							"raw": "{\r\n    \"PageID\": \"{{pageid}}\",\r\n    \"Title\": \"Hey look I updated my page!\",\r\n    \"Body\": \"# Title\\n**This is an exciting new opportunity in text editing technology**\\n\\n_Please use Markdown._\",\r\n    \"Privacy\": \"PUBLIC\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1024,6 +1024,56 @@
 							"path": [
 								"v1",
 								"page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Captcha-Token",
+								"value": "token",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverAddress}}/v1/page/{{pageid}}",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"v1",
+								"page",
+								"{{pageid}}"
 							]
 						}
 					},

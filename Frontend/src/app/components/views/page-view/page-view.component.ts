@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { filter, map, takeUntil } from 'rxjs';
 import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { Page } from 'src/app/models/page.interface';
+import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
 @Component({
@@ -16,7 +17,7 @@ export class PageViewComponent extends BaseUnsubscribeComponent implements OnIni
 
   SharePrivacy = SharePrivacy;
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private pagesStateService: PagesStateService) {
     super();
   }
 
@@ -42,5 +43,10 @@ export class PageViewComponent extends BaseUnsubscribeComponent implements OnIni
 
   cancelEdit(): void {
     this.isEditing = false;
+  }
+
+  deletePage(): void {
+    // TODO show an ARE YOU SURE? message/modal!
+    this.pagesStateService.onPageDeleteRequest(this.page.pageID);
   }
 }

@@ -33,4 +33,6 @@ export abstract class PagesStateActions {
   static readonly pagesDataCleared = createAction('@critcase/action/page/cleared');
   static readonly pageUpdateRequest = createAction('@critcase/action/page/update/request', props<{ request: PageEditRequest }>());
   static readonly pageUpdateReceived = createAction('@critcase/action/page/update/received', props<{ response: Page }>());
+  static readonly pageDeleteRequest = createAction('@critcase/action/page/delete/request', props<{ pageID: string }>());
+  static readonly pageDeleteReceived = createAction('@critcase/action/page/delete/received', props<{ pageID: string }>());
 }

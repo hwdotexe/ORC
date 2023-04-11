@@ -336,6 +336,58 @@ namespace BackendWebAPI.Controllers
             }
         }
 
+
+        [HttpDelete("{pageID}")]
+        public ActionResult DELETE_Delete_Page(string pageID)
+        {
+            var session = HttpContext.GetAccountSession();
+
+            if (session == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_PAGE"))
+                {
+                    var sessionValue = session.Value;
+                    var page = App.GetState().GetPage(Guid.Parse(pageID));
+
+                    if (page != null)
+                    {
+                        var isOwner = page.OwnerAccountID == sessionValue.AccountID;
+                        var pageShare = page.Shares.Find(s => s.AccountID == sessionValue.AccountID && s.ShareType != ShareType.FULL);
+
+                        if (isOwner || pageShare != null)
+                        {
+                            App.GetState().DeletePage(page.PageID);
+
+                            return Ok();
+                        }
+                        else
+                        {
+                            return Forbid();
+                        }
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    return StatusCode(429);
+                }
+            }
+            catch (Exception e)
+            {
+                HTTPServerUtilities.LogServerError(e);
+
+                return StatusCode(500);
+            }
+        }
+
         private PageFolderGetResponse MapPageFolder(Guid callerID, PageFolder folder, List<Page> pages)
         {
             var response = new PageFolderGetResponse

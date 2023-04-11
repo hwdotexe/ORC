@@ -92,5 +92,17 @@ export class PagesStateEffects {
     )
   );
 
+  pageDeleteRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PagesStateActions.pageDeleteRequest),
+      exhaustMap(action =>
+        this.httpService.DELETE<any>('page/' + action.pageID, null, 'DELETE_PAGE').pipe(
+          map(() => PagesStateActions.pageDeleteReceived({ pageID: action.pageID })),
+          catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
+        )
+      )
+    )
+  );
+
   // TODO catch the failure and display something
 }

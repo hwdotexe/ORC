@@ -87,6 +87,10 @@ export class PagesStateService {
     this.store.dispatch(PagesStateActions.pageUpdateRequest({ request }));
   }
 
+  onPageDeleteRequest(pageID: string) {
+    this.store.dispatch(PagesStateActions.pageDeleteRequest({ pageID }));
+  }
+
   private folderMatchState(statePages: Page[], folder: PageFolder) {
     // If there are pages to compare at all, compare them. Otherwise, only compare the length.
     if (folder.pages.length > 0) {
