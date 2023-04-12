@@ -1,12 +1,15 @@
 <ng-container *ngIf="isLoading$ | async; else notLoading">
-  <button class="w-full py-2 rounded-sm bg-[#6abaf7] text-gray-100 font-semibold shadow-sm hover:cursor-progress" type="submit" disabled="disabled">
+  <button
+    class="w-full py-2 rounded-sm bg-critBlue-100 text-gray-100 font-semibold shadow-sm hover:cursor-progress"
+    type="submit"
+    disabled="disabled">
     <i class="fa-solid fa-spinner animate-spin mx-2"></i>
-    Log In
+    {{ label }}
   </button>
 </ng-container>
 <ng-template #notLoading>
   <button
-    class="w-full py-2 rounded-sm bg-[#39A0ED] text-gray-100 font-semibold shadow-sm hover:bg-[#328dd3] active:bg-[#2972aa] active:ring active:ring-[#39A0ED]"
+    class="w-full py-2 rounded-sm bg-critBlue-200 text-gray-100 font-semibold shadow-sm hover:bg-critBlue-300 active:bg-critBlue-400 active:ring active:ring-critBlue-200"
     type="submit">
     {{ label }}
   </button>

@@ -60,6 +60,7 @@ import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.ef
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
+import { ConfirmModalComponent } from './components/ui/confirm-modal/confirm-modal.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -103,7 +104,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     PageEditFormComponent,
     CaseNavNewItemComponent,
     LoadingSpinnerComponent,
-    TimedOutComponent
+    TimedOutComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,

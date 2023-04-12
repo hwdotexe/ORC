@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { filter, map, takeUntil } from 'rxjs';
 import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { Page } from 'src/app/models/page.interface';
+import { AppDetailsStateService } from 'src/app/store/app-details-state/app-details-state.service';
 import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
 import { BaseUnsubscribeComponent } from '../../base-unsubscribe.component';
 
@@ -17,7 +18,11 @@ export class PageViewComponent extends BaseUnsubscribeComponent implements OnIni
 
   SharePrivacy = SharePrivacy;
 
-  constructor(private activatedRoute: ActivatedRoute, private pagesStateService: PagesStateService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private pagesStateService: PagesStateService,
+    private appDetailsStateService: AppDetailsStateService
+  ) {
     super();
   }
 
@@ -46,7 +51,12 @@ export class PageViewComponent extends BaseUnsubscribeComponent implements OnIni
   }
 
   deletePage(): void {
-    // TODO show an ARE YOU SURE? message/modal!
-    this.pagesStateService.onPageDeleteRequest(this.page.pageID);
+    this.appDetailsStateService.showConfirmationModal({
+      title: 'Are you sure?',
+      body: ['You are about to delete the page "' + this.page.title + '"!', 'This action cannot be undone.'],
+      callback: () => {
+        this.pagesStateService.onPageDeleteRequest(this.page.pageID);
+      }
+    });
   }
 }

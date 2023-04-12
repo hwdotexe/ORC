@@ -2,7 +2,7 @@
   <div class="flex px-2 py-4 {{ expanded ? 'pb-2' : '' }}" (click)="toggleExpand()">
     <i class="{{ fa_icon }} text-2xl inline-block self-center text-center flex-initial w-9"></i>
     <p class="inline-block self-center flex-auto px-2 text-lg font-semibold">{{ label }}</p>
-    <div class="text-2xl px-1.5 text-gray-400 inline-block self-center flex-initial">
+    <div class="text-2xl px-1.5 text-gray-400 inline-block self-center flex-initial hover:text-critBlue-200">
       <i class="fa-solid fa-plus plus {{ expanded ? 'opened' : '' }}"></i>
     </div>
   </div>

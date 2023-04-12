@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
 import { PageCreateRequest } from 'src/app/models/API/Request/page-create-request.interface';
 import { SharePrivacy } from 'src/app/models/enum/share-privacy.enum';
 import { PageFolder } from 'src/app/models/page-folder.interface';
 import { Page } from 'src/app/models/page.interface';
 import { PageLoadingService } from 'src/app/services/page-loading-service/page-loading.service';
+import { AppDetailsStateService } from 'src/app/store/app-details-state/app-details-state.service';
 import { PagesStateService } from 'src/app/store/pages-state/pages-state.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class PageFolderViewComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router,
+    private appDetailsStateService: AppDetailsStateService,
     private pagesStateService: PagesStateService,
     private pageLoadingService: PageLoadingService
   ) {}
@@ -51,8 +52,17 @@ export class PageFolderViewComponent implements OnInit {
     this.pagesStateService.onPageCreateRequest(request);
   }
 
-  deleteFolder(folderID: string): void {
-    // TODO show an ARE YOU SURE? message/modal!
-    this.pagesStateService.onPageFolderDeleteRequest(folderID);
+  deleteFolder(folder: PageFolder): void {
+    this.appDetailsStateService.showConfirmationModal({
+      title: 'Are you sure?',
+      body: [
+        'You are about to delete the folder "' + folder.folderName + '"!',
+        'This will also delete each page inside this folder, and users sharing this folder will lose access.',
+        'This action cannot be undone.'
+      ],
+      callback: () => {
+        this.pagesStateService.onPageFolderDeleteRequest(folder.folderID);
+      }
+    });
   }
 }
