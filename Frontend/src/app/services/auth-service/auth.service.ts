@@ -13,9 +13,9 @@ export class AuthService {
 
   getAccountInfo$(): Observable<AccountInfo> {
     return this.authStateService.userID$.pipe(
-      withLatestFrom(this.authStateService.displayName$, this.authStateService.accountType$),
-      map(([userID, displayName, accountType]) => {
-        return userID ? { userID, displayName, accountType } : undefined;
+      withLatestFrom(this.authStateService.displayName$, this.authStateService.accountType$, this.authStateService.avatarURL$),
+      map(([userID, displayName, accountType, avatarURL]) => {
+        return userID ? { userID, displayName, accountType, avatarURL } : undefined;
       })
     );
   }

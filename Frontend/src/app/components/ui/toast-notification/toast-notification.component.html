@@ -1,16 +1,14 @@
 <div
-  class="animate-flyIn min-w-[16rem] max-w-xs p-3 mb-1 bg-white hover:bg-gray-200 border border-gray-200 rounded-md shadow-md"
+  class="animate-flyIn min-w-[16rem] max-w-xs py-3 px-5 mb-1 text-white {{
+    toastType === 'toast-success' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+  }} rounded-md shadow-md"
   (click)="action($event)">
   <div class="flex">
-    <i
-      class="flex-initial self-center text-3xl p-1 mr-2 rounded-sm text-green-600 fa-regular fa-circle-check"
-      *ngIf="toastType === 'toast-success'"></i>
-    <i
-      class="flex-initial self-center text-3xl p-1 mr-2 rounded-sm text-red-600 fa-solid fa-triangle-exclamation"
-      *ngIf="toastType === 'toast-error'"></i>
+    <i class="flex-initial self-center text-3xl p-1 mr-2 rounded-sm fa-regular fa-circle-check" *ngIf="toastType === 'toast-success'"></i>
+    <i class="flex-initial self-center text-3xl p-1 mr-2 rounded-sm fa-solid fa-triangle-exclamation" *ngIf="toastType === 'toast-error'"></i>
     <div class="flex-auto self-center">
       <p class="font-semibold">{{ title }}</p>
-      <p class="text-xs text-gray-600">{{ message }}</p>
+      <p class="text-xs">{{ message }}</p>
     </div>
   </div>
 </div>

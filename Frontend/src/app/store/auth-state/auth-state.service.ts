@@ -13,6 +13,7 @@ import { AuthStateSelectors } from './auth-state.selectors';
 export class AuthStateService {
   authToken$: Observable<string> = this.store.select(AuthStateSelectors.authToken);
   userID$: Observable<string> = this.store.select(AuthStateSelectors.userID);
+  avatarURL$: Observable<string> = this.store.select(AuthStateSelectors.avatarURL);
   displayName$: Observable<string> = this.store.select(AuthStateSelectors.displayName);
   accountType$: Observable<AccountType> = this.store.select(AuthStateSelectors.accountType);
 

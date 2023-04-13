@@ -11,6 +11,7 @@ const reducer = createReducer(
       ...state,
       authToken: action.response.authToken,
       accountID: action.response.accountID,
+      avatarURL: action.response.avatarURL,
       displayName: action.response.displayName,
       accountType: action.response.accountType
     })
@@ -21,6 +22,7 @@ const reducer = createReducer(
       ...state,
       authToken: action.response.authToken,
       accountID: action.response.accountID,
+      avatarURL: action.response.avatarURL,
       displayName: action.response.displayName,
       accountType: action.response.accountType
     })

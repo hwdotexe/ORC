@@ -35,11 +35,11 @@ namespace BackendWebAPI.Controllers
                             if (!App.GetState().Auth.AccountExists(requestValue.Email))
                             {
                                 // TODO: We're retrieving ALL accounts just to see if the count is 0?
-                                // Maybe we should generate an admun account when the app first starts
+                                // Maybe we should generate an admin account when the app first starts
                                 // with an auto-generated password?
                                 var accountCount = App.GetState().DB.GetAccounts().Count;
                                 var accountType = accountCount == 0 ? AccountType.ADMIN : AccountType.USER;
-                                var account = new Account(requestValue.DisplayName, accountType);
+                                var account = new Account(requestValue.DisplayName, requestValue.Email, accountType);
                                 var token = App.GetState().Auth.CreateSession(account.AccountID);
 
                                 App.GetState().DB.InsertAccount(account);
@@ -56,6 +56,7 @@ namespace BackendWebAPI.Controllers
                                 {
                                     AuthToken = token,
                                     AccountID = account.AccountID,
+                                    AvatarURL = account.AvatarURL,
                                     AccountType = account.AccountType.ToString(),
                                     DisplayName = account.DisplayName
                                 };
@@ -122,6 +123,7 @@ namespace BackendWebAPI.Controllers
                                         {
                                             AuthToken = resultValue.AuthToken,
                                             AccountID = account.AccountID,
+                                            AvatarURL = account.AvatarURL,
                                             DisplayName = account.DisplayName,
                                             AccountType = account.AccountType.ToString()
                                         };

@@ -6,6 +6,7 @@ namespace BackendCore.Models.API.Response
     {
         public string AuthToken { get; set; }
         public Guid AccountID { get; set; }
+        public string AvatarURL { get; set; }
         public string DisplayName { get; set; }
         public string AccountType { get; set; }
     }

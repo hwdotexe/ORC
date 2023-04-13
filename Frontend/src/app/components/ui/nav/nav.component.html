@@ -7,9 +7,9 @@
     <div class="flex-auto"></div>
     <div class="flex-1 text-right items-center">
       <ng-container *ngIf="accountInfo$ | async as accountInfo; else loggedOut">
-        <p class="inline-block mx-2 align-middle" (click)="toggleMenu()">{{ accountInfo.displayName }}</p>
         <button mat-button [matMenuTriggerFor]="menu" class="align-middle">
-          <img src="https://avatars.githubusercontent.com/u/5459165?v=4" class="max-w-[40px] rounded-xl border border-gray-300" />
+          <p class="inline-block mx-2 align-middle">{{ accountInfo.displayName }}</p>
+          <img src="{{ accountInfo.avatarURL }}" class="inline-block max-w-[40px] rounded-xl border border-gray-300" />
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item>

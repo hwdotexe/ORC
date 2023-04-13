@@ -13,12 +13,13 @@ module.exports = {
         }
       },
       animation: {
-        flyIn: 'flyIn 0.3s linear'
+        flyIn: 'flyIn 0.5s linear'
       },
       keyframes: {
         flyIn: {
           '0%': { transform: 'translateX(100%)' },
-          '75%': { transform: 'translateX(-1%)' }
+          '75%': { transform: 'translateX(-3%)' },
+          '100%': { transform: 'translateX(0%)' }
         }
       }
     }
