@@ -11,6 +11,15 @@ module.exports = {
           300: '#328dd3',
           400: '#2972aa'
         }
+      },
+      animation: {
+        flyIn: 'flyIn 0.3s linear'
+      },
+      keyframes: {
+        flyIn: {
+          '0%': { transform: 'translateX(100%)' },
+          '75%': { transform: 'translateX(-1%)' }
+        }
       }
     }
   },

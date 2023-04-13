@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store/src/models';
+import { ToastrService } from 'ngx-toastr';
 import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AccountAuthenticatedResponse } from 'src/app/models/API/Response/account-authenticated-response.interface';
 import { FormName } from 'src/app/models/enum/form-name.enum';
@@ -13,7 +14,7 @@ import { AuthStateActions } from './auth-state.actions';
 
 @Injectable()
 export class AuthStateEffects {
-  constructor(private actions$: Actions, private httpService: HTTPService, private router: Router) {}
+  constructor(private actions$: Actions, private httpService: HTTPService, private router: Router, private toastrService: ToastrService) {}
 
   registerAttempt$ = createEffect(() =>
     this.actions$.pipe(
@@ -52,7 +53,10 @@ export class AuthStateEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthStateActions.loginSuccess),
-        tap(() => this.router.navigate(['/dashboard']))
+        tap(() => {
+          this.router.navigate(['/dashboard']);
+          this.toastrService.success("You've successfully logged in.", 'Welcome back!');
+        })
       ),
     { dispatch: false }
   );
@@ -75,7 +79,10 @@ export class AuthStateEffects {
     this.actions$.pipe(
       ofType(AuthStateActions.logOutSuccess),
       map(() => AppDetailsStateActions.clearFullState()),
-      tap(() => this.router.navigate(['/logged-out']))
+      tap(() => {
+        this.router.navigate(['/logged-out']);
+        this.toastrService.success("You've been successfully logged out.", 'Logged out!');
+      })
     )
   );
 

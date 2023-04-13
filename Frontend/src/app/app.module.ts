@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+import { ToastrModule } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +39,7 @@ import {
 import { CaseNavCategoryComponent } from './components/ui/case-nav-category/case-nav-category.component';
 import { CaseNavNewItemComponent } from './components/ui/case-nav-new-item/case-nav-new-item.component';
 import { CaseNavComponent } from './components/ui/case-nav/case-nav.component';
+import { ConfirmModalComponent } from './components/ui/confirm-modal/confirm-modal.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { FormErrorComponent } from './components/ui/form-error/form-error.component';
 import { FormFieldErrorComponent } from './components/ui/form-field-error/form-field-error.component';
@@ -49,6 +51,7 @@ import { PageItemComponent } from './components/ui/page-item/page-item.component
 import { SelectDirective } from './components/ui/select.directive';
 import { SubmitButtonComponent } from './components/ui/submit-button/submit-button.component';
 import { TextareaDirective } from './components/ui/textarea.directive';
+import { ToastNotificationComponent } from './components/ui/toast-notification/toast-notification.component';
 import { CampaignViewComponent } from './components/views/campaign-view/campaign-view.component';
 import { PageFolderViewComponent } from './components/views/page-folder-view/page-folder-view.component';
 import { PageViewComponent } from './components/views/page-view/page-view.component';
@@ -60,7 +63,6 @@ import { CampaignStateEffects } from './store/campaigns-state/campaigns-state.ef
 import { localstorageMetaReducer } from './store/localstorage-meta.reducer';
 import { PagesStateEffects } from './store/pages-state/pages-state.effects';
 import { rootReducer } from './store/store';
-import { ConfirmModalComponent } from './components/ui/confirm-modal/confirm-modal.component';
 
 export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
 
@@ -105,7 +107,8 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     CaseNavNewItemComponent,
     LoadingSpinnerComponent,
     TimedOutComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    ToastNotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -128,7 +131,10 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
       }
     }),
     EffectsModule.forRoot([AuthStateEffects, AppDetailsStateEffects, CampaignStateEffects, PagesStateEffects]),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      toastComponent: ToastNotificationComponent
+    })
   ],
   providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: 'site_key' }],
   bootstrap: [AppComponent]
