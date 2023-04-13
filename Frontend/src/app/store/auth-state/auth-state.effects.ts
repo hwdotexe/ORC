@@ -32,7 +32,10 @@ export class AuthStateEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthStateActions.registerSuccess),
-        tap(() => this.router.navigate(['/dashboard']))
+        tap(() => {
+          this.router.navigate(['/dashboard']);
+          this.toastrService.success('Your account is ready for adventure.', 'Welcome to CritCase!');
+        })
       ),
     { dispatch: false }
   );
