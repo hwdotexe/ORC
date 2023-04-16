@@ -10,7 +10,7 @@ export abstract class AuthStateActions {
   static readonly loginAttempt = createAction('@critcase/action/login/attempt', props<{ request: AccountLoginRequest }>());
   static readonly loginSuccess = createAction('@critcase/action/login/success', props<{ response: AccountAuthenticatedResponse }>());
   static readonly authFailure = createAction('@critcase/action/authentication/failure', props<{ form: FormName; error: any }>());
-  static readonly authExpired = createAction('@critcase/action/authentication/expired', props<{ error: any }>());
+  static readonly authExpired = createAction('@critcase/action/authentication/expired');
   static readonly logOutAttempt = createAction('@critcase/action/logout/attempt');
   static readonly logOutSuccess = createAction('@critcase/action/logout/success');
   static readonly authDataCleared = createAction('@critcase/action/authentication/cleared');

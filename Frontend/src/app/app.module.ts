@@ -24,7 +24,6 @@ import { FrontPageComponent } from './components/pages/front-page/front-page.com
 import { LoginComponent } from './components/pages/login/login.component';
 import { PrivacyPolicyComponent } from './components/pages/privacy-policy/privacy-policy.component';
 import { RegisterComponent } from './components/pages/register/register.component';
-import { AccountCreatedComponent } from './components/pages/status-pages/account-created/account-created.component';
 import { ErrorComponent } from './components/pages/status-pages/error/error.component';
 import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
 import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
@@ -88,7 +87,6 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     ErrorComponent,
     NotFoundComponent,
     RegisterComponent,
-    AccountCreatedComponent,
     LoggedOutComponent,
     AboutComponent,
     LoginFormComponent,

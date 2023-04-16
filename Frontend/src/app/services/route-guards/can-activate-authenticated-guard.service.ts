@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
-import { AuthService } from '../auth-service/auth.service';
+import { map, take } from 'rxjs/operators';
+import { AuthStateService } from 'src/app/store/auth-state/auth-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanActivateAuthenticatedGuardService implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authStateService: AuthStateService) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.authService.checkUserSessionActive$().pipe(
-      withLatestFrom(this.authService.getUserID$()),
-      tap(([isSessionActive, userID]) => {
-        if (!isSessionActive) {
-          if (userID) {
-            this.router.navigate(['/logged-out']);
-          } else {
-            this.router.navigate(['']);
-          }
+    return this.authStateService.authToken$.pipe(
+      take(1),
+      map(token => {
+        if (!token) {
+          this.authStateService.onExpired();
+          return false;
         }
-      }),
-      map(([isSessionActive]) => isSessionActive)
+
+        return true;
+      })
     );
   }
 }

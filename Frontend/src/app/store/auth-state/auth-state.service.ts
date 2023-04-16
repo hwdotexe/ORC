@@ -34,4 +34,8 @@ export class AuthStateService {
   onAuthDataCleared(): void {
     this.store.dispatch(AuthStateActions.authDataCleared());
   }
+
+  onExpired(): void {
+    this.store.dispatch(AuthStateActions.authExpired());
+  }
 }
