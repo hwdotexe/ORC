@@ -8,7 +8,7 @@
           <i class="flex-initial self-center text-xl mr-2 fa-solid fa-folder"></i>
           <h2
             class="flex-initial self-center text-xl font-semibold underline rounded-md p-1 max-w-xs overflow-hidden text-ellipsis whitespace-nowrap hover:bg-gray-100 active:bg-gray-200 hover:cursor-pointer"
-            [routerLink]="['/dashboard']"
+            [routerLink]="['/app/dashboard/notes']"
             [queryParams]="{ pageFolder: folder.folderID }">
             {{ folder.folderName }}
           </h2>
@@ -70,7 +70,7 @@
                 <!-- TODO: put this component on its own route? -->
                 <ui-page-item
                   [page]="page"
-                  [routerLink]="['/dashboard']"
+                  [routerLink]="['/app/dashboard/notes']"
                   [queryParams]="{ pageFolder: folder.folderID, page: page.pageID }"></ui-page-item>
               </ng-container>
             </div>

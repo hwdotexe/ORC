@@ -8,12 +8,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 import { ToastrModule } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthenticatedRoutingModule } from './authenticated-routing.module';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { PageEditFormComponent } from './components/forms/page-edit-form/page-edit-form.component';
 import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
@@ -114,6 +115,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     BrowserModule,
     MatMenuModule,
     AppRoutingModule,
+    AuthenticatedRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     RecaptchaV3Module,

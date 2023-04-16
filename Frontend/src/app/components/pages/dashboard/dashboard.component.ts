@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  routeSegment$: Observable<string>;
 
-  ngOnInit(): void {}
+  constructor(private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.routeSegment$ = this.activatedRoute.url.pipe(map(segments => segments?.toString().split(',')[1]?.toString() || 'home'));
+  }
 }

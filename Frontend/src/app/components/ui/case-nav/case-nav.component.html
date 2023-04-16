@@ -12,7 +12,7 @@
             <i class="flex-initial self-center fa-solid fa-bookmark"></i>
             <button
               class="flex-auto self-center ml-2 text-left max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-              [routerLink]="['/dashboard']"
+              [routerLink]="['/app/dashboard']"
               [queryParams]="{ campaign: campaign.campaignID }">
               {{ campaign.name }}
             </button>
@@ -22,7 +22,7 @@
           <i class="flex-initial self-center fa-solid fa-plus"></i>
           <button
             class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-            [routerLink]="['/dashboard']">
+            [routerLink]="['/app/dashboard']">
             New Campaign
           </button>
         </div>
@@ -33,7 +33,7 @@
           <i class="flex-initial self-center fa-solid fa-plus"></i>
           <button
             class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-            [routerLink]="['/dashboard']">
+            [routerLink]="['/app/dashboard']">
             New Character
           </button>
         </div>
@@ -44,20 +44,20 @@
           <i class="flex-initial self-center fa-solid fa-plus"></i>
           <button
             class="flex-auto self-center ml-2 text-left text-sm max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-            [routerLink]="['/dashboard']">
+            [routerLink]="['/app/dashboard']">
             New System
           </button>
         </div>
       </ui-case-nav-category>
 
-      <div *ngIf="queryParamID$ | async as paramID">
+      <div *ngIf="pageFolderParam$ | async as paramID">
         <ui-case-nav-category label="Notes" fa_icon="fa-solid fa-book-open" [expanded]="paramID !== 'none'">
           <ng-container *ngFor="let pageFolder of pageFolders$ | async">
             <div
               class="flex rounded-md {{ paramID === pageFolder.folderID ? 'bg-critBlue-200 text-white' : 'hover:bg-gray-200' }} active:bg-gray-300">
               <button
                 class="flex-auto self-center py-1 px-3 text-left overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
-                [routerLink]="['/dashboard']"
+                [routerLink]="['/app/dashboard/notes']"
                 [queryParams]="{ pageFolder: pageFolder.folderID }">
                 <i class="flex-initial mr-2 self-center fa-solid fa-folder"></i>
                 {{ pageFolder.folderName }}

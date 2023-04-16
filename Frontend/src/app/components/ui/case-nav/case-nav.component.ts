@@ -14,7 +14,7 @@ import { PagesStateService } from 'src/app/store/pages-state/pages-state.service
 export class CaseNavComponent implements OnInit {
   campaigns$: Observable<Campaign[]>;
   pageFolders$: Observable<PageFolder[]>;
-  queryParamID$: Observable<string>;
+  pageFolderParam$: Observable<string>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,7 +34,7 @@ export class CaseNavComponent implements OnInit {
     );
 
     // We can amend this with future query param keys to make this apply to multiple types.
-    this.queryParamID$ = this.activatedRoute.queryParamMap.pipe(map(map => (map.has('pageFolder') ? map.get('pageFolder') : 'none')));
+    this.pageFolderParam$ = this.activatedRoute.queryParamMap.pipe(map(map => (map.has('pageFolder') ? map.get('pageFolder') : 'none')));
   }
 
   dispatchCreateFolder(title: string) {

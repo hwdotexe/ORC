@@ -33,7 +33,7 @@ export class AuthStateEffects {
       this.actions$.pipe(
         ofType(AuthStateActions.registerSuccess),
         tap(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/app/dashboard']);
           this.toastrService.success('Your account is ready for adventure.', 'Welcome to CritCase!');
         })
       ),
@@ -57,7 +57,7 @@ export class AuthStateEffects {
       this.actions$.pipe(
         ofType(AuthStateActions.loginSuccess),
         tap(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/app/dashboard']);
           this.toastrService.success("You've successfully logged in.", 'Welcome back!');
         })
       ),

@@ -54,7 +54,7 @@ export class PagesStateEffects {
     () =>
       this.actions$.pipe(
         ofType(PagesStateActions.pageFolderCreateReceived),
-        tap(action => this.router.navigate(['/dashboard'], { queryParams: { pageFolder: action.response.folderID } }))
+        tap(action => this.router.navigate(['/app/dashboard/notes'], { queryParams: { pageFolder: action.response.folderID } }))
       ),
     { dispatch: false }
   );
@@ -75,7 +75,7 @@ export class PagesStateEffects {
     () =>
       this.actions$.pipe(
         ofType(PagesStateActions.pageFolderDeleteReceived),
-        tap(action => this.router.navigate(['/dashboard']))
+        tap(action => this.router.navigate(['/app/dashboard']))
       ),
     { dispatch: false }
   );
@@ -97,7 +97,9 @@ export class PagesStateEffects {
       this.actions$.pipe(
         ofType(PagesStateActions.pageCreateReceived),
         tap(action =>
-          this.router.navigate(['/dashboard'], { queryParams: { pageFolder: action.folderID, page: action.response.pageID, isEditing: true } })
+          this.router.navigate(['/app/dashboard/notes'], {
+            queryParams: { pageFolder: action.folderID, page: action.response.pageID, isEditing: true }
+          })
         )
       ),
     { dispatch: false }

@@ -34,12 +34,12 @@ export class PagesStateService {
 
   getPageFolderFromID$(folderID: string): Observable<PageFolder> {
     // TODO: call action to navigate to Not Found?
-    return this.pageFolders$.pipe(map(folders => folders?.find(f => f.folderID == folderID)));
+    return this.pageFolders$.pipe(map(folders => folders?.find(f => f.folderID === folderID)));
   }
 
   getPageFromID$(pageID: string): Observable<Page> {
     // TODO: call action to navigate to Not Found?
-    return this.pages$.pipe(map(pages => pages?.find(p => p.pageID == pageID)));
+    return this.pages$.pipe(map(pages => pages?.find(p => p.pageID === pageID)));
   }
 
   isPageDataLoaded$(folder: PageFolder): Observable<boolean> {

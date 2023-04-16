@@ -14,9 +14,10 @@
 <!-- Case Navigation + Chosen View -->
 <div class="flex">
   <app-case-nav class="flex-initial mr-6"></app-case-nav>
-  <div class="flex-auto">
-    <app-campaign-view></app-campaign-view>
-    <app-page-folder-view></app-page-folder-view>
+  <div class="flex-auto" *ngIf="routeSegment$ | async as routeSegment">
+    <app-campaign-view *ngIf="routeSegment === 'campaign'"></app-campaign-view>
+    <app-page-folder-view *ngIf="routeSegment === 'notes'"></app-page-folder-view>
+    <p *ngIf="routeSegment === 'home'">Welcome to CritCase!</p>
     <!-- TODO: Home / default view, welcome user, etc. -->
   </div>
 </div>
