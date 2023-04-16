@@ -8,7 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 import { ToastrModule } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.dev';
@@ -18,16 +18,18 @@ import { AuthenticatedRoutingModule } from './authenticated-routing.module';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { PageEditFormComponent } from './components/forms/page-edit-form/page-edit-form.component';
 import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
+import { AboutComponent } from './components/pages/about/about.component';
 import { DashboardComponent } from './components/pages/dashboard/dashboard.component';
 import { FrontPageComponent } from './components/pages/front-page/front-page.component';
-import { InfoComponent } from './components/pages/info/info.component';
 import { LoginComponent } from './components/pages/login/login.component';
+import { PrivacyPolicyComponent } from './components/pages/privacy-policy/privacy-policy.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 import { AccountCreatedComponent } from './components/pages/status-pages/account-created/account-created.component';
 import { ErrorComponent } from './components/pages/status-pages/error/error.component';
 import { LoggedOutComponent } from './components/pages/status-pages/logged-out/logged-out.component';
 import { NotFoundComponent } from './components/pages/status-pages/not-found/not-found.component';
 import { TimedOutComponent } from './components/pages/status-pages/timed-out/timed-out.component';
+import { TermsComponent } from './components/pages/terms/terms.component';
 import { UserManagementComponent } from './components/pages/user-management/user-management.component';
 import {
   ButtonDirectiveBlue,
@@ -88,7 +90,7 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     RegisterComponent,
     AccountCreatedComponent,
     LoggedOutComponent,
-    InfoComponent,
+    AboutComponent,
     LoginFormComponent,
     RegisterFormComponent,
     TimePipe,
@@ -109,7 +111,9 @@ export const metaReducers: MetaReducer[] = [localstorageMetaReducer];
     LoadingSpinnerComponent,
     TimedOutComponent,
     ConfirmModalComponent,
-    ToastNotificationComponent
+    ToastNotificationComponent,
+    PrivacyPolicyComponent,
+    TermsComponent
   ],
   imports: [
     BrowserModule,
