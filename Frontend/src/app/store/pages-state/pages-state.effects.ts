@@ -136,7 +136,7 @@ export class PagesStateEffects {
         if (error.error.status >= 500) {
           return AppDetailsStateActions.serverError({ error });
         } else if (error.error.status === 401) {
-          return AuthStateActions.authExpired({ error });
+          return AuthStateActions.authExpired();
         }
       })
     )
