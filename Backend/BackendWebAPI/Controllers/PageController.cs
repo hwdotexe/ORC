@@ -34,7 +34,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "GET_PAGE"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "GET_PAGE", false))
                 {
                     var sessionValue = session.Value;
                     var page = App.GetState().GetPage(Guid.Parse(pageID));
@@ -80,7 +80,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "GET_PAGE_FOLDER"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "GET_PAGE_FOLDER", false))
                 {
                     var sessionValue = session.Value;
                     var folder = App.GetState().LoadedPageFolders.Find(f => f.FolderID == Guid.Parse(folderID));
@@ -128,7 +128,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "LIST_PAGE_FOLDERS"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "LIST_PAGE_FOLDERS", false))
                 {
                     var sessionValue = session.Value;
 
@@ -161,7 +161,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE", false))
                 {
                     var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                     var request = APIRequestMapper.MapRequestToModel<PageCreateRequest>(body);
@@ -233,7 +233,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE_FOLDER"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "CREATE_PAGE_FOLDER", false))
                 {
                     var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                     var request = APIRequestMapper.MapRequestToModel<PageFolderCreateRequest>(body);
@@ -279,7 +279,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_PAGE"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "UPDATE_PAGE", false))
                 {
                     var body = HTTPServerUtilities.GetHTTPRequestBody(HttpContext.Request);
                     var request = APIRequestMapper.MapRequestToModel<PageUpdateRequest>(body);
@@ -347,7 +347,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_PAGE"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_PAGE", false))
                 {
                     var sessionValue = session.Value;
                     var page = App.GetState().GetPage(Guid.Parse(pageID));
@@ -410,7 +410,7 @@ namespace BackendWebAPI.Controllers
 
             try
             {
-                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_FOLDER"))
+                if (CaptchaService.IsSafeRequest(HttpContext, "DELETE_FOLDER", false))
                 {
                     var sessionValue = session.Value;
                     var folder = App.GetState().LoadedPageFolders.Find(f => f.FolderID == Guid.Parse(folderID));

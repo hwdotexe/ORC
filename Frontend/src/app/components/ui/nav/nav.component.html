@@ -12,13 +12,17 @@
           <img src="{{ accountInfo.avatarURL }}" class="inline-block max-w-[40px] rounded-xl border border-gray-300" />
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <i class="w-7 fa-solid fa-gear pr-1"></i>
-            Account Settings
+          <button mat-menu-item [routerLink]="['/app/dashboard']">
+            <i class="w-7 fa-solid fa-house pr-1"></i>
+            Dashboard
           </button>
           <button mat-menu-item>
             <i class="w-7 fa-regular fa-circle-question pr-1"></i>
             Help
+          </button>
+          <button mat-menu-item>
+            <i class="w-7 fa-solid fa-gear pr-1"></i>
+            Account Settings
           </button>
           <button mat-menu-item (click)="logOut()">
             <i class="w-7 fa-solid fa-right-from-bracket pr-1"></i>
