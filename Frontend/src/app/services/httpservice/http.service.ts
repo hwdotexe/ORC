@@ -48,12 +48,12 @@ export class HTTPService {
     );
   }
 
-  PUT<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
+  PUT<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
       take(1),
-      withLatestFrom(this.captchaService.createCaptchaToken$('PUT_' + action)),
+      withLatestFrom(isProtected ? this.captchaService.createCaptchaToken$('PUT_' + action) : of('token')),
       switchMap(([authToken, captchaToken]) => {
         let call = this.http.put<T>(environment.api_base + url, body, this.httpCallOptions(authToken, captchaToken));
         return this.mapResponse<T>(call);
@@ -61,12 +61,12 @@ export class HTTPService {
     );
   }
 
-  PATCH<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
+  PATCH<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
       take(1),
-      withLatestFrom(this.captchaService.createCaptchaToken$('PATCH_' + action)),
+      withLatestFrom(isProtected ? this.captchaService.createCaptchaToken$('PATCH_' + action) : of('token')),
       switchMap(([authToken, captchaToken]) => {
         let call = this.http.request<T>('PATCH', environment.api_base + url, { ...this.httpCallOptions(authToken, captchaToken), body: body });
         return this.mapResponse<T>(call);
@@ -74,12 +74,12 @@ export class HTTPService {
     );
   }
 
-  DELETE<T>(url: string, body: any, action: string): Observable<HttpResponse<T>> {
+  DELETE<T>(url: string, body: any, action: string, isProtected: boolean = true): Observable<HttpResponse<T>> {
     this.pageLoadingService.loading();
 
     return this.authStateService.authToken$.pipe(
       take(1),
-      withLatestFrom(this.captchaService.createCaptchaToken$('DELETE_' + action)),
+      withLatestFrom(isProtected ? this.captchaService.createCaptchaToken$('DELETE_' + action) : of('token')),
       switchMap(([authToken, captchaToken]) => {
         let call = this.http.request<T>('DELETE', environment.api_base + url, { ...this.httpCallOptions(authToken, captchaToken), body: body });
         return this.mapResponse<T>(call);
