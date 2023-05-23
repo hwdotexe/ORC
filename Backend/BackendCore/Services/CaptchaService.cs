@@ -20,16 +20,15 @@ namespace BackendCore.Services
             _captchaUrl = $"https://recaptchaenterprise.googleapis.com/v1/projects/{_projectID}/assessments?key={_apiKey}";
         }
 
-        public static bool IsSafeRequest(HttpContext context, string action)
+        public static bool IsSafeRequest(HttpContext context, string action, bool isProtected = true)
         {
             // GetScore should be moved to a private method and/or merged with this method.
-            var score = GetScore(context.GetCaptchaToken(), context.Request.Method + "_" + action);
+            var score = isProtected ? GetScore(context.GetCaptchaToken(), context.Request.Method + "_" + action) : 1d;
 
             return score > 0.5;
         }
 
-        [Obsolete("This method enables logic duplication. Use IsSafeRequest() instead.")]
-        public static double GetScore(string token, string action)
+        private static double GetScore(string token, string action)
         {
             if (App.isDevelopment)
             {

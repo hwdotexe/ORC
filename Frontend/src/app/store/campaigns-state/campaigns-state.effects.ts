@@ -14,7 +14,7 @@ export class CampaignStateEffects {
     this.actions$.pipe(
       ofType(CampaignStateActions.campaignDataRequest),
       mergeMap(() =>
-        this.httpService.GET<CampaignListResponse>('campaign', 'LIST_CAMPAIGNS').pipe(
+        this.httpService.GET<CampaignListResponse>('campaign', 'LIST_CAMPAIGNS', false).pipe(
           map(response => CampaignStateActions.campaignDataReceived({ response: response.body })),
           catchError(error => of(CampaignStateActions.campaignDataFailure({ error })))
         )

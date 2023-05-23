@@ -66,7 +66,7 @@ export class AppDetailsStateEffects {
     this.actions$.pipe(
       ofType(AppDetailsStateActions.authenticationHeartbeatAttempt),
       mergeMap(() =>
-        this.httpService.GET<PageFolderDataResponse>('heartbeat', 'CREATE_PAGE').pipe(
+        this.httpService.GET<PageFolderDataResponse>('heartbeat', 'HEARTBEAT', false).pipe(
           map(() => {
             return AppDetailsStateActions.authenticationHeartbeatSucceeded();
           }),

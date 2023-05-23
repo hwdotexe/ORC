@@ -18,7 +18,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageFoldersListRequest),
       mergeMap(() =>
-        this.httpService.GET<PageFoldersListResponse>('page', 'LIST_PAGE_FOLDERS').pipe(
+        this.httpService.GET<PageFoldersListResponse>('page', 'LIST_PAGE_FOLDERS', false).pipe(
           map(response => PagesStateActions.pageFoldersListReceived({ response: response.body })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -30,7 +30,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageFoldersDataRequest),
       mergeMap(request =>
-        this.httpService.GET<PageFolderDataResponse>('page/folder/' + request.folderID, 'GET_PAGE_FOLDER').pipe(
+        this.httpService.GET<PageFolderDataResponse>('page/folder/' + request.folderID, 'GET_PAGE_FOLDER', false).pipe(
           map(response => PagesStateActions.pageFoldersDataReceived({ response: response.body })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -42,7 +42,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageFolderCreateRequest),
       mergeMap(action =>
-        this.httpService.PUT<any>('page/folder/', action.request, 'CREATE_PAGE_FOLDER').pipe(
+        this.httpService.PUT<any>('page/folder/', action.request, 'CREATE_PAGE_FOLDER', false).pipe(
           map(response => PagesStateActions.pageFolderCreateReceived({ response: response.body })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -63,7 +63,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageFolderDeleteRequest),
       exhaustMap(action =>
-        this.httpService.DELETE<any>('page/folder/' + action.folderID, null, 'DELETE_FOLDER').pipe(
+        this.httpService.DELETE<any>('page/folder/' + action.folderID, null, 'DELETE_FOLDER', false).pipe(
           map(() => PagesStateActions.pageFolderDeleteReceived({ folderID: action.folderID })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -84,7 +84,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageCreateRequest),
       mergeMap(action =>
-        this.httpService.PUT<any>('page', action.request, 'CREATE_PAGE').pipe(
+        this.httpService.PUT<any>('page', action.request, 'CREATE_PAGE', false).pipe(
           map(response => PagesStateActions.pageCreateReceived({ response: response.body, folderID: action.request.folderID })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -109,7 +109,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageUpdateRequest),
       exhaustMap(action =>
-        this.httpService.PATCH<Page>('page', action.request, 'UPDATE_PAGE').pipe(
+        this.httpService.PATCH<Page>('page', action.request, 'UPDATE_PAGE', false).pipe(
           map(response => PagesStateActions.pageUpdateReceived({ response: response.body })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
@@ -121,7 +121,7 @@ export class PagesStateEffects {
     this.actions$.pipe(
       ofType(PagesStateActions.pageDeleteRequest),
       exhaustMap(action =>
-        this.httpService.DELETE<any>('page/' + action.pageID, null, 'DELETE_PAGE').pipe(
+        this.httpService.DELETE<any>('page/' + action.pageID, null, 'DELETE_PAGE', false).pipe(
           map(() => PagesStateActions.pageDeleteReceived({ pageID: action.pageID })),
           catchError(error => of(PagesStateActions.pagesDataFailure({ error })))
         )
