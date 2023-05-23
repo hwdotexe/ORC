@@ -80,13 +80,14 @@ namespace BackendWebAPI
 
             // Run initial setup.
             var connectionString = Configuration.GetConnectionString("mongoDB");
+            var passwordSalt = Configuration.GetValue<string>("PasswordSalt");
             var databaseName = Configuration.GetValue<string>("Database");
             var captchaSettings = Configuration.GetSection("Captcha");
             var captchaAPIKey = captchaSettings.GetValue<string>("APIKey");
             var captchaProjectID = captchaSettings.GetValue<string>("ProjectID");
             var captchaSiteKey = captchaSettings.GetValue<string>("SiteKey");
 
-            App.Init(connectionString, databaseName, env.IsDevelopment());
+            App.Init(connectionString, passwordSalt, databaseName, env.IsDevelopment());
             CaptchaService.Init(captchaAPIKey, captchaProjectID, captchaSiteKey);
 
             // Start threads and tasks.

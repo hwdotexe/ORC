@@ -13,7 +13,7 @@ namespace BackendCore.Authentication
     public class Gatekeeper
     {
         private readonly int sessionDurationHours = 1;
-        private readonly static string salt = "White-haired Anime Husbando";
+        private readonly static string salt = App.PasswordSalt;
         private readonly static string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private Dictionary<string, AccountSession> Sessions { get; }
         private RequestCache LoginAttemptCache { get; set; }

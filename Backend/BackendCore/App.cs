@@ -1,5 +1,4 @@
-﻿using BackendCore;
-using System;
+﻿using System;
 using System.IO;
 
 namespace BackendCore
@@ -12,12 +11,14 @@ namespace BackendCore
         private static State state;
 
         public static string DBConnectionString { get; private set; }
+        public static string PasswordSalt { get; private set; }
 
-        public static void Init(string connectionString, string database, bool isDev)
+        public static void Init(string connectionString, string passwordSalt, string database, bool isDev)
         {
             isDevelopment = isDev;
             DBConnectionString = connectionString;
             databaseName = database;
+            PasswordSalt = passwordSalt;
 
             // Create default directories.
             if (!Directory.Exists(wwwDir))
@@ -25,7 +26,8 @@ namespace BackendCore
                 Console.WriteLine("Creating www directory...");
 
                 Directory.CreateDirectory(wwwDir);
-            } else
+            }
+            else
             {
                 Console.WriteLine("Loading www directory...");
             }
