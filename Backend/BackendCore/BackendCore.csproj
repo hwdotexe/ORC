@@ -11,4 +11,12 @@
     <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
     <PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Models\Universe\" />
+    <None Remove="Models\UserAccount\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Universe\" />
+    <Folder Include="Models\UserAccount\" />
+  </ItemGroup>
 </Project>
